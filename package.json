@@ -1,0 +1,34 @@
+{
+  "name": "apex-gym",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [
+    "Gym",
+    "Website",
+    "express"
+  ],
+  "homepage": "https://github.com/NelsonHennessiAyodeji/apex-gym-website#readme",
+  "bugs": {
+    "url": "https://github.com/NelsonHennessiAyodeji/apex-gym-website/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NelsonHennessiAyodeji/apex-gym-website.git"
+  },
+  "license": "ISC",
+  "author": "Ayodeji Nelson",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "dev:debug": "nodemon --inspect index.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.76.1",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "multer": "^2.0.2"
+  }
+}
