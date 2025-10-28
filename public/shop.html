@@ -1,15 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="eng">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="description"
-      content="Ape-X Gym Shop - Premium Fitness Equipment and Apparel"
-    />
-    <meta
-      name="keywords"
-      content="Gym, Fitness, Workout, Equipment, Apparel, Store"
-    />
+    <meta name="description" content="Gym Template" />
+    <meta name="keywords" content="Gym, unica, creative, html" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Ape-X Store</title>
@@ -25,834 +19,436 @@
     />
 
     <!-- Css Styles -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    />
-
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/flaticon.css" type="text/css" />
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/barfiller.css" type="text/css" />
+    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css" />
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
     <style>
-      :root {
-        --primary-color: #f36100;
-        --dark-bg: #0a0a0a;
-        --card-bg: #1a1a1a;
-        --text-light: #b0b0b0;
-        --border-color: #333;
-      }
-
+      /* Global black background */
       body {
-        background-color: var(--dark-bg);
-        color: #fff;
-        font-family: "Muli", sans-serif;
-        overflow-x: hidden;
-      }
-
-      /* Header Styles */
-      .header-section {
-        background-color: #111;
-        padding: 15px 0;
-        border-bottom: 2px solid var(--primary-color);
-      }
-
-      .logo img {
-        max-height: 50px;
-      }
-
-      .nav-menu ul {
-        list-style: none;
-        display: flex;
-        justify-content: center;
-        margin: 0;
-        padding: 0;
-      }
-
-      .nav-menu ul li {
-        position: relative;
-        margin: 0 15px;
-      }
-
-      .nav-menu ul li a {
-        color: #fff;
-        text-decoration: none;
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 16px;
-        transition: all 0.3s;
-      }
-
-      .nav-menu ul li a:hover,
-      .nav-menu ul li.active a {
-        color: var(--primary-color);
-      }
-
-      .top-option {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 20px;
-      }
-
-      .search-switch,
-      .to-social a {
-        color: #fff;
-        font-size: 18px;
-        transition: all 0.3s;
-      }
-
-      .search-switch:hover,
-      .to-social a:hover {
-        color: var(--primary-color);
-      }
-
-      .canvas-open {
-        display: none;
-        color: #fff;
-        font-size: 24px;
-        cursor: pointer;
-      }
-
-      /* Mobile Header Styles */
-      @media (max-width: 991px) {
-        .nav-menu {
-          display: none;
-        }
-
-        .top-option {
-          justify-content: center;
-          margin-top: 15px;
-        }
-
-        .canvas-open {
-          display: block;
-          text-align: right;
-        }
-
-        .logo {
-          text-align: center;
-        }
-      }
-
-      /* Breadcrumb Section */
-      .breadcrumb-section {
-        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-          url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80");
-        background-size: cover;
-        background-position: center;
-        padding: 80px 0;
-        text-align: center;
-      }
-
-      @media (max-width: 768px) {
-        .breadcrumb-section {
-          padding: 60px 0;
-        }
-      }
-
-      @media (max-width: 576px) {
-        .breadcrumb-section {
-          padding: 40px 0;
-        }
-      }
-
-      .breadcrumb-text h2 {
-        font-size: 48px;
-        font-weight: 700;
-        margin-bottom: 20px;
-        font-family: "Oswald", sans-serif;
-      }
-
-      @media (max-width: 768px) {
-        .breadcrumb-text h2 {
-          font-size: 36px;
-        }
-      }
-
-      @media (max-width: 576px) {
-        .breadcrumb-text h2 {
-          font-size: 28px;
-        }
-      }
-
-      .bt-option a {
-        color: var(--text-light);
-        text-decoration: none;
-      }
-
-      .bt-option span {
-        color: var(--primary-color);
-      }
-
-      /* Shop Section */
-      .shop-section {
-        padding: 70px 0;
-      }
-
-      @media (max-width: 768px) {
-        .shop-section {
-          padding: 50px 0;
-        }
-      }
-
-      @media (max-width: 576px) {
-        .shop-section {
-          padding: 30px 0;
-        }
-      }
-
-      .shop-sidebar {
-        background-color: var(--card-bg);
-        padding: 30px;
-        border-radius: 5px;
-        margin-bottom: 30px;
-      }
-
-      @media (max-width: 768px) {
-        .shop-sidebar {
-          padding: 20px;
-        }
-      }
-
-      .shop-sidebar h4 {
-        color: #fff;
-        margin-bottom: 20px;
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 18px;
-        border-bottom: 2px solid var(--primary-color);
-        padding-bottom: 10px;
-      }
-
-      .shop-sidebar ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-
-      .shop-sidebar ul li {
-        margin-bottom: 10px;
-      }
-
-      .shop-sidebar ul li a {
-        color: var(--text-light);
-        text-decoration: none;
-        transition: all 0.3s;
-        display: block;
-        padding: 5px 0;
-      }
-
-      .shop-sidebar ul li a:hover,
-      .shop-sidebar ul li a.active {
-        color: var(--primary-color);
-        padding-left: 10px;
-      }
-
-      .price-filter {
-        margin-bottom: 20px;
-      }
-
-      .price-range {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-        color: var(--text-light);
-      }
-
-      .filter-btn {
-        background-color: var(--primary-color);
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: all 0.3s;
-        width: 100%;
-        font-weight: 600;
-        text-transform: uppercase;
-      }
-
-      .filter-btn:hover {
-        background-color: #d95300;
-      }
-
-      .social-links {
-        display: flex;
-        gap: 10px;
-      }
-
-      .social-links a {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 36px;
-        height: 36px;
-        background-color: #2a2a2a;
-        color: #fff;
-        border-radius: 50%;
-        transition: all 0.3s;
-      }
-
-      .social-links a:hover {
-        background-color: var(--primary-color);
-      }
-
-      .shop-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 30px;
-        flex-wrap: wrap;
-        gap: 15px;
-      }
-
-      @media (max-width: 576px) {
-        .shop-header {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-      }
-
-      .shop-sorting {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-      }
-
-      @media (max-width: 576px) {
-        .shop-sorting {
-          flex-direction: column;
-          align-items: flex-start;
-          width: 100%;
-          gap: 10px;
-        }
-      }
-
-      .shop-sorting select {
-        background-color: var(--card-bg);
-        color: #fff;
-        border: 1px solid var(--border-color);
-        padding: 8px 15px;
-        border-radius: 4px;
-      }
-
-      @media (max-width: 576px) {
-        .shop-sorting select {
-          width: 100%;
-        }
-      }
-
-      .view-options {
-        display: flex;
-        gap: 10px;
-      }
-
-      @media (max-width: 576px) {
-        .view-options {
-          margin-top: 10px;
-        }
-      }
-
-      .view-options a {
-        color: var(--text-light);
-        text-decoration: none;
-        padding: 5px 10px;
-        border-radius: 4px;
-        transition: all 0.3s;
-      }
-
-      .view-options a.active,
-      .view-options a:hover {
-        background-color: var(--primary-color);
+        background-color: #000;
         color: #fff;
       }
 
-      .product-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 30px;
+      /* Override any existing white backgrounds */
+      .shop-section,
+      .breadcrumb-section,
+      .header-section,
+      .offcanvas-menu-wrapper,
+      .gettouch-section,
+      .footer-section {
+        background-color: #000 !important;
       }
 
-      @media (max-width: 992px) {
-        .product-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
+      .breadcrumb-section.set-bg {
+        background-color: #111 !important;
       }
 
-      @media (max-width: 576px) {
-        .product-grid {
-          grid-template-columns: 1fr;
-          gap: 20px;
-        }
-      }
-
-      /* Fixed height product cards */
+      /* Product styles */
       .product-item {
-        background-color: var(--card-bg);
+        background: #1a1a1a;
         border-radius: 5px;
         overflow: hidden;
+        margin-bottom: 30px;
         transition: all 0.3s;
-        height: 450px; /* Fixed height */
+        border: 1px solid #333;
+        height: 100%;
         display: flex;
         flex-direction: column;
       }
-
-      @media (max-width: 768px) {
-        .product-item {
-          height: 420px;
-        }
-      }
-
-      @media (max-width: 576px) {
-        .product-item {
-          height: 400px;
-        }
-      }
-
       .product-item:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 10px 20px rgba(229, 54, 55, 0.2);
       }
-
       .product-img {
         position: relative;
         overflow: hidden;
-        height: 250px; /* Fixed image height */
-        flex-shrink: 0; /* Prevent image area from shrinking */
+        height: 250px;
+        background-color: #222;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
-
-      @media (max-width: 768px) {
-        .product-img {
-          height: 220px;
-        }
-      }
-
-      @media (max-width: 576px) {
-        .product-img {
-          height: 200px;
-        }
-      }
-
       .product-img img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         transition: all 0.5s;
       }
-
       .product-item:hover .product-img img {
         transform: scale(1.05);
       }
-
-      .product-badge {
+      .product-text {
+        padding: 20px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .product-text h5 {
+        color: #fff;
+        font-weight: 600;
+        margin-bottom: 10px;
+        /* Limit product name to 2 lines */
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 48px;
+      }
+      .product-text p {
+        color: #e53637;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 15px;
+      }
+      .product-text .primary-btn {
+        display: inline-block;
+        background: #e53637;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-weight: 600;
+        transition: all 0.3s;
+        text-decoration: none;
+        text-align: center;
+        margin-top: auto;
+      }
+      .product-text .primary-btn:hover {
+        background: #fff;
+        color: #e53637;
+        text-decoration: none;
+      }
+      .out-of-stock {
         position: absolute;
         top: 10px;
         right: 10px;
-        background-color: var(--primary-color);
+        background: #e53637;
         color: #fff;
         padding: 5px 10px;
-        border-radius: 3px;
+        border-radius: 4px;
         font-size: 12px;
         font-weight: 600;
-        z-index: 2;
       }
-
-      .product-badge.sold-out {
-        background-color: #666;
+      .shop-sidebar {
+        background: #1a1a1a;
+        padding: 30px;
+        border-radius: 5px;
+        margin-bottom: 30px;
+        border: 1px solid #333;
       }
-
-      .quick-view {
-        position: absolute;
-        bottom: -40px;
-        left: 0;
-        right: 0;
-        background-color: rgba(0, 0, 0, 0.7);
+      .shop-sidebar h4 {
         color: #fff;
-        text-align: center;
-        padding: 10px;
-        transition: all 0.3s;
-        z-index: 2;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #333;
       }
-
-      .product-item:hover .quick-view {
-        bottom: 0;
+      .shop-sidebar ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
       }
-
-      .product-info {
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1; /* Allow info section to grow and fill remaining space */
-        justify-content: space-between; /* Distribute space between elements */
-      }
-
-      @media (max-width: 768px) {
-        .product-info {
-          padding: 15px;
-        }
-      }
-
-      .product-category {
-        color: var(--primary-color);
-        font-size: 12px;
-        text-transform: uppercase;
-        margin-bottom: 5px;
-        display: block;
-        line-height: 1.2;
-      }
-
-      .product-title {
-        color: #fff;
-        font-size: 18px;
+      .shop-sidebar ul li {
         margin-bottom: 10px;
-        font-weight: 600;
-        line-height: 1.3;
-        /* Truncate long titles with ellipsis */
-        display: -webkit-box;
-        -webkit-line-clamp: 2; /* Limit to 2 lines */
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        height: 46px; /* Fixed height for title (2 lines) */
       }
-
-      @media (max-width: 768px) {
-        .product-title {
-          font-size: 16px;
-          height: 42px;
-        }
+      .shop-sidebar ul li a {
+        color: #b7b7b7;
+        transition: all 0.3s;
+        text-decoration: none;
       }
-
-      .product-price {
-        color: var(--primary-color);
-        font-size: 20px;
-        font-weight: 700;
-        margin-bottom: 15px;
-        line-height: 1.2;
+      .shop-sidebar ul li a:hover {
+        color: #e53637;
+        text-decoration: none;
       }
-
-      @media (max-width: 768px) {
-        .product-price {
-          font-size: 18px;
-          margin-bottom: 12px;
-        }
+      .price-filter {
+        margin-top: 20px;
       }
-
-      .product-actions {
-        display: flex;
-        gap: 10px;
-        margin-top: auto; /* Push actions to bottom of card */
+      .price-filter input {
+        width: 100%;
+        margin-bottom: 10px;
+        background: #333;
+        border: none;
+        color: #fff;
+        padding: 8px 15px;
+        border-radius: 4px;
       }
-
-      .add-to-cart {
-        background-color: var(--primary-color);
+      .price-filter button {
+        width: 100%;
+        background: #e53637;
         color: #fff;
         border: none;
-        padding: 8px 15px;
+        padding: 10px;
         border-radius: 4px;
-        cursor: pointer;
-        transition: all 0.3s;
-        flex: 1;
-      }
-
-      .add-to-cart:hover {
-        background-color: #d95300;
-      }
-
-      .read-more {
-        background-color: transparent;
-        color: var(--text-light);
-        border: 1px solid var(--border-color);
-        padding: 8px 15px;
-        border-radius: 4px;
-        cursor: pointer;
+        font-weight: 600;
         transition: all 0.3s;
       }
-
-      .read-more:hover {
-        background-color: #333;
-        color: #fff;
+      .price-filter button:hover {
+        background: #fff;
+        color: #e53637;
       }
-
-      .pagination {
-        display: flex;
-        justify-content: center;
-        margin-top: 50px;
+      .shop-pagination {
+        text-align: center;
+        margin-top: 30px;
       }
-
-      @media (max-width: 576px) {
-        .pagination {
-          margin-top: 30px;
-        }
-      }
-
-      .pagination a {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+      .shop-pagination a {
+        display: inline-block;
         width: 40px;
         height: 40px;
-        background-color: var(--card-bg);
-        color: var(--text-light);
-        text-decoration: none;
+        line-height: 40px;
+        text-align: center;
+        background: #1a1a1a;
+        color: #fff;
         margin: 0 5px;
         border-radius: 4px;
         transition: all 0.3s;
+        text-decoration: none;
       }
-
-      .pagination a.active,
-      .pagination a:hover {
-        background-color: var(--primary-color);
+      .shop-pagination a.active,
+      .shop-pagination a:hover {
+        background: #e53637;
         color: #fff;
+        text-decoration: none;
       }
-
-      /* Filter Buttons */
-      .filter-buttons {
+      .sorting-options {
+        margin-bottom: 30px;
         display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-bottom: 20px;
+        justify-content: space-between;
+        align-items: center;
       }
-
-      .filter-btn-small {
-        background-color: var(--card-bg);
-        color: var(--text-light);
-        border: 1px solid var(--border-color);
+      .sorting-options select {
+        background: #1a1a1a;
+        border: 1px solid #333;
+        color: #fff;
         padding: 8px 15px;
         border-radius: 4px;
-        cursor: pointer;
-        transition: all 0.3s;
       }
-
-      .filter-btn-small.active,
-      .filter-btn-small:hover {
-        background-color: var(--primary-color);
+      .view-options span {
         color: #fff;
-        border-color: var(--primary-color);
+        margin-right: 10px;
+      }
+      .view-options a {
+        color: #b7b7b7;
+        margin-right: 10px;
+        transition: all 0.3s;
+        text-decoration: none;
+      }
+      .view-options a.active,
+      .view-options a:hover {
+        color: #e53637;
+        text-decoration: none;
       }
 
-      /* Footer */
-      .gettouch-section {
-        background-color: #111;
-        padding: 50px 0;
-      }
-
-      @media (max-width: 768px) {
-        .gettouch-section {
-          padding: 40px 0;
-        }
-      }
-
-      .gt-text {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        color: var(--text-light);
-        margin-bottom: 20px;
-      }
-
-      @media (max-width: 768px) {
-        .gt-text {
-          justify-content: center;
-          text-align: center;
-          flex-direction: column;
-          gap: 10px;
-        }
-      }
-
-      .gt-text i {
-        color: var(--primary-color);
-        font-size: 24px;
+      /* Adjust header and footer for black background */
+      .header-section {
+        background-color: #000 !important;
+        border-bottom: 1px solid #333;
       }
 
       .footer-section {
-        background-color: #0a0a0a;
-        padding: 70px 0 20px;
+        background-color: #111 !important;
       }
 
-      @media (max-width: 768px) {
-        .footer-section {
-          padding: 50px 0 20px;
-        }
+      .gettouch-section {
+        background-color: #111 !important;
+        border-top: 1px solid #333;
+        border-bottom: 1px solid #333;
       }
 
-      .fs-about p {
-        color: var(--text-light);
-        margin-bottom: 20px;
+      /* Breadcrumb adjustments */
+      .breadcrumb-text h2 {
+        color: #fff;
       }
 
-      .fa-social a {
-        display: inline-flex;
+      .bt-option a {
+        color: #e53637;
+        text-decoration: none;
+      }
+
+      .bt-option span {
+        color: #b7b7b7;
+      }
+
+      /* Cart and Profile Styles */
+      .top-option {
+        display: flex;
         align-items: center;
-        justify-content: center;
-        width: 36px;
-        height: 36px;
-        background-color: #2a2a2a;
+        justify-content: flex-end;
+      }
+
+      .cart-icon,
+      .profile-icon {
+        position: relative;
+        margin-left: 20px;
+        cursor: pointer;
+      }
+
+      .cart-icon i,
+      .profile-icon i {
+        font-size: 20px;
+        color: #fff;
+        transition: all 0.3s;
+      }
+
+      .cart-icon:hover i,
+      .profile-icon:hover i {
+        color: #e53637;
+      }
+
+      .cart-count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: #e53637;
         color: #fff;
         border-radius: 50%;
-        margin-right: 10px;
-        transition: all 0.3s;
-      }
-
-      .fa-social a:hover {
-        background-color: var(--primary-color);
-      }
-
-      .fs-widget {
-        margin-bottom: 30px;
-      }
-
-      .fs-widget h4 {
-        color: #fff;
-        margin-bottom: 20px;
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 18px;
-      }
-
-      .fs-widget ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-
-      .fs-widget ul li {
-        margin-bottom: 10px;
-      }
-
-      .fs-widget ul li a {
-        color: var(--text-light);
-        text-decoration: none;
-        transition: all 0.3s;
-      }
-
-      .fs-widget ul li a:hover {
-        color: var(--primary-color);
-      }
-
-      .fw-recent {
-        margin-bottom: 20px;
-      }
-
-      .fw-recent h6 a {
-        color: #fff;
-        text-decoration: none;
-        transition: all 0.3s;
-      }
-
-      .fw-recent h6 a:hover {
-        color: var(--primary-color);
-      }
-
-      .fw-recent ul {
+        width: 18px;
+        height: 18px;
+        font-size: 12px;
         display: flex;
-        gap: 15px;
-        color: var(--text-light);
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
+
+      .profile-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 4px;
+        padding: 10px 0;
+        min-width: 150px;
+        z-index: 1000;
+        display: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .profile-dropdown a {
+        display: block;
+        padding: 8px 15px;
+        color: #b7b7b7;
+        text-decoration: none;
+        transition: all 0.3s;
+      }
+
+      .profile-dropdown a:hover {
+        background: #333;
+        color: #e53637;
+      }
+
+      .profile-icon {
+        position: relative;
+      }
+
+      .profile-icon:hover .profile-dropdown {
+        display: block;
+      }
+
+      .cart-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 4px;
+        padding: 15px;
+        min-width: 280px;
+        z-index: 1000;
+        display: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .cart-icon {
+        position: relative;
+      }
+
+      .cart-icon:hover .cart-dropdown {
+        display: block;
+      }
+
+      .cart-items {
+        max-height: 200px;
+        overflow-y: auto;
+      }
+
+      .cart-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #333;
+      }
+
+      .cart-item:last-child {
+        border-bottom: none;
+      }
+
+      .cart-item img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        margin-right: 10px;
+        border-radius: 4px;
+      }
+
+      .cart-item-details {
+        flex-grow: 1;
+      }
+
+      .cart-item-name {
+        color: #fff;
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+
+      .cart-item-price {
+        color: #e53637;
+        font-weight: bold;
         font-size: 14px;
       }
 
-      .copyright-text {
-        border-top: 1px solid var(--border-color);
-        padding-top: 20px;
-        margin-top: 50px;
-        text-align: center;
-        color: var(--text-light);
-      }
-
-      @media (max-width: 768px) {
-        .copyright-text {
-          margin-top: 30px;
-          padding-top: 15px;
-        }
-      }
-
-      .copyright-text a {
-        color: var(--primary-color);
-      }
-
-      /* Offcanvas Menu for Mobile */
-      .offcanvas-menu-overlay {
-        position: fixed;
-        left: 0;
-        top: 0;
-        height: 100%;
-        width: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        z-index: 9999;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s;
-      }
-
-      .offcanvas-menu-overlay.active {
-        opacity: 1;
-        visibility: visible;
-      }
-
-      .offcanvas-menu-wrapper {
-        position: fixed;
-        left: -300px;
-        top: 0;
-        height: 100%;
-        width: 300px;
-        background: #111;
-        padding: 30px;
-        z-index: 10000;
-        overflow-y: auto;
-        transition: all 0.5s;
-      }
-
-      .offcanvas-menu-wrapper.active {
-        left: 0;
-      }
-
-      .canvas-close {
-        color: #fff;
-        font-size: 20px;
-        cursor: pointer;
-        text-align: right;
-        margin-bottom: 20px;
-      }
-
-      .canvas-menu ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-
-      .canvas-menu ul li {
-        margin-bottom: 10px;
-      }
-
-      .canvas-menu ul li a {
-        color: #fff;
-        text-decoration: none;
-        font-weight: 600;
-        text-transform: uppercase;
-        display: block;
-        padding: 8px 0;
-        transition: all 0.3s;
-      }
-
-      .canvas-menu ul li a:hover,
-      .canvas-menu ul li.active a {
-        color: var(--primary-color);
-      }
-
-      .canvas-social {
-        margin-top: 30px;
+      .cart-total {
         display: flex;
-        gap: 15px;
-      }
-
-      .canvas-social a {
+        justify-content: space-between;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #333;
+        font-weight: bold;
         color: #fff;
-        font-size: 18px;
-        transition: all 0.3s;
       }
 
-      .canvas-social a:hover {
-        color: var(--primary-color);
+      .cart-actions {
+        margin-top: 15px;
+        display: flex;
+        gap: 10px;
+      }
+
+      .cart-actions a {
+        flex: 1;
+        text-align: center;
+        padding: 8px 0;
+        border-radius: 4px;
+        font-size: 14px;
+        text-decoration: none;
+      }
+
+      .view-cart {
+        background: #333;
+        color: #fff;
+      }
+
+      .checkout {
+        background: #e53637;
+        color: #fff;
+      }
+
+      .empty-cart {
+        text-align: center;
+        color: #b7b7b7;
+        padding: 20px 0;
       }
     </style>
   </head>
@@ -872,6 +468,21 @@
       <div class="canvas-search search-switch">
         <i class="fa fa-search"></i>
       </div>
+      <!-- Mobile cart and profile -->
+      <div class="canvas-cart-profile">
+        <div class="cart-icon">
+          <i class="fa fa-shopping-cart"></i>
+          <span class="cart-count">0</span>
+        </div>
+        <div class="profile-icon">
+          <i class="fa fa-user"></i>
+          <div class="profile-dropdown">
+            <a href="#" class="login-link">Login</a>
+            <a href="#" class="register-link">Register</a>
+            <a href="#" class="logout-link" style="display: none">Logout</a>
+          </div>
+        </div>
+      </div>
       <nav class="canvas-menu mobile-menu">
         <ul>
           <li><a href="index.html">Home</a></li>
@@ -880,14 +491,27 @@
           <li><a href="services.html">Services</a></li>
           <li class="active"><a href="shop.html">Shop</a></li>
           <li><a href="team.html">Our Team</a></li>
+          <li>
+            <a href="#">Pages</a>
+            <ul class="dropdown">
+              <li><a href="about-us.html">About us</a></li>
+              <li><a href="class-timetable.html">Classes timetable</a></li>
+              <li><a href="bmi-calculator.html">Bmi calculate</a></li>
+              <li><a href="team.html">Our team</a></li>
+              <li><a href="gallery.html">Gallery</a></li>
+              <li><a href="blog.html">Our blog</a></li>
+              <li><a href="404.html">404</a></li>
+            </ul>
+          </li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </nav>
+      <div id="mobile-menu-wrap"></div>
       <div class="canvas-social">
-        <a href="#"><i class="fab fa-facebook-f"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-youtube"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fa fa-facebook"></i></a>
+        <a href="#"><i class="fa fa-twitter"></i></a>
+        <a href="#"><i class="fa fa-youtube-play"></i></a>
+        <a href="#"><i class="fa fa-instagram"></i></a>
       </div>
     </div>
     <!-- Offcanvas Menu Section End -->
@@ -895,15 +519,15 @@
     <!-- Header Section Begin -->
     <header class="header-section">
       <div class="container-fluid">
-        <div class="row align-items-center">
-          <div class="col-lg-3 col-md-4 col-6">
+        <div class="row">
+          <div class="col-lg-3">
             <div class="logo">
               <a href="index.html">
-                <h2 style="color: #fff; margin: 0">APE-X GYM</h2>
+                <img src="img/logo.png" alt="" />
               </a>
             </div>
           </div>
-          <div class="col-lg-6 col-md-4 d-none d-md-block">
+          <div class="col-lg-6">
             <nav class="nav-menu">
               <ul>
                 <li><a href="index.html">Home</a></li>
@@ -912,33 +536,82 @@
                 <li><a href="services.html">Services</a></li>
                 <li class="active"><a href="shop.html">Shop</a></li>
                 <li><a href="team.html">Our Team</a></li>
+                <li>
+                  <a href="#">Pages</a>
+                  <ul class="dropdown">
+                    <li><a href="about-us.html">About us</a></li>
+                    <li>
+                      <a href="class-timetable.html">Classes timetable</a>
+                    </li>
+                    <li><a href="bmi-calculator.html">Bmi calculate</a></li>
+                    <li><a href="team.html">Our team</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="blog.html">Our blog</a></li>
+                    <li><a href="404.html">404</a></li>
+                  </ul>
+                </li>
                 <li><a href="contact.html">Contact</a></li>
               </ul>
             </nav>
           </div>
-          <div class="col-lg-3 col-md-4 col-6">
-            <div class="top-option d-none d-md-flex">
+          <div class="col-lg-3">
+            <div class="top-option">
               <div class="to-search search-switch">
                 <i class="fa fa-search"></i>
               </div>
+              <!-- Cart Icon -->
+              <div class="cart-icon">
+                <i class="fa fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+                <div class="cart-dropdown">
+                  <div class="cart-items">
+                    <div class="empty-cart">Your cart is empty</div>
+                    <!-- Cart items will be added here dynamically -->
+                  </div>
+                  <div class="cart-total">
+                    <span>Total:</span>
+                    <span>N0</span>
+                  </div>
+                  <div class="cart-actions">
+                    <a href="#" class="view-cart">View Cart</a>
+                    <a href="#" class="checkout">Checkout</a>
+                  </div>
+                </div>
+              </div>
+              <!-- Profile Icon -->
+              <div class="profile-icon">
+                <i class="fa fa-user"></i>
+                <div class="profile-dropdown">
+                  <a href="./profile.html" class="login-link">Login</a>
+                  <a href="./registration.html" class="register-link"
+                    >Register</a
+                  >
+                  <a href="#" class="logout-link" style="display: none"
+                    >Logout</a
+                  >
+                </div>
+              </div>
               <div class="to-social">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fa fa-facebook"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+                <a href="#"><i class="fa fa-youtube-play"></i></a>
+                <a href="#"><i class="fa fa-instagram"></i></a>
               </div>
             </div>
-            <div class="canvas-open d-md-none">
-              <i class="fa fa-bars"></i>
-            </div>
           </div>
+        </div>
+        <div class="canvas-open">
+          <i class="fa fa-bars"></i>
         </div>
       </div>
     </header>
     <!-- Header End -->
 
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section">
+    <section
+      class="breadcrumb-section set-bg"
+      data-setbg="img/breadcrumb-bg.jpg"
+    >
       <div class="container">
         <div class="row">
           <div class="col-lg-12 text-center">
@@ -956,152 +629,234 @@
     <!-- Breadcrumb Section End -->
 
     <!-- Shop Section Begin -->
-    <section class="shop-section">
+    <section class="shop-section spad">
       <div class="container">
         <div class="row">
-          <!-- Sidebar -->
           <div class="col-lg-3 col-md-4">
             <div class="shop-sidebar">
-              <div class="search-box">
-                <h4>Search</h4>
-                <div class="search-form">
-                  <input
-                    type="text"
-                    placeholder="Search products..."
-                    class="form-control"
-                    style="
-                      background-color: #2a2a2a;
-                      border: 1px solid #333;
-                      color: #fff;
-                    "
-                  />
-                </div>
-              </div>
+              <h4>Categories</h4>
+              <ul>
+                <li><a href="#">Fitness Equipment</a></li>
+                <li><a href="#">Workout Clothes</a></li>
+                <li><a href="#">Accessories</a></li>
+                <li><a href="#">Nutrition</a></li>
+                <li><a href="#">Training Plans</a></li>
+              </ul>
+            </div>
 
-              <div class="categories">
-                <h4>Categories</h4>
-                <ul>
-                  <li>
-                    <a
-                      href="#"
-                      class="category-filter active"
-                      data-category="all"
-                      >All Products</a
-                    >
-                  </li>
-                  <li>
-                    <a href="#" class="category-filter" data-category="apparel"
-                      >Apparel</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      class="category-filter"
-                      data-category="equipment"
-                      >Equipment</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      class="category-filter"
-                      data-category="accessories"
-                      >Accessories</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      class="category-filter"
-                      data-category="nutrition"
-                      >Nutrition</a
-                    >
-                  </li>
-                </ul>
-              </div>
+            <div class="shop-sidebar">
+              <h4>Tags</h4>
+              <ul>
+                <li><a href="#">FITNESS</a></li>
+                <li><a href="#">HEALTH</a></li>
+                <li><a href="#">WORKOUT</a></li>
+                <li><a href="#">GYM</a></li>
+                <li><a href="#">STRENGTH</a></li>
+              </ul>
+            </div>
 
-              <div class="tags">
-                <h4>Tags</h4>
-                <div class="filter-buttons">
-                  <button class="filter-btn-small active" data-filter="all">
-                    All
-                  </button>
-                  <button class="filter-btn-small" data-filter="featured">
-                    Featured
-                  </button>
-                  <button class="filter-btn-small" data-filter="new">
-                    New
-                  </button>
-                  <button class="filter-btn-small" data-filter="sale">
-                    On Sale
-                  </button>
-                </div>
-              </div>
-
+            <div class="shop-sidebar">
+              <h4>Filter By Price</h4>
               <div class="price-filter">
-                <h4>Filter By Price</h4>
-                <div class="price-range">
-                  <span id="minPrice">₦0</span>
-                  <span id="maxPrice">₦25,000,000</span>
-                </div>
-                <input
-                  type="range"
-                  class="form-range"
-                  id="priceRange"
-                  min="0"
-                  max="25000000"
-                  step="1000000"
-                  value="25000000"
-                  style="width: 100%; margin-bottom: 15px"
-                />
-                <button class="filter-btn" id="applyPriceFilter">
-                  Apply Filter
-                </button>
+                <input type="text" placeholder="Min Price" />
+                <input type="text" placeholder="Max Price" />
+                <button>FILTER</button>
               </div>
+            </div>
 
-              <div class="follow-us">
-                <h4>Follow Us</h4>
-                <div class="social-links">
-                  <a href="#"><i class="fab fa-facebook-f"></i></a>
-                  <a href="#"><i class="fab fa-twitter"></i></a>
-                  <a href="#"><i class="fab fa-instagram"></i></a>
-                  <a href="#"><i class="fab fa-youtube"></i></a>
-                </div>
+            <div class="shop-sidebar">
+              <h4>Follow Us</h4>
+              <div class="fa-social">
+                <a href="#"><i class="fa fa-facebook"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+                <a href="#"><i class="fa fa-youtube-play"></i></a>
+                <a href="#"><i class="fa fa-instagram"></i></a>
               </div>
             </div>
           </div>
 
-          <!-- Main Content -->
           <div class="col-lg-9 col-md-8">
-            <div class="shop-header">
-              <div class="shop-sorting">
-                <span style="color: var(--text-light)"
-                  >Showing 1-9 of 15 products</span
-                >
-                <select id="sortProducts">
-                  <option value="default">Default sorting</option>
-                  <option value="popularity">Sort by popularity</option>
-                  <option value="rating">Sort by average rating</option>
-                  <option value="latest">Sort by latest</option>
-                  <option value="low-high">Sort by price: low to high</option>
-                  <option value="high-low">Sort by price: high to low</option>
+            <div class="sorting-options">
+              <div class="sort-by">
+                <span>Sort by:</span>
+                <select>
+                  <option>Default sorting</option>
+                  <option>Sort by popularity</option>
+                  <option>Sort by average rating</option>
+                  <option>Sort by latest</option>
+                  <option>Sort by price: low to high</option>
+                  <option>Sort by price: high to low</option>
                 </select>
               </div>
               <div class="view-options">
+                <span>View:</span>
                 <a href="#" class="active">12</a>
                 <a href="#">24</a>
                 <a href="#">ALL</a>
               </div>
             </div>
 
-            <div class="product-grid" id="productGrid">
-              <!-- Products will be dynamically loaded here -->
+            <div class="row">
+              <!-- Product 1 -->
+              <div class="col-lg-4 col-md-6">
+                <div class="product-item">
+                  <div class="product-img">
+                    <img
+                      src="https://images.unsplash.com/photo-1595079676339-153e7ef34d65?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                      alt="Hilton Short"
+                    />
+                    <div class="out-of-stock">Sold out!</div>
+                  </div>
+                  <div class="product-text">
+                    <h5>Hilton Short - Premium Gym Wear</h5>
+                    <p>N7,869,000</p>
+                    <a href="#" class="primary-btn">Add to cart</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Product 2 -->
+              <div class="col-lg-4 col-md-6">
+                <div class="product-item">
+                  <div class="product-img">
+                    <img
+                      src="https://images.unsplash.com/photo-1596735128619-bc8c0b39731e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                      alt="Knee Guard"
+                    />
+                  </div>
+                  <div class="product-text">
+                    <h5>Professional Knee Support Guard</h5>
+                    <p>N17,000,000</p>
+                    <a href="#" class="primary-btn">Add to cart</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Product 3 -->
+              <div class="col-lg-4 col-md-6">
+                <div class="product-item">
+                  <div class="product-img">
+                    <img
+                      src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                      alt="The Revive Short Set"
+                    />
+                  </div>
+                  <div class="product-text">
+                    <h5>The Revive Short Set - Premium Edition</h5>
+                    <p>N24,499,000</p>
+                    <a href="#" class="primary-btn">Add to cart</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Product 4 -->
+              <div class="col-lg-4 col-md-6">
+                <div class="product-item">
+                  <div class="product-img">
+                    <img
+                      src="https://images.unsplash.com/photo-1506629905607-e48b0e67d879?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                      alt="DAG Biker Short"
+                    />
+                  </div>
+                  <div class="product-text">
+                    <h5>DAG Biker Short - High Performance</h5>
+                    <p>N10,125,000</p>
+                    <a href="#" class="primary-btn">Add to cart</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Product 5 -->
+              <div class="col-lg-4 col-md-6">
+                <div class="product-item">
+                  <div class="product-img">
+                    <img
+                      src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                      alt="DAG Boxed Logo T-shirt"
+                    />
+                    <div class="out-of-stock">Sold out!</div>
+                  </div>
+                  <div class="product-text">
+                    <h5>DAG Boxed Logo T-shirt - Limited Edition</h5>
+                    <p>N13,500,000</p>
+                    <a href="#" class="primary-btn">Add to cart</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Product 6 -->
+              <div class="col-lg-4 col-md-6">
+                <div class="product-item">
+                  <div class="product-img">
+                    <img
+                      src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                      alt="DAG Bum Short"
+                    />
+                  </div>
+                  <div class="product-text">
+                    <h5>DAG Bum Short - Athletic Fit</h5>
+                    <p>N8,100,000</p>
+                    <a href="#" class="primary-btn">Add to cart</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Product 7 -->
+              <div class="col-lg-4 col-md-6">
+                <div class="product-item">
+                  <div class="product-img">
+                    <img
+                      src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                      alt="DAG Crop Top Hoodie"
+                    />
+                  </div>
+                  <div class="product-text">
+                    <h5>DAG Crop Top Hoodie - Premium Comfort</h5>
+                    <p>N16,850,000</p>
+                    <a href="#" class="primary-btn">Add to cart</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Product 8 -->
+              <div class="col-lg-4 col-md-6">
+                <div class="product-item">
+                  <div class="product-img">
+                    <img
+                      src="https://images.unsplash.com/photo-1544966503-7cc5ac882d5b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                      alt="DAG Fleece Joggers"
+                    />
+                  </div>
+                  <div class="product-text">
+                    <h5>DAG Fleece Joggers - Winter Edition</h5>
+                    <p>N16,850,000</p>
+                    <a href="#" class="primary-btn">Add to cart</a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Product 9 -->
+              <div class="col-lg-4 col-md-6">
+                <div class="product-item">
+                  <div class="product-img">
+                    <img
+                      src="https://images.unsplash.com/photo-1591361878477-b8b4b27d17cc?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+                      alt="DAG Flight Running Short"
+                    />
+                  </div>
+                  <div class="product-text">
+                    <h5>DAG Flight Running Short - Lightweight Design</h5>
+                    <p>N9,450,000</p>
+                    <a href="#" class="primary-btn">Add to cart</a>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div class="pagination">
+            <div class="shop-pagination">
               <a href="#" class="active">1</a>
               <a href="#">2</a>
+              <a href="#">3</a>
               <a href="#">Next</a>
             </div>
           </div>
@@ -1116,7 +871,7 @@
         <div class="row">
           <div class="col-md-4">
             <div class="gt-text">
-              <i class="fa fa-map-marker-alt"></i>
+              <i class="fa fa-map-marker"></i>
               <p>
                 333 Middle Winchendon Rd, Rindge,<br />
                 NH 03461
@@ -1125,7 +880,7 @@
           </div>
           <div class="col-md-4">
             <div class="gt-text">
-              <i class="fa fa-mobile-alt"></i>
+              <i class="fa fa-mobile"></i>
               <ul>
                 <li>125-711-811</li>
                 <li>125-668-886</li>
@@ -1150,7 +905,7 @@
           <div class="col-lg-4">
             <div class="fs-about">
               <div class="fa-logo">
-                <a href="#"><h3>APE-X GYM</h3></a>
+                <a href="#"><img src="img/logo.png" alt="" /></a>
               </div>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -1158,11 +913,11 @@
                 ultrices gravida lorem.
               </p>
               <div class="fa-social">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fa fa-envelope"></i></a>
+                <a href="#"><i class="fa fa-facebook"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+                <a href="#"><i class="fa fa-youtube-play"></i></a>
+                <a href="#"><i class="fa fa-instagram"></i></a>
+                <a href="#"><i class="fa fa-envelope-o"></i></a>
               </div>
             </div>
           </div>
@@ -1221,6 +976,7 @@
           <div class="col-lg-12 text-center">
             <div class="copyright-text">
               <p>
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 Copyright &copy;
                 <script>
                   document.write(new Date().getFullYear());
@@ -1228,6 +984,7 @@
                 All rights reserved | This template is made with
                 <i class="fa fa-heart" aria-hidden="true"></i> by
                 <a href="https://colorlib.com/" target="_blank">Colorlib</a>
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
               </p>
             </div>
           </div>
@@ -1236,280 +993,120 @@
     </section>
     <!-- Footer Section End -->
 
+    <!-- Search model Begin -->
+    <div class="search-model">
+      <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+          <input type="text" id="search-input" placeholder="Search here....." />
+        </form>
+      </div>
+    </div>
+    <!-- Search model end -->
+
+    <!-- Js Plugins -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/masonry.pkgd.min.js"></script>
+    <script src="js/jquery.barfiller.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
+
     <script>
-      // Product data
-      const products = [
-        {
-          id: 1,
-          name: "Hilton Short - Premium Edition with Extra Long Name to Test",
-          category: "apparel",
-          price: 7869000,
-          image: "https://picsum.photos/id/1005/300/250",
-          inStock: true,
-          tags: ["new"],
-        },
-        {
-          id: 2,
-          name: "Knee Guard",
-          category: "equipment",
-          price: 17000000,
-          image: "https://picsum.photos/id/146/300/250",
-          inStock: true,
-          tags: ["featured"],
-        },
-        {
-          id: 3,
-          name: "The Revive Short Set - Premium Quality Fitness Wear",
-          category: "apparel",
-          price: 24499000,
-          image: "https://picsum.photos/id/1043/300/250",
-          inStock: true,
-          tags: ["sale"],
-        },
-        {
-          id: 4,
-          name: "DAG Biker Short - Professional Edition",
-          category: "apparel",
-          price: 10125000,
-          image: "https://picsum.photos/id/1033/300/250",
-          inStock: false,
-          tags: [],
-        },
-        {
-          id: 5,
-          name: "DAG Boxed Logo T-shirt - Limited Edition",
-          category: "apparel",
-          price: 13500000,
-          image: "https://picsum.photos/id/1035/300/250",
-          inStock: true,
-          tags: ["new"],
-        },
-        {
-          id: 6,
-          name: "DAG Bum Short - Premium Fitness Wear",
-          category: "apparel",
-          price: 8100000,
-          image: "https://picsum.photos/id/1038/300/250",
-          inStock: true,
-          tags: [],
-        },
-        {
-          id: 7,
-          name: "DAG Crop Top Hoodie - Exclusive Collection",
-          category: "apparel",
-          price: 16850000,
-          image: "https://picsum.photos/id/1040/300/250",
-          inStock: false,
-          tags: [],
-        },
-        {
-          id: 8,
-          name: "DAG Fleece Joggers - Premium Quality",
-          category: "apparel",
-          price: 16850000,
-          image: "https://picsum.photos/id/1044/300/250",
-          inStock: true,
-          tags: ["featured"],
-        },
-        {
-          id: 9,
-          name: "DAG Flight Running Short - Professional Edition",
-          category: "apparel",
-          price: 9450000,
-          image: "https://picsum.photos/id/1048/300/250",
-          inStock: true,
-          tags: ["sale"],
-        },
-      ];
+      // Cart functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const cartCount = document.querySelector(".cart-count");
+        const cartItems = document.querySelector(".cart-items");
+        const cartTotal = document.querySelector(".cart-total span:last-child");
+        const addToCartButtons = document.querySelectorAll(".primary-btn");
+        const emptyCart = document.querySelector(".empty-cart");
 
-      // Format price with commas
-      function formatPrice(price) {
-        return "₦" + price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      }
+        let cart = [];
 
-      // Render products
-      function renderProducts(productsToRender) {
-        const productGrid = document.getElementById("productGrid");
-        productGrid.innerHTML = "";
+        // Add to cart functionality
+        addToCartButtons.forEach((button) => {
+          button.addEventListener("click", function (e) {
+            e.preventDefault();
 
-        productsToRender.forEach((product) => {
-          const productItem = document.createElement("div");
-          productItem.className = "product-item";
-          productItem.setAttribute("data-category", product.category);
-          productItem.setAttribute("data-price", product.price);
+            // Don't add sold out items
+            if (this.closest(".product-item").querySelector(".out-of-stock")) {
+              alert("This item is currently out of stock");
+              return;
+            }
 
-          let badgeHTML = "";
-          if (!product.inStock) {
-            badgeHTML = '<div class="product-badge sold-out">Sold out!</div>';
-          } else if (product.tags.includes("new")) {
-            badgeHTML = '<div class="product-badge">New</div>';
-          } else if (product.tags.includes("sale")) {
-            badgeHTML = '<div class="product-badge">Sale</div>';
-          }
+            const productItem = this.closest(".product-item");
+            const productName = productItem.querySelector("h5").textContent;
+            const productPrice = productItem.querySelector("p").textContent;
+            const productImage = productItem.querySelector("img").src;
 
-          let actionButton = "";
-          if (product.inStock) {
-            actionButton = '<button class="add-to-cart">Add to cart</button>';
-          } else {
-            actionButton = '<button class="read-more">Read more</button>';
-          }
+            // Add item to cart
+            cart.push({
+              name: productName,
+              price: productPrice,
+              image: productImage,
+            });
 
-          productItem.innerHTML = `
-                    <div class="product-img">
-                        <img src="${product.image}" alt="${product.name}">
-                        ${badgeHTML}
-                        <div class="quick-view">Quick view</div>
-                    </div>
-                    <div class="product-info">
-                        <span class="product-category">${
-                          product.category.charAt(0).toUpperCase() +
-                          product.category.slice(1)
-                        }</span>
-                        <h3 class="product-title">${product.name}</h3>
-                        <div class="product-price">${formatPrice(
-                          product.price
-                        )}</div>
-                        <div class="product-actions">
-                            ${actionButton}
-                        </div>
-                    </div>
-                `;
+            updateCartDisplay();
 
-          productGrid.appendChild(productItem);
+            // Show feedback
+            const originalText = this.textContent;
+            this.textContent = "Added!";
+            setTimeout(() => {
+              this.textContent = originalText;
+            }, 1000);
+          });
         });
-      }
 
-      // Initialize with all products
-      renderProducts(products);
+        function updateCartDisplay() {
+          // Update cart count
+          cartCount.textContent = cart.length;
 
-      // Category filter
-      document.querySelectorAll(".category-filter").forEach((button) => {
-        button.addEventListener("click", function (e) {
-          e.preventDefault();
+          // Show/hide empty cart message
+          if (cart.length === 0) {
+            emptyCart.style.display = "block";
+          } else {
+            emptyCart.style.display = "none";
+          }
 
-          // Remove active class from all buttons
-          document.querySelectorAll(".category-filter").forEach((btn) => {
-            btn.classList.remove("active");
+          // Update cart items
+          cartItems.innerHTML = "";
+          let total = 0;
+
+          cart.forEach((item) => {
+            // Extract numeric value from price string
+            const priceValue = parseInt(item.price.replace(/[^0-9]/g, ""));
+            total += priceValue;
+
+            const cartItem = document.createElement("div");
+            cartItem.className = "cart-item";
+            cartItem.innerHTML = `
+              <img src="${item.image}" alt="${item.name}">
+              <div class="cart-item-details">
+                <div class="cart-item-name">${item.name}</div>
+                <div class="cart-item-price">${item.price}</div>
+              </div>
+            `;
+            cartItems.appendChild(cartItem);
           });
 
-          // Add active class to clicked button
-          this.classList.add("active");
+          // Update total
+          cartTotal.textContent = `N${total.toLocaleString()}`;
+        }
 
-          const category = this.getAttribute("data-category");
-
-          if (category === "all") {
-            renderProducts(products);
-          } else {
-            const filteredProducts = products.filter(
-              (product) => product.category === category
-            );
-            renderProducts(filteredProducts);
-          }
-        });
-      });
-
-      // Tag filter
-      document.querySelectorAll(".filter-btn-small").forEach((button) => {
-        button.addEventListener("click", function () {
-          // Remove active class from all buttons
-          document.querySelectorAll(".filter-btn-small").forEach((btn) => {
-            btn.classList.remove("active");
+        // Profile dropdown functionality for mobile
+        const mobileProfileIcon = document.querySelector(
+          ".canvas-cart-profile .profile-icon"
+        );
+        if (mobileProfileIcon) {
+          mobileProfileIcon.addEventListener("click", function () {
+            const dropdown = this.querySelector(".profile-dropdown");
+            dropdown.style.display =
+              dropdown.style.display === "block" ? "none" : "block";
           });
-
-          // Add active class to clicked button
-          this.classList.add("active");
-
-          const filter = this.getAttribute("data-filter");
-
-          if (filter === "all") {
-            renderProducts(products);
-          } else {
-            // This is a simplified filter - in a real app you'd have more complex logic
-            const filteredProducts = products.filter((product) =>
-              product.tags.includes(filter)
-            );
-            renderProducts(filteredProducts);
-          }
-        });
+        }
       });
-
-      // Price range filter
-      const priceRange = document.getElementById("priceRange");
-      const maxPriceDisplay = document.getElementById("maxPrice");
-
-      priceRange.addEventListener("input", function () {
-        maxPriceDisplay.textContent = formatPrice(this.value);
-      });
-
-      document
-        .getElementById("applyPriceFilter")
-        .addEventListener("click", function () {
-          const maxPrice = parseInt(priceRange.value);
-          const filteredProducts = products.filter(
-            (product) => product.price <= maxPrice
-          );
-          renderProducts(filteredProducts);
-        });
-
-      // Sort products
-      document
-        .getElementById("sortProducts")
-        .addEventListener("change", function () {
-          const sortBy = this.value;
-          let sortedProducts = [...products];
-
-          switch (sortBy) {
-            case "low-high":
-              sortedProducts.sort((a, b) => a.price - b.price);
-              break;
-            case "high-low":
-              sortedProducts.sort((a, b) => b.price - a.price);
-              break;
-            case "latest":
-              // For demo, we'll consider newer products to have higher IDs
-              sortedProducts.sort((a, b) => b.id - a.id);
-              break;
-            default:
-              // Default sorting (by ID)
-              sortedProducts.sort((a, b) => a.id - b.id);
-          }
-
-          renderProducts(sortedProducts);
-        });
-
-      // Mobile menu functionality
-      document
-        .querySelector(".canvas-open")
-        .addEventListener("click", function () {
-          document
-            .querySelector(".offcanvas-menu-overlay")
-            .classList.add("active");
-          document
-            .querySelector(".offcanvas-menu-wrapper")
-            .classList.add("active");
-        });
-
-      document
-        .querySelector(".canvas-close")
-        .addEventListener("click", function () {
-          document
-            .querySelector(".offcanvas-menu-overlay")
-            .classList.remove("active");
-          document
-            .querySelector(".offcanvas-menu-wrapper")
-            .classList.remove("active");
-        });
-
-      document
-        .querySelector(".offcanvas-menu-overlay")
-        .addEventListener("click", function () {
-          document
-            .querySelector(".offcanvas-menu-overlay")
-            .classList.remove("active");
-          document
-            .querySelector(".offcanvas-menu-wrapper")
-            .classList.remove("active");
-        });
     </script>
   </body>
 </html>

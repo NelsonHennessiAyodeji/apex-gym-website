@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="eng">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Gym Template" />
+    <meta name="keywords" content="Gym, unica, creative, html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Ape-X Store - Login</title>
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Oswald:300,400,500,600,700&amp;display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/flaticon.css" type="text/css" />
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/barfiller.css" type="text/css" />
+    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css" />
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+    <style>
+      /* Global black background */
+      body {
+        background-color: #000;
+        color: #fff;
+      }
+
+      /* Override any existing white backgrounds */
+      .login-section,
+      .breadcrumb-section,
+      .header-section,
+      .offcanvas-menu-wrapper,
+      .gettouch-section,
+      .footer-section {
+        background-color: #000 !important;
+      }
+
+      .breadcrumb-section.set-bg {
+        background-color: #111 !important;
+      }
+
+      /* Login Page Styles */
+      .login-container {
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 60px 20px;
+      }
+
+      .login-card {
+        background: #1a1a1a;
+        border-radius: 10px;
+        padding: 40px;
+        border: 1px solid #333;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .login-header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .login-header h2 {
+        color: #fff;
+        font-size: 32px;
+        margin-bottom: 10px;
+      }
+
+      .login-header p {
+        color: #b7b7b7;
+        font-size: 16px;
+      }
+
+      .login-logo {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .login-logo img {
+        max-width: 120px;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+      }
+
+      .form-group label {
+        display: block;
+        color: #b7b7b7;
+        margin-bottom: 8px;
+        font-weight: 600;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 15px;
+        background: #222;
+        border: 1px solid #333;
+        border-radius: 4px;
+        color: #fff;
+        font-size: 16px;
+        transition: all 0.3s;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: #e53637;
+        box-shadow: 0 0 0 2px rgba(229, 54, 55, 0.2);
+      }
+
+      .password-container {
+        position: relative;
+      }
+
+      .toggle-password {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #b7b7b7;
+        cursor: pointer;
+      }
+
+      .form-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+      }
+
+      .remember-me {
+        display: flex;
+        align-items: center;
+      }
+
+      .remember-me input {
+        margin-right: 8px;
+      }
+
+      .remember-me label {
+        color: #b7b7b7;
+        margin: 0;
+        font-weight: normal;
+      }
+
+      .forgot-password {
+        color: #e53637;
+        text-decoration: none;
+        transition: all 0.3s;
+      }
+
+      .forgot-password:hover {
+        color: #fff;
+        text-decoration: underline;
+      }
+
+      .login-btn {
+        width: 100%;
+        background: #e53637;
+        color: #fff;
+        border: none;
+        padding: 15px;
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-bottom: 20px;
+      }
+
+      .login-btn:hover {
+        background: #fff;
+        color: #e53637;
+      }
+
+      .divider {
+        display: flex;
+        align-items: center;
+        margin: 25px 0;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+        flex: 1;
+        border-bottom: 1px solid #333;
+      }
+
+      .divider span {
+        padding: 0 15px;
+        color: #b7b7b7;
+        font-size: 14px;
+      }
+
+      .social-login {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+
+      .social-btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+
+      .social-btn i {
+        margin-right: 8px;
+      }
+
+      .facebook-btn {
+        background: #3b5998;
+        color: #fff;
+      }
+
+      .facebook-btn:hover {
+        background: #2d4373;
+        color: #fff;
+      }
+
+      .google-btn {
+        background: #fff;
+        color: #333;
+      }
+
+      .google-btn:hover {
+        background: #f1f1f1;
+        color: #333;
+      }
+
+      .signup-link {
+        text-align: center;
+        color: #b7b7b7;
+      }
+
+      .signup-link a {
+        color: #e53637;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+
+      .signup-link a:hover {
+        color: #fff;
+        text-decoration: underline;
+      }
+
+      /* Adjust header and footer for black background */
+      .header-section {
+        background-color: #000 !important;
+        border-bottom: 1px solid #333;
+      }
+
+      .footer-section {
+        background-color: #111 !important;
+      }
+
+      .gettouch-section {
+        background-color: #111 !important;
+        border-top: 1px solid #333;
+        border-bottom: 1px solid #333;
+      }
+
+      /* Breadcrumb adjustments */
+      .breadcrumb-text h2 {
+        color: #fff;
+      }
+
+      .bt-option a {
+        color: #e53637;
+        text-decoration: none;
+      }
+
+      .bt-option span {
+        color: #b7b7b7;
+      }
+
+      /* Cart and Profile Styles */
+      .top-option {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+
+      .cart-icon,
+      .profile-icon {
+        position: relative;
+        margin-left: 20px;
+        cursor: pointer;
+      }
+
+      .cart-icon i,
+      .profile-icon i {
+        font-size: 20px;
+        color: #fff;
+        transition: all 0.3s;
+      }
+
+      .cart-icon:hover i,
+      .profile-icon:hover i {
+        color: #e53637;
+      }
+
+      .cart-count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: #e53637;
+        color: #fff;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
+
+      .profile-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 4px;
+        padding: 10px 0;
+        min-width: 150px;
+        z-index: 1000;
+        display: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .profile-dropdown a {
+        display: block;
+        padding: 8px 15px;
+        color: #b7b7b7;
+        text-decoration: none;
+        transition: all 0.3s;
+      }
+
+      .profile-dropdown a:hover {
+        background: #333;
+        color: #e53637;
+      }
+
+      .profile-icon {
+        position: relative;
+      }
+
+      .profile-icon:hover .profile-dropdown {
+        display: block;
+      }
+
+      .cart-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 4px;
+        padding: 15px;
+        min-width: 280px;
+        z-index: 1000;
+        display: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .cart-icon {
+        position: relative;
+      }
+
+      .cart-icon:hover .cart-dropdown {
+        display: block;
+      }
+
+      .cart-items {
+        max-height: 200px;
+        overflow-y: auto;
+      }
+
+      .cart-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #333;
+      }
+
+      .cart-item:last-child {
+        border-bottom: none;
+      }
+
+      .cart-item img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        margin-right: 10px;
+        border-radius: 4px;
+      }
+
+      .cart-item-details {
+        flex-grow: 1;
+      }
+
+      .cart-item-name {
+        color: #fff;
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+
+      .cart-item-price {
+        color: #e53637;
+        font-weight: bold;
+        font-size: 14px;
+      }
+
+      .cart-total {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #333;
+        font-weight: bold;
+        color: #fff;
+      }
+
+      .cart-actions {
+        margin-top: 15px;
+        display: flex;
+        gap: 10px;
+      }
+
+      .cart-actions a {
+        flex: 1;
+        text-align: center;
+        padding: 8px 0;
+        border-radius: 4px;
+        font-size: 14px;
+        text-decoration: none;
+      }
+
+      .view-cart {
+        background: #333;
+        color: #fff;
+      }
+
+      .checkout {
+        background: #e53637;
+        color: #fff;
+      }
+
+      .empty-cart {
+        text-align: center;
+        color: #b7b7b7;
+        padding: 20px 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+      <div class="loader"></div>
+    </div>
+
+    <!-- Login Section Begin -->
+    <section class="login-section">
+      <div class="login-container">
+        <div class="login-card">
+          <div class="login-logo">
+            <a href="index.html">
+              <img src="img/logo.png" alt="Ape-X Gym" />
+            </a>
+          </div>
+
+          <div class="login-header">
+            <h2>Welcome Back</h2>
+            <p>
+              Sign in to access your account and continue your fitness journey
+            </p>
+          </div>
+
+          <form id="loginForm">
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input
+                type="email"
+                id="email"
+                class="form-control"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+              <div class="password-container">
+                <input
+                  type="password"
+                  id="password"
+                  class="form-control"
+                  placeholder="Enter your password"
+                  required
+                />
+                <button
+                  type="button"
+                  class="toggle-password"
+                  id="togglePassword"
+                >
+                  <i class="fa fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-options">
+              <div class="remember-me">
+                <input type="checkbox" id="remember" />
+                <label for="remember">Remember me</label>
+              </div>
+              <a href="forgot-password.html" class="forgot-password"
+                >Forgot Password?</a
+              >
+            </div>
+
+            <button type="submit" class="login-btn">Login to Account</button>
+
+            <div class="divider">
+              <span>Or continue with</span>
+            </div>
+
+            <div class="social-login">
+              <a href="#" class="social-btn facebook-btn">
+                <i class="fa fa-facebook"></i> Facebook
+              </a>
+              <a href="#" class="social-btn google-btn">
+                <i class="fa fa-google"></i> Google
+              </a>
+            </div>
+
+            <div class="signup-link">
+              Don't have an account? <a href="register.html">Create one here</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+    <!-- Login Section End -->
+
+    <!-- Search model Begin -->
+    <div class="search-model">
+      <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+          <input type="text" id="search-input" placeholder="Search here....." />
+        </form>
+      </div>
+    </div>
+    <!-- Search model end -->
+
+    <!-- Js Plugins -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/masonry.pkgd.min.js"></script>
+    <script src="js/jquery.barfiller.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+      // Login form functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const loginForm = document.getElementById("loginForm");
+        const togglePassword = document.getElementById("togglePassword");
+        const passwordInput = document.getElementById("password");
+
+        // Toggle password visibility
+        togglePassword.addEventListener("click", function () {
+          const type =
+            passwordInput.getAttribute("type") === "password"
+              ? "text"
+              : "password";
+          passwordInput.setAttribute("type", type);
+
+          // Toggle eye icon
+          this.innerHTML =
+            type === "password"
+              ? '<i class="fa fa-eye"></i>'
+              : '<i class="fa fa-eye-slash"></i>';
+        });
+
+        // Form submission
+        loginForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Get form values
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+          const remember = document.getElementById("remember").checked;
+
+          // Simple validation
+          if (!email || !password) {
+            alert("Please fill in all fields");
+            return;
+          }
+
+          // In a real application, you would send this data to a server
+          // For this example, we'll just show a success message
+          alert("Login successful! Redirecting to your account...");
+
+          // Redirect to profile page after successful login
+          setTimeout(() => {
+            window.location.href = "profile.html";
+          }, 1000);
+        });
+      });
+    </script>
+  </body>
+</html>
