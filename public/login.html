@@ -582,54 +582,6 @@
     <script src="js/jquery.slicknav.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
-
-    <script>
-      // Login form functionality
-      document.addEventListener("DOMContentLoaded", function () {
-        const loginForm = document.getElementById("loginForm");
-        const togglePassword = document.getElementById("togglePassword");
-        const passwordInput = document.getElementById("password");
-
-        // Toggle password visibility
-        togglePassword.addEventListener("click", function () {
-          const type =
-            passwordInput.getAttribute("type") === "password"
-              ? "text"
-              : "password";
-          passwordInput.setAttribute("type", type);
-
-          // Toggle eye icon
-          this.innerHTML =
-            type === "password"
-              ? '<i class="fa fa-eye"></i>'
-              : '<i class="fa fa-eye-slash"></i>';
-        });
-
-        // Form submission
-        loginForm.addEventListener("submit", function (e) {
-          e.preventDefault();
-
-          // Get form values
-          const email = document.getElementById("email").value;
-          const password = document.getElementById("password").value;
-          const remember = document.getElementById("remember").checked;
-
-          // Simple validation
-          if (!email || !password) {
-            alert("Please fill in all fields");
-            return;
-          }
-
-          // In a real application, you would send this data to a server
-          // For this example, we'll just show a success message
-          alert("Login successful! Redirecting to your account...");
-
-          // Redirect to profile page after successful login
-          setTimeout(() => {
-            window.location.href = "profile.html";
-          }, 1000);
-        });
-      });
-    </script>
+    <script src="js/login.js"></script>
   </body>
 </html>

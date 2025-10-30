@@ -804,20 +804,39 @@
               />
             </div>
 
-            <div class="form-group">
-              <label for="emergencyContact">Emergency Contact</label>
-              <input
-                type="text"
-                id="emergencyContact"
-                class="form-control"
-                placeholder="Name and phone number of emergency contact"
-              />
+            <div class="form-row">
+              <div class="form-group">
+                <label for="emergencyContactName">Emergency Contact Name</label>
+                <input
+                  type="text"
+                  id="emergencyContactName"
+                  class="form-control"
+                  placeholder="Name of emergency contact"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="emergencyContactPhone"
+                  >Emergency Contact Phone</label
+                >
+                <input
+                  type="tel"
+                  id="emergencyContactPhone"
+                  class="form-control"
+                  placeholder="Phone number of emergency contact"
+                />
+              </div>
             </div>
 
             <!-- Membership Options -->
             <div class="membership-options">
               <label>Select Membership Plan</label>
               <div class="membership-grid">
+                <div class="membership-option" data-plan="none">
+                  <div class="membership-name">Pay Later</div>
+                  <div class="membership-price">Free</div>
+                  <div class="membership-duration">No commitment</div>
+                </div>
                 <div class="membership-option" data-plan="basic">
                   <div class="membership-name">Basic</div>
                   <div class="membership-price">N25,000</div>
@@ -980,136 +999,6 @@
     <script src="js/jquery.slicknav.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
-
-    <script>
-      // Registration form functionality
-      document.addEventListener("DOMContentLoaded", function () {
-        const registerForm = document.getElementById("registerForm");
-        const togglePassword = document.getElementById("togglePassword");
-        const passwordInput = document.getElementById("password");
-        const toggleConfirmPassword = document.getElementById(
-          "toggleConfirmPassword"
-        );
-        const confirmPasswordInput = document.getElementById("confirmPassword");
-        const membershipOptions =
-          document.querySelectorAll(".membership-option");
-        const membershipPlanInput = document.getElementById("membershipPlan");
-
-        // Toggle password visibility
-        togglePassword.addEventListener("click", function () {
-          const type =
-            passwordInput.getAttribute("type") === "password"
-              ? "text"
-              : "password";
-          passwordInput.setAttribute("type", type);
-
-          // Toggle eye icon
-          this.innerHTML =
-            type === "password"
-              ? '<i class="fa fa-eye"></i>'
-              : '<i class="fa fa-eye-slash"></i>';
-        });
-
-        // Toggle confirm password visibility
-        toggleConfirmPassword.addEventListener("click", function () {
-          const type =
-            confirmPasswordInput.getAttribute("type") === "password"
-              ? "text"
-              : "password";
-          confirmPasswordInput.setAttribute("type", type);
-
-          // Toggle eye icon
-          this.innerHTML =
-            type === "password"
-              ? '<i class="fa fa-eye"></i>'
-              : '<i class="fa fa-eye-slash"></i>';
-        });
-
-        // Membership selection
-        membershipOptions.forEach((option) => {
-          option.addEventListener("click", function () {
-            // Remove selected class from all options
-            membershipOptions.forEach((opt) =>
-              opt.classList.remove("selected")
-            );
-
-            // Add selected class to clicked option
-            this.classList.add("selected");
-
-            // Update hidden input value
-            membershipPlanInput.value = this.getAttribute("data-plan");
-          });
-        });
-
-        // Form submission
-        registerForm.addEventListener("submit", function (e) {
-          e.preventDefault();
-
-          // Get form values
-          const firstName = document.getElementById("firstName").value;
-          const lastName = document.getElementById("lastName").value;
-          const email = document.getElementById("email").value;
-          const phone = document.getElementById("phone").value;
-          const dob = document.getElementById("dob").value;
-          const password = document.getElementById("password").value;
-          const confirmPassword =
-            document.getElementById("confirmPassword").value;
-          const gender = document.getElementById("gender").value;
-          const fitnessLevel = document.getElementById("fitnessLevel").value;
-          const address = document.getElementById("address").value;
-          const emergencyContact =
-            document.getElementById("emergencyContact").value;
-          const membershipPlan = membershipPlanInput.value;
-          const terms = document.getElementById("terms").checked;
-
-          // Simple validation
-          if (
-            !firstName ||
-            !lastName ||
-            !email ||
-            !phone ||
-            !dob ||
-            !password ||
-            !confirmPassword ||
-            !gender ||
-            !fitnessLevel
-          ) {
-            alert("Please fill in all required fields");
-            return;
-          }
-
-          if (password !== confirmPassword) {
-            alert("Passwords do not match");
-            return;
-          }
-
-          if (!terms) {
-            alert("You must agree to the Terms and Conditions");
-            return;
-          }
-
-          // In a real application, you would send this data to a server
-          // For this example, we'll just show a success message
-          alert(
-            "Registration successful! Welcome to Ape-X Gym. Redirecting to your profile..."
-          );
-
-          // Redirect to profile page after successful registration
-          setTimeout(() => {
-            window.location.href = "profile.html";
-          }, 1500);
-        });
-
-        // Set minimum date for date of birth (18 years ago)
-        const dobInput = document.getElementById("dob");
-        const today = new Date();
-        const minDate = new Date(
-          today.getFullYear() - 18,
-          today.getMonth(),
-          today.getDate()
-        );
-        dobInput.max = minDate.toISOString().split("T")[0];
-      });
-    </script>
+    <script src="js/registration.js"></script>
   </body>
 </html>
