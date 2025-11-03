@@ -162,7 +162,7 @@
                 <i class="fa fa-user"></i>
                 <div class="profile-dropdown">
                   <a href="profile.html" class="login-link">My Profile</a>
-                  <a href="#" class="register-link">Logout</a>
+                  <a href="#" class="register-link" id="logoutBtn">Logout</a>
                 </div>
               </div>
               <div class="to-social">
@@ -203,6 +203,7 @@
     <!-- Breadcrumb Section End -->
 
     <!-- Profile Section Begin -->
+    <!-- Profile Section Begin -->
     <section class="profile-section">
       <div class="profile-container">
         <!-- Profile Header -->
@@ -214,9 +215,9 @@
             />
           </div>
           <div class="profile-info">
-            <h1>John Fitness</h1>
-            <p>john.fitness@example.com</p>
-            <p class="member-since">Member since March 2023</p>
+            <h1>Loading...</h1>
+            <p>Loading email...</p>
+            <p class="member-since">Member since...</p>
             <a href="#" class="edit-profile-btn">Edit Profile</a>
           </div>
         </div>
@@ -224,19 +225,19 @@
         <!-- Stats Section -->
         <div class="stats-grid">
           <div class="stat-card">
-            <div class="stat-value">82 kg</div>
+            <div class="stat-value">-- kg</div>
             <div class="stat-label">Weight</div>
           </div>
           <div class="stat-card">
-            <div class="stat-value">24.5</div>
+            <div class="stat-value">--</div>
             <div class="stat-label">BMI</div>
           </div>
           <div class="stat-card">
-            <div class="stat-value">Premium</div>
+            <div class="stat-value">--</div>
             <div class="stat-label">Membership Type</div>
           </div>
           <div class="stat-card">
-            <div class="stat-value">Active</div>
+            <div class="stat-value">--</div>
             <div class="stat-label">Membership Status</div>
           </div>
         </div>
@@ -246,29 +247,37 @@
           <div class="profile-sidebar">
             <ul class="profile-nav">
               <li>
-                <a href="#" class="active"
+                <a href="#" class="active" data-tab="account-overview"
                   ><i class="fa fa-user"></i> Account Overview</a
                 >
               </li>
               <li>
-                <a href="#"><i class="fa fa-dumbbell"></i> Workout History</a>
+                <a href="#" data-tab="purchase-history"
+                  ><i class="fa fa-shopping-bag"></i> Purchase History</a
+                >
               </li>
               <li>
-                <a href="#"><i class="fa fa-heart"></i> Health Metrics</a>
+                <a href="#" data-tab="health-metrics"
+                  ><i class="fa fa-heart"></i> Health Metrics</a
+                >
               </li>
               <li>
-                <a href="#"><i class="fa fa-calendar"></i> Class Bookings</a>
+                <a href="#" data-tab="class-bookings"
+                  ><i class="fa fa-calendar"></i> Class Bookings</a
+                >
               </li>
               <li>
-                <a href="#"
+                <a href="#" data-tab="billing-payments"
                   ><i class="fa fa-credit-card"></i> Billing & Payments</a
                 >
               </li>
               <li>
-                <a href="#"><i class="fa fa-cog"></i> Account Settings</a>
+                <a href="#" data-tab="account-settings"
+                  ><i class="fa fa-cog"></i> Account Settings</a
+                >
               </li>
               <li>
-                <a href="#"
+                <a href="#" data-tab="help-support"
                   ><i class="fa fa-question-circle"></i> Help & Support</a
                 >
               </li>
@@ -278,176 +287,361 @@
           <!-- Main Content -->
           <div class="profile-main">
             <!-- Account Details Section -->
-            <div class="section-title">Account Details</div>
-            <div class="account-details">
-              <div class="form-group">
-                <label for="firstName">First Name</label>
-                <input
-                  type="text"
-                  id="firstName"
-                  class="form-control"
-                  value="John"
-                />
+            <div class="profile-tab active" id="account-overview">
+              <div class="section-title">Account Details</div>
+              <div class="account-details">
+                <div class="form-group">
+                  <label for="firstName">First Name</label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    class="form-control"
+                    value="Loading..."
+                    readonly
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="lastName">Last Name</label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    class="form-control"
+                    value="Loading..."
+                    readonly
+                  />
+                </div>
+                <div class="form-group full-width">
+                  <label for="email">Email Address</label>
+                  <input
+                    type="email"
+                    id="email"
+                    class="form-control"
+                    value="Loading..."
+                    readonly
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone Number</label>
+                  <input
+                    type="text"
+                    id="phone"
+                    class="form-control"
+                    value="Loading..."
+                    readonly
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="dob">Date of Birth</label>
+                  <input
+                    type="date"
+                    id="dob"
+                    class="form-control"
+                    value=""
+                    readonly
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="gender">Gender</label>
+                  <select id="gender" class="form-control" disabled>
+                    <option value="">Loading...</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="fitnessLevel">Fitness Level</label>
+                  <select id="fitnessLevel" class="form-control" disabled>
+                    <option value="">Loading...</option>
+                  </select>
+                </div>
+                <div class="form-group full-width">
+                  <label for="address">Address</label>
+                  <input
+                    type="text"
+                    id="address"
+                    class="form-control"
+                    value="Loading..."
+                    readonly
+                  />
+                </div>
+                <div class="form-group full-width">
+                  <label for="emergencyContact">Emergency Contact</label>
+                  <input
+                    type="text"
+                    id="emergencyContact"
+                    class="form-control"
+                    value="Loading..."
+                    readonly
+                  />
+                </div>
+                <div class="form-group full-width">
+                  <button class="save-btn" style="display: none">
+                    Save Changes
+                  </button>
+                </div>
               </div>
-              <div class="form-group">
-                <label for="lastName">Last Name</label>
-                <input
-                  type="text"
-                  id="lastName"
-                  class="form-control"
-                  value="Fitness"
-                />
+
+              <!-- Membership Details Section -->
+              <div class="membership-details">
+                <div class="section-title">Membership Details</div>
+
+                <div class="membership-card">
+                  <div class="membership-header">
+                    <div class="membership-name">Loading Membership</div>
+                    <div class="membership-status status-active">Active</div>
+                  </div>
+                  <div class="membership-info">
+                    <div class="info-item">
+                      <span class="info-label">Plan Type</span>
+                      <span class="info-value">Loading...</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Monthly Cost</span>
+                      <span class="info-value">--</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Start Date</span>
+                      <span class="info-value">--</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Expiration Date</span>
+                      <span class="info-value">--</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Auto-Renewal</span>
+                      <span class="info-value">--</span>
+                    </div>
+                    <div class="info-item">
+                      <span class="info-label">Payment Method</span>
+                      <span class="info-value">--</span>
+                    </div>
+                  </div>
+                  <div class="membership-actions">
+                    <a href="#" class="membership-btn renew-btn"
+                      >Renew Membership</a
+                    >
+                    <a href="#" class="membership-btn upgrade-btn"
+                      >Upgrade Plan</a
+                    >
+                  </div>
+                </div>
               </div>
-              <div class="form-group full-width">
-                <label for="email">Email Address</label>
-                <input
-                  type="email"
-                  id="email"
-                  class="form-control"
-                  value="john.fitness@example.com"
-                />
-              </div>
-              <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input
-                  type="text"
-                  id="phone"
-                  class="form-control"
-                  value="+1 (555) 123-4567"
-                />
-              </div>
-              <div class="form-group">
-                <label for="dob">Date of Birth</label>
-                <input
-                  type="date"
-                  id="dob"
-                  class="form-control"
-                  value="1990-05-15"
-                />
-              </div>
-              <div class="form-group">
-                <label for="gender">Gender</label>
-                <select id="gender" class="form-control">
-                  <option value="male" selected>Male</option>
-                  <option value="female">Female</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="fitnessLevel">Fitness Level</label>
-                <select id="fitnessLevel" class="form-control">
-                  <option value="intermediate" selected>Intermediate</option>
-                  <option value="beginner">Beginner</option>
-                  <option value="advanced">Advanced</option>
-                  <option value="athlete">Athlete</option>
-                </select>
-              </div>
-              <div class="form-group full-width">
-                <label for="address">Address</label>
-                <input
-                  type="text"
-                  id="address"
-                  class="form-control"
-                  value="123 Fitness Street, Gym City, 10001"
-                />
-              </div>
-              <div class="form-group full-width">
-                <label for="emergencyContact">Emergency Contact</label>
-                <input
-                  type="text"
-                  id="emergencyContact"
-                  class="form-control"
-                  value="Jane Fitness - +1 (555) 987-6543"
-                />
-              </div>
-              <div class="form-group full-width">
-                <button class="save-btn">Save Changes</button>
+
+              <!-- Health Information Section -->
+              <div class="health-section">
+                <div class="section-title">Health Information</div>
+                <div class="health-grid">
+                  <div class="health-item">
+                    <div class="health-label">Health Conditions</div>
+                    <ul class="conditions-list">
+                      <li>Loading...</li>
+                    </ul>
+                  </div>
+                  <div class="health-item">
+                    <div class="health-label">Additional Health Notes</div>
+                    <div class="health-value">
+                      Loading health information...
+                    </div>
+                  </div>
+                  <div class="health-item">
+                    <div class="health-label">Fitness Goals</div>
+                    <div class="health-value">
+                      <a href="#" style="color: #e53637; text-decoration: none">
+                        Set your fitness goals (Coming Soon)
+                      </a>
+                    </div>
+                  </div>
+                  <div class="health-item">
+                    <div class="health-label">Preferred Training Style</div>
+                    <div class="health-value">
+                      <a href="#" style="color: #e53637; text-decoration: none">
+                        Update training preferences (Coming Soon)
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <!-- Membership Details Section -->
-            <div class="membership-details">
-              <div class="section-title">Membership Details</div>
+            <!-- Purchase History Section -->
+            <div
+              class="profile-tab"
+              id="purchase-history"
+              style="display: none"
+            >
+              <div class="section-title">Purchase History</div>
+              <div class="purchase-history">
+                <div class="purchase-table-container">
+                  <table class="purchase-table">
+                    <thead>
+                      <tr>
+                        <th>Order ID</th>
+                        <th>Date</th>
+                        <th>Items</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>#GYM-001</td>
+                        <td>2024-01-15</td>
+                        <td>Protein Powder (2), Shaker Bottle</td>
+                        <td>N45,000</td>
+                        <td><span class="status-delivered">Delivered</span></td>
+                        <td>
+                          <button class="view-order-btn">View Details</button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>#GYM-002</td>
+                        <td>2024-01-10</td>
+                        <td>Gym Gloves, Weightlifting Belt</td>
+                        <td>N28,500</td>
+                        <td><span class="status-delivered">Delivered</span></td>
+                        <td>
+                          <button class="view-order-btn">View Details</button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>#GYM-003</td>
+                        <td>2024-01-05</td>
+                        <td>Resistance Bands Set</td>
+                        <td>N15,000</td>
+                        <td>
+                          <span class="status-processing">Processing</span>
+                        </td>
+                        <td>
+                          <button class="view-order-btn">View Details</button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>#GYM-004</td>
+                        <td>2023-12-20</td>
+                        <td>Workout Towel (3), Water Bottle</td>
+                        <td>N12,500</td>
+                        <td><span class="status-delivered">Delivered</span></td>
+                        <td>
+                          <button class="view-order-btn">View Details</button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>#GYM-005</td>
+                        <td>2023-12-15</td>
+                        <td>Premium Membership</td>
+                        <td>N65,000</td>
+                        <td><span class="status-active">Active</span></td>
+                        <td>
+                          <button class="view-order-btn">View Details</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
 
-              <div class="membership-card">
-                <div class="membership-header">
-                  <div class="membership-name">Premium Membership</div>
-                  <div class="membership-status status-active">Active</div>
-                </div>
-                <div class="membership-info">
-                  <div class="info-item">
-                    <span class="info-label">Plan Type</span>
-                    <span class="info-value">Premium</span>
+                <div class="purchase-stats">
+                  <div class="stat-card">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Total Orders</div>
                   </div>
-                  <div class="info-item">
-                    <span class="info-label">Monthly Cost</span>
-                    <span class="info-value">N65,000</span>
+                  <div class="stat-card">
+                    <div class="stat-value">N165,000</div>
+                    <div class="stat-label">Total Spent</div>
                   </div>
-                  <div class="info-item">
-                    <span class="info-label">Start Date</span>
-                    <span class="info-value">March 15, 2023</span>
+                  <div class="stat-card">
+                    <div class="stat-value">4</div>
+                    <div class="stat-label">Items Purchased</div>
                   </div>
-                  <div class="info-item">
-                    <span class="info-label">Expiration Date</span>
-                    <span class="info-value">March 14, 2024</span>
+                  <div class="stat-card">
+                    <div class="stat-value">N65,000</div>
+                    <div class="stat-label">Avg. Order Value</div>
                   </div>
-                  <div class="info-item">
-                    <span class="info-label">Auto-Renewal</span>
-                    <span class="info-value">Enabled</span>
-                  </div>
-                  <div class="info-item">
-                    <span class="info-label">Payment Method</span>
-                    <span class="info-value">Credit Card ****1234</span>
-                  </div>
-                </div>
-                <div class="membership-actions">
-                  <a href="#" class="membership-btn renew-btn"
-                    >Renew Membership</a
-                  >
-                  <a href="#" class="membership-btn upgrade-btn"
-                    >Upgrade Plan</a
-                  >
                 </div>
               </div>
             </div>
 
-            <!-- Health Information Section -->
-            <div class="health-section">
-              <div class="section-title">Health Information</div>
-              <div class="health-grid">
-                <div class="health-item">
-                  <div class="health-label">Health Conditions</div>
-                  <ul class="conditions-list">
-                    <li>None reported</li>
-                  </ul>
-                </div>
-                <div class="health-item">
-                  <div class="health-label">Additional Health Notes</div>
-                  <div class="health-value">
-                    Occasional lower back discomfort during heavy lifts. Prefer
-                    alternative exercises for deadlifts.
-                  </div>
-                </div>
-                <div class="health-item">
-                  <div class="health-label">Fitness Goals</div>
-                  <div class="health-value">
-                    Build muscle mass, increase strength, improve cardiovascular
-                    endurance
-                  </div>
-                </div>
-                <div class="health-item">
-                  <div class="health-label">Preferred Training Style</div>
-                  <div class="health-value">
-                    Strength training with focus on compound movements,
-                    occasional HIIT sessions
-                  </div>
-                </div>
+            <!-- Other tabs (hidden for now) -->
+            <div class="profile-tab" id="health-metrics" style="display: none">
+              <div class="section-title">Health Metrics</div>
+              <div class="coming-soon">
+                <i
+                  class="fa fa-chart-line"
+                  style="font-size: 48px; color: #e53637; margin-bottom: 20px"
+                ></i>
+                <h3>Health Metrics Coming Soon</h3>
+                <p>
+                  Track your fitness progress with detailed health metrics and
+                  analytics.
+                </p>
+              </div>
+            </div>
+
+            <div class="profile-tab" id="class-bookings" style="display: none">
+              <div class="section-title">Class Bookings</div>
+              <div class="coming-soon">
+                <i
+                  class="fa fa-calendar-check"
+                  style="font-size: 48px; color: #e53637; margin-bottom: 20px"
+                ></i>
+                <h3>Class Bookings Coming Soon</h3>
+                <p>
+                  Book and manage your gym classes with our easy scheduling
+                  system.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="profile-tab"
+              id="billing-payments"
+              style="display: none"
+            >
+              <div class="section-title">Billing & Payments</div>
+              <div class="coming-soon">
+                <i
+                  class="fa fa-credit-card"
+                  style="font-size: 48px; color: #e53637; margin-bottom: 20px"
+                ></i>
+                <h3>Billing & Payments Coming Soon</h3>
+                <p>
+                  Manage your subscription and payment methods in one place.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="profile-tab"
+              id="account-settings"
+              style="display: none"
+            >
+              <div class="section-title">Account Settings</div>
+              <div class="coming-soon">
+                <i
+                  class="fa fa-cog"
+                  style="font-size: 48px; color: #e53637; margin-bottom: 20px"
+                ></i>
+                <h3>Account Settings Coming Soon</h3>
+                <p>Customize your account preferences and security settings.</p>
+              </div>
+            </div>
+
+            <div class="profile-tab" id="help-support" style="display: none">
+              <div class="section-title">Help & Support</div>
+              <div class="coming-soon">
+                <i
+                  class="fa fa-question-circle"
+                  style="font-size: 48px; color: #e53637; margin-bottom: 20px"
+                ></i>
+                <h3>Help & Support Coming Soon</h3>
+                <p>
+                  Get help and support for any questions or issues you may have.
+                </p>
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
+    <!-- Profile Section End -->
     <!-- Profile Section End -->
 
     <!-- Search model Begin -->
@@ -470,6 +664,7 @@
     <script src="js/jquery.slicknav.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/profile-data.js"></script>
 
     <script>
       // Simple script for profile navigation

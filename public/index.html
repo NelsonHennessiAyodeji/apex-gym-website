@@ -32,6 +32,430 @@
     <link rel="stylesheet" href="css/magnific-popup.css" type="text/css" />
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css" />
     <link rel="stylesheet" href="css/style.css" type="text/css" />
+
+    <style>
+      /* Global black background */
+      body {
+        background-color: #000;
+        color: #fff;
+      }
+
+      /* Override any existing white backgrounds */
+      .shop-section,
+      .breadcrumb-section,
+      .header-section,
+      .offcanvas-menu-wrapper,
+      .gettouch-section,
+      .footer-section {
+        background-color: #000 !important;
+      }
+
+      .breadcrumb-section.set-bg {
+        background-color: #111 !important;
+      }
+
+      /* Product styles */
+      .product-item {
+        background: #1a1a1a;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-bottom: 30px;
+        transition: all 0.3s;
+        border: 1px solid #333;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .product-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(229, 54, 55, 0.2);
+      }
+      .product-img {
+        position: relative;
+        overflow: hidden;
+        height: 250px;
+        background-color: #222;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .product-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.5s;
+      }
+      .product-item:hover .product-img img {
+        transform: scale(1.05);
+      }
+      .product-text {
+        padding: 20px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .product-text h5 {
+        color: #fff;
+        font-weight: 600;
+        margin-bottom: 10px;
+        /* Limit product name to 2 lines */
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 48px;
+      }
+      .product-text p {
+        color: #e53637;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 15px;
+      }
+      .product-text .primary-btn {
+        display: inline-block;
+        background: #e53637;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-weight: 600;
+        transition: all 0.3s;
+        text-decoration: none;
+        text-align: center;
+        margin-top: auto;
+      }
+      .product-text .primary-btn:hover {
+        background: #fff;
+        color: #e53637;
+        text-decoration: none;
+      }
+      .out-of-stock {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #e53637;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .shop-sidebar {
+        background: #1a1a1a;
+        padding: 30px;
+        border-radius: 5px;
+        margin-bottom: 30px;
+        border: 1px solid #333;
+      }
+      .shop-sidebar h4 {
+        color: #fff;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #333;
+      }
+      .shop-sidebar ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .shop-sidebar ul li {
+        margin-bottom: 10px;
+      }
+      .shop-sidebar ul li a {
+        color: #b7b7b7;
+        transition: all 0.3s;
+        text-decoration: none;
+      }
+      .shop-sidebar ul li a:hover {
+        color: #e53637;
+        text-decoration: none;
+      }
+      .price-filter {
+        margin-top: 20px;
+      }
+      .price-filter input {
+        width: 100%;
+        margin-bottom: 10px;
+        background: #333;
+        border: none;
+        color: #fff;
+        padding: 8px 15px;
+        border-radius: 4px;
+      }
+      .price-filter button {
+        width: 100%;
+        background: #e53637;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+      .price-filter button:hover {
+        background: #fff;
+        color: #e53637;
+      }
+      .shop-pagination {
+        text-align: center;
+        margin-top: 30px;
+      }
+      .shop-pagination a {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        background: #1a1a1a;
+        color: #fff;
+        margin: 0 5px;
+        border-radius: 4px;
+        transition: all 0.3s;
+        text-decoration: none;
+      }
+      .shop-pagination a.active,
+      .shop-pagination a:hover {
+        background: #e53637;
+        color: #fff;
+        text-decoration: none;
+      }
+      .sorting-options {
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .sorting-options select {
+        background: #1a1a1a;
+        border: 1px solid #333;
+        color: #fff;
+        padding: 8px 15px;
+        border-radius: 4px;
+      }
+      .view-options span {
+        color: #fff;
+        margin-right: 10px;
+      }
+      .view-options a {
+        color: #b7b7b7;
+        margin-right: 10px;
+        transition: all 0.3s;
+        text-decoration: none;
+      }
+      .view-options a.active,
+      .view-options a:hover {
+        color: #e53637;
+        text-decoration: none;
+      }
+
+      /* Adjust header and footer for black background */
+      .header-section {
+        background-color: #000 !important;
+        border-bottom: 1px solid #333;
+      }
+
+      .footer-section {
+        background-color: #111 !important;
+      }
+
+      .gettouch-section {
+        background-color: #111 !important;
+        border-top: 1px solid #333;
+        border-bottom: 1px solid #333;
+      }
+
+      /* Breadcrumb adjustments */
+      .breadcrumb-text h2 {
+        color: #fff;
+      }
+
+      .bt-option a {
+        color: #e53637;
+        text-decoration: none;
+      }
+
+      .bt-option span {
+        color: #b7b7b7;
+      }
+
+      /* Cart and Profile Styles */
+      .top-option {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+
+      .cart-icon,
+      .profile-icon {
+        position: relative;
+        margin-left: 20px;
+        cursor: pointer;
+      }
+
+      .cart-icon i,
+      .profile-icon i {
+        font-size: 20px;
+        color: #fff;
+        transition: all 0.3s;
+      }
+
+      .cart-icon:hover i,
+      .profile-icon:hover i {
+        color: #e53637;
+      }
+
+      .cart-count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: #e53637;
+        color: #fff;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
+
+      .profile-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 4px;
+        padding: 10px 0;
+        min-width: 150px;
+        z-index: 1000;
+        display: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .profile-dropdown a {
+        display: block;
+        padding: 8px 15px;
+        color: #b7b7b7;
+        text-decoration: none;
+        transition: all 0.3s;
+      }
+
+      .profile-dropdown a:hover {
+        background: #333;
+        color: #e53637;
+      }
+
+      .profile-icon {
+        position: relative;
+      }
+
+      .profile-icon:hover .profile-dropdown {
+        display: block;
+      }
+
+      .cart-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 4px;
+        padding: 15px;
+        min-width: 280px;
+        z-index: 1000;
+        display: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .cart-icon {
+        position: relative;
+      }
+
+      .cart-icon:hover .cart-dropdown {
+        display: block;
+      }
+
+      .cart-items {
+        max-height: 200px;
+        overflow-y: auto;
+      }
+
+      .cart-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #333;
+      }
+
+      .cart-item:last-child {
+        border-bottom: none;
+      }
+
+      .cart-item img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        margin-right: 10px;
+        border-radius: 4px;
+      }
+
+      .cart-item-details {
+        flex-grow: 1;
+      }
+
+      .cart-item-name {
+        color: #fff;
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+
+      .cart-item-price {
+        color: #e53637;
+        font-weight: bold;
+        font-size: 14px;
+      }
+
+      .cart-total {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #333;
+        font-weight: bold;
+        color: #fff;
+      }
+
+      .cart-actions {
+        margin-top: 15px;
+        display: flex;
+        gap: 10px;
+      }
+
+      .cart-actions a {
+        flex: 1;
+        text-align: center;
+        padding: 8px 0;
+        border-radius: 4px;
+        font-size: 14px;
+        text-decoration: none;
+      }
+
+      .view-cart {
+        background: #333;
+        color: #fff;
+      }
+
+      .checkout {
+        background: #e53637;
+        color: #fff;
+      }
+
+      .empty-cart {
+        text-align: center;
+        color: #b7b7b7;
+        padding: 20px 0;
+      }
+    </style>
   </head>
 
   <body>
@@ -49,14 +473,30 @@
       <div class="canvas-search search-switch">
         <i class="fa fa-search"></i>
       </div>
+      <!-- Mobile cart and profile -->
+      <div class="canvas-cart-profile">
+        <div class="cart-icon">
+          <i class="fa fa-shopping-cart"></i>
+          <span class="cart-count">0</span>
+        </div>
+        <div class="profile-icon">
+          <i class="fa fa-user"></i>
+          <div class="profile-dropdown">
+            <a href="#" class="login-link">Login</a>
+            <a href="#" class="register-link">Register</a>
+            <a href="#" class="logout-link" style="display: none">Logout</a>
+          </div>
+        </div>
+      </div>
       <nav class="canvas-menu mobile-menu">
         <ul>
           <li><a href="index.html">Home</a></li>
           <li><a href="about-us.html">About Us</a></li>
-          <li><a href="classes.html">Classes</a></li>
+          <li><a href="class-details.html">Classes</a></li>
           <li><a href="services.html">Services</a></li>
+          <li class="active"><a href="shop.html">Shop</a></li>
           <li><a href="team.html">Our Team</a></li>
-          <li>
+          <!-- <li>
             <a href="#">Pages</a>
             <ul class="dropdown">
               <li><a href="about-us.html">About us</a></li>
@@ -67,7 +507,7 @@
               <li><a href="blog.html">Our blog</a></li>
               <li><a href="404.html">404</a></li>
             </ul>
-          </li>
+          </li> -->
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </nav>
@@ -95,13 +535,13 @@
           <div class="col-lg-6">
             <nav class="nav-menu">
               <ul>
-                <li class="active"><a href="index.html">Home</a></li>
+                <li><a href="index.html">Home</a></li>
                 <li><a href="about-us.html">About Us</a></li>
                 <li><a href="class-details.html">Classes</a></li>
                 <li><a href="services.html">Services</a></li>
-                <li><a href="shop.html">Shop</a></li>
+                <li class="active"><a href="shop.html">Shop</a></li>
                 <li><a href="team.html">Our Team</a></li>
-                <li>
+                <!-- <li>
                   <a href="#">Pages</a>
                   <ul class="dropdown">
                     <li><a href="about-us.html">About us</a></li>
@@ -114,7 +554,7 @@
                     <li><a href="blog.html">Our blog</a></li>
                     <li><a href="404.html">404</a></li>
                   </ul>
-                </li>
+                </li> -->
                 <li><a href="contact.html">Contact</a></li>
               </ul>
             </nav>
@@ -123,6 +563,38 @@
             <div class="top-option">
               <div class="to-search search-switch">
                 <i class="fa fa-search"></i>
+              </div>
+              <!-- Cart Icon -->
+              <div class="cart-icon">
+                <i class="fa fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+                <div class="cart-dropdown">
+                  <div class="cart-items">
+                    <div class="empty-cart">Your cart is empty</div>
+                    <!-- Cart items will be added here dynamically -->
+                  </div>
+                  <div class="cart-total">
+                    <span>Total:</span>
+                    <span>N0</span>
+                  </div>
+                  <div class="cart-actions">
+                    <a href="#" class="view-cart">View Cart</a>
+                    <a href="#" class="checkout">Checkout</a>
+                  </div>
+                </div>
+              </div>
+              <!-- Profile Icon -->
+              <div class="profile-icon">
+                <i class="fa fa-user"></i>
+                <div class="profile-dropdown">
+                  <a href="./profile.html" class="login-link">Login</a>
+                  <a href="./registration.html" class="register-link"
+                    >Register</a
+                  >
+                  <a href="#" class="logout-link" style="display: none"
+                    >Logout</a
+                  >
+                </div>
               </div>
               <div class="to-social">
                 <a href="#"><i class="fa fa-facebook"></i></a>

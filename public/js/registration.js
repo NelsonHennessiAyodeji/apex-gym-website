@@ -9,6 +9,38 @@ document.addEventListener("DOMContentLoaded", function () {
   const membershipOptions = document.querySelectorAll(".membership-option");
   const membershipPlanInput = document.getElementById("membershipPlan");
 
+  // Create and inject modal HTML
+  const modalHTML = `
+    <div id="emailConfirmationModal" class="modal" style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8);">
+      <div class="modal-content" style="background: #1a1a1a; margin: 15% auto; padding: 30px; border-radius: 10px; width: 90%; max-width: 500px; border: 2px solid #e53637; text-align: center;">
+        <h2 style="color: #e53637; margin-bottom: 20px;">🎉 Registration Successful!</h2>
+        <p style="color: #fff; margin-bottom: 20px; font-size: 16px;">
+          We've sent a confirmation email to <strong id="userEmail" style="color: #e53637;"></strong>
+        </p>
+        <p style="color: #b7b7b7; margin-bottom: 25px;">
+          Please check your inbox and click the confirmation link to activate your account.
+        </p>
+        <div style="margin-bottom: 25px;">
+          <p style="color: #b7b7b7; font-size: 14px; margin-bottom: 10px;">
+            Didn't receive the email?
+          </p>
+          <button id="resendEmailBtn" style="background: #e53637; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+            Resend Confirmation Email
+          </button>
+        </div>
+        <button id="closeModalBtn" style="background: #333; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+          Close
+        </button>
+      </div>
+    </div>
+  `;
+  document.body.insertAdjacentHTML("beforeend", modalHTML);
+
+  const modal = document.getElementById("emailConfirmationModal");
+  const userEmailElement = document.getElementById("userEmail");
+  const resendEmailBtn = document.getElementById("resendEmailBtn");
+  const closeModalBtn = document.getElementById("closeModalBtn");
+
   // Toggle password visibility
   togglePassword.addEventListener("click", function () {
     const type =
@@ -74,6 +106,44 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
     });
+  });
+
+  // Resend confirmation email
+  resendEmailBtn.addEventListener("click", async function () {
+    const email = document.getElementById("email").value;
+
+    try {
+      resendEmailBtn.textContent = "Sending...";
+      resendEmailBtn.disabled = true;
+
+      const response = await fetch("/auth/resend-confirmation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to resend email");
+      }
+
+      alert("Confirmation email sent! Please check your inbox.");
+    } catch (error) {
+      console.error("Resend error:", error);
+      alert("Failed to resend email: " + error.message);
+    } finally {
+      resendEmailBtn.textContent = "Resend Confirmation Email";
+      resendEmailBtn.disabled = false;
+    }
+  });
+
+  // Close modal
+  closeModalBtn.addEventListener("click", function () {
+    modal.style.display = "none";
+    window.location.href = "login.html";
   });
 
   // Form submission
@@ -156,9 +226,9 @@ document.addEventListener("DOMContentLoaded", function () {
           firstName,
           lastName,
           email,
+          password,
           phone,
           dob,
-          password,
           gender,
           fitnessLevel,
           address,
@@ -176,10 +246,9 @@ document.addEventListener("DOMContentLoaded", function () {
         throw new Error(data.error || "Registration failed");
       }
 
-      alert(
-        "Registration successful! Welcome to Ape-X Gym. Redirecting to home page..."
-      );
-      window.location.href = "index.html";
+      // Show success modal instead of alert
+      userEmailElement.textContent = email;
+      modal.style.display = "block";
     } catch (error) {
       console.error("Registration error:", error);
       alert("Registration failed: " + error.message);

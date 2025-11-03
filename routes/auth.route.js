@@ -5,6 +5,8 @@ const {
   login,
   getProfile,
   logout,
+  updateProfile,
+  resendConfirmation,
 } = require("../controllers/auth.controller");
 
 // Register user
@@ -18,5 +20,11 @@ router.post("/logout", logout);
 
 // Get user profile
 router.get("/profile", getProfile);
+
+// Update user profile
+router.put("/profile/:userId", updateProfile);
+
+// Resend confirmation email
+router.post("/resend-confirmation", resendConfirmation);
 
 module.exports = router;
