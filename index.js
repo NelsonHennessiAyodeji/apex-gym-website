@@ -13,6 +13,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
 app.use("/auth", require("./routes/auth.route"));
+app.use("/admin", require("./routes/admin.route")); // Add this line
 
 // Route to serve HTML files
 app.get("/", (req, res) => {
@@ -25,6 +26,23 @@ app.get("/login", (req, res) => {
 
 app.get("/register", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "registration.html"));
+});
+
+// Admin routes
+app.get("/admin", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin-login.html"));
+});
+
+app.get("/admin/dashboard", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin-dashboard.html"));
+});
+
+app.get("/admin/shop", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin-shop.html"));
+});
+
+app.get("/admin/blog", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin-blog.html"));
 });
 
 app.listen(port, () => {

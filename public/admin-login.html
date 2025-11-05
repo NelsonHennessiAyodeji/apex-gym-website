@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="eng">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Apex Gym Admin" />
+    <meta name="keywords" content="Gym, Admin, Management" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Apex Gym - Admin Login</title>
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Oswald:300,400,500,600,700&amp;display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+
+    <style>
+      /* Global black background */
+      body {
+        background-color: #000;
+        color: #fff;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .admin-login-container {
+        max-width: 400px;
+        width: 90%;
+        margin: 0 auto;
+      }
+
+      .admin-login-card {
+        background: #1a1a1a;
+        border-radius: 10px;
+        padding: 40px;
+        border: 1px solid #333;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .admin-logo {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .admin-logo img {
+        max-width: 120px;
+      }
+
+      .admin-login-header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .admin-login-header h2 {
+        color: #e53637;
+        font-size: 28px;
+        margin-bottom: 10px;
+      }
+
+      .admin-login-header p {
+        color: #b7b7b7;
+        font-size: 14px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 15px;
+        background: #222;
+        border: 1px solid #333;
+        border-radius: 4px;
+        color: #fff;
+        font-size: 16px;
+        transition: all 0.3s;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: #e53637;
+        box-shadow: 0 0 0 2px rgba(229, 54, 55, 0.2);
+      }
+
+      .admin-login-btn {
+        width: 100%;
+        background: #e53637;
+        color: #fff;
+        border: none;
+        padding: 15px;
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 10px;
+      }
+
+      .admin-login-btn:hover {
+        background: #fff;
+        color: #e53637;
+      }
+
+      .alert {
+        padding: 12px 15px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        display: none;
+      }
+
+      .alert-error {
+        background: rgba(229, 54, 55, 0.2);
+        border: 1px solid #e53637;
+        color: #e53637;
+      }
+
+      @media (max-width: 480px) {
+        .admin-login-card {
+          padding: 30px 20px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="admin-login-container">
+      <div class="admin-login-card">
+        <div class="admin-logo">
+          <img src="img/logo.png" alt="Apex Gym Admin" />
+        </div>
+
+        <div class="admin-login-header">
+          <h2>Admin Portal</h2>
+          <p>Access the management dashboard</p>
+        </div>
+
+        <div id="errorAlert" class="alert alert-error"></div>
+
+        <form id="adminLoginForm">
+          <div class="form-group">
+            <input
+              type="email"
+              id="adminEmail"
+              class="form-control"
+              placeholder="Admin Email"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <input
+              type="password"
+              id="adminPassword"
+              class="form-control"
+              placeholder="Admin Password"
+              required
+            />
+          </div>
+
+          <button type="submit" class="admin-login-btn">Login to Admin</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const adminLoginForm = document.getElementById("adminLoginForm");
+        const errorAlert = document.getElementById("errorAlert");
+
+        adminLoginForm.addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const email = document.getElementById("adminEmail").value;
+          const password = document.getElementById("adminPassword").value;
+
+          if (!email || !password) {
+            showError("Please fill in all fields");
+            return;
+          }
+
+          try {
+            const submitBtn = adminLoginForm.querySelector(
+              'button[type="submit"]'
+            );
+            submitBtn.textContent = "Logging in...";
+            submitBtn.disabled = true;
+
+            // For demo purposes - in production, this would call your actual admin auth endpoint
+            if (email === "admin@apexgym.com" && password === "admin123") {
+              // Store admin session
+              localStorage.setItem("admin_authenticated", "true");
+              localStorage.setItem("admin_email", email);
+
+              // Redirect to admin dashboard
+              window.location.href = "admin-dashboard.html";
+            } else {
+              throw new Error("Invalid admin credentials");
+            }
+          } catch (error) {
+            showError(error.message);
+          } finally {
+            const submitBtn = adminLoginForm.querySelector(
+              'button[type="submit"]'
+            );
+            submitBtn.textContent = "Login to Admin";
+            submitBtn.disabled = false;
+          }
+        });
+
+        function showError(message) {
+          errorAlert.textContent = message;
+          errorAlert.style.display = "block";
+          setTimeout(() => {
+            errorAlert.style.display = "none";
+          }, 5000);
+        }
+
+        // Check if already authenticated
+        if (localStorage.getItem("admin_authenticated") === "true") {
+          window.location.href = "admin-dashboard.html";
+        }
+      });
+    </script>
+  </body>
+</html>
