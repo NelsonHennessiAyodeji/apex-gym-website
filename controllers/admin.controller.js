@@ -1,11 +1,18 @@
-// src/controllers/admin.controller.js
 const supabase = require("../db/supabase");
+const path = require("path");
+const fs = require("fs");
 
-// Simple admin authentication (in production, use proper authentication)
+// Simple admin authentication (TODO: in production, use proper authentication)
 const ADMIN_CREDENTIALS = {
   email: "admin@apexgym.com",
-  password: "admin123", // In production, use hashed passwords
+  password: "admin123",
 };
+
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, "../../public/uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
 
 const adminLogin = async (req, res) => {
   try {
@@ -53,7 +60,7 @@ const getDashboardStats = async (req, res) => {
       .select("*", { count: "exact", head: true });
 
     // Calculate total sales (this would come from orders table in production)
-    const totalSales = 1245000; // Mock data
+    const totalSales = 1245000;
 
     res.json({
       totalProducts: productsCount || 0,
@@ -67,16 +74,42 @@ const getDashboardStats = async (req, res) => {
   }
 };
 
-// Shop Items CRUD
+// Shop Items CRUD with Pagination
 const getShopItems = async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const startIndex = (page - 1) * limit;
+
+    // Get total count
+    const { count, error: countError } = await supabase
+      .from("shop_items")
+      .select("*", { count: "exact", head: true });
+
+    if (countError) throw countError;
+
+    // Get paginated data
     const { data, error } = await supabase
       .from("shop_items")
       .select("*")
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: false })
+      .range(startIndex, startIndex + limit - 1);
 
     if (error) throw error;
-    res.json(data);
+
+    const totalPages = Math.ceil(count / limit);
+
+    res.json({
+      data,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalItems: count,
+        itemsPerPage: limit,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1,
+      },
+    });
   } catch (error) {
     console.error("Get shop items error:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -85,8 +118,17 @@ const getShopItems = async (req, res) => {
 
 const createShopItem = async (req, res) => {
   try {
-    const { name, description, price, stock, category, status, image } =
-      req.body;
+    const { name, description, price, stock, category, status } = req.body;
+
+    let imageUrl = "";
+
+    // Handle file upload
+    if (req.file) {
+      imageUrl = `/uploads/${req.file.filename}`;
+    } else if (req.body.image) {
+      // Fallback to URL if provided
+      imageUrl = req.body.image;
+    }
 
     const { data, error } = await supabase
       .from("shop_items")
@@ -98,7 +140,7 @@ const createShopItem = async (req, res) => {
           stock: parseInt(stock),
           category,
           status,
-          image_url: image,
+          image_url: imageUrl,
           created_at: new Date().toISOString(),
         },
       ])
@@ -115,8 +157,14 @@ const createShopItem = async (req, res) => {
 const updateShopItem = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description, price, stock, category, status, image } =
-      req.body;
+    const { name, description, price, stock, category, status } = req.body;
+
+    let imageUrl = req.body.existingImage || "";
+
+    // Handle file upload
+    if (req.file) {
+      imageUrl = `/uploads/${req.file.filename}`;
+    }
 
     const { data, error } = await supabase
       .from("shop_items")
@@ -127,7 +175,7 @@ const updateShopItem = async (req, res) => {
         stock: parseInt(stock),
         category,
         status,
-        image_url: image,
+        image_url: imageUrl,
         updated_at: new Date().toISOString(),
       })
       .eq("id", id)

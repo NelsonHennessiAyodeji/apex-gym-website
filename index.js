@@ -28,6 +28,14 @@ app.get("/register", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "registration.html"));
 });
 
+// Add this temporary debug route to test if your admin routes are working
+app.get("/debug-admin-routes", (req, res) => {
+  res.json({
+    message: "Admin routes are working",
+    timestamp: new Date().toISOString(),
+  });
+});
+
 // Admin routes
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin-login.html"));
