@@ -700,8 +700,9 @@
         <div class="profile-icon">
           <i class="fa fa-user"></i>
           <div class="profile-dropdown">
-            <a href="#" class="login-link">Login</a>
-            <a href="#" class="register-link">Register</a>
+            <a href="./profile.html" class="profile-link">My Profile</a>
+            <a href="./login.html" class="login-link">Login</a>
+            <a href="./registration.html" class="register-link">Register</a>
             <a href="#" class="logout-link" style="display: none">Logout</a>
           </div>
         </div>
@@ -709,7 +710,6 @@
       <nav class="canvas-menu mobile-menu">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="about-us.html">About Us</a></li>
           <li><a href="class-details.html">Classes</a></li>
           <li><a href="services.html">Services</a></li>
           <li class="active"><a href="shop.html">Shop</a></li>
@@ -754,7 +754,6 @@
             <nav class="nav-menu">
               <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="about-us.html">About Us</a></li>
                 <li><a href="class-details.html">Classes</a></li>
                 <li><a href="services.html">Services</a></li>
                 <li class="active"><a href="shop.html">Shop</a></li>
@@ -805,7 +804,8 @@
               <div class="profile-icon">
                 <i class="fa fa-user"></i>
                 <div class="profile-dropdown">
-                  <a href="./profile.html" class="login-link">Login</a>
+                  <a href="./profile.html" class="profile-link">My Profile</a>
+                  <a href="./login.html" class="login-link">Login</a>
                   <a href="./registration.html" class="register-link"
                     >Register</a
                   >
@@ -1161,12 +1161,30 @@
         const modalMessage = document.getElementById("modalMessage");
         const modalConfirmBtn = document.getElementById("modalConfirmBtn");
 
+        // Filter elements
+        const categoryLinks = document.querySelectorAll("[data-category]");
+        const minPriceInput = document.getElementById("minPrice");
+        const maxPriceInput = document.getElementById("maxPrice");
+        const filterPriceBtn = document.getElementById("filterPrice");
+        const clearFilterBtn = document.getElementById("clearFilter");
+        const sortSelect = document.getElementById("sortSelect");
+        const searchInput = document.getElementById("searchInput");
+
         let cart = [];
         let products = [];
         let currentPage = 1;
         const itemsPerPage = 20;
         let totalPages = 1;
         let totalItems = 0;
+
+        // Current filter state
+        let currentFilters = {
+          category: "all",
+          minPrice: "",
+          maxPrice: "",
+          sortBy: "newest",
+          search: "",
+        };
 
         // Modal functionality
         modalConfirmBtn.addEventListener("click", function () {
@@ -1183,8 +1201,11 @@
         // Initialize cart
         initializeCart();
 
-        // Load products from Supabase
+        // Load products from Supabase with current filters
         loadProducts(currentPage);
+
+        // Setup filter event listeners
+        setupFilters();
 
         async function initializeCart() {
           try {
@@ -1203,12 +1224,62 @@
           }
         }
 
+        function setupFilters() {
+          // Category filter
+          categoryLinks.forEach((link) => {
+            link.addEventListener("click", function (e) {
+              e.preventDefault();
+              const category = this.getAttribute("data-category");
+              currentFilters.category = category;
+
+              // Update active state
+              categoryLinks.forEach((l) => l.classList.remove("active"));
+              this.classList.add("active");
+
+              loadProducts(1); // Reset to page 1 when filter changes
+            });
+          });
+
+          // Price filter
+          filterPriceBtn.addEventListener("click", function () {
+            currentFilters.minPrice = minPriceInput.value;
+            currentFilters.maxPrice = maxPriceInput.value;
+            loadProducts(1);
+          });
+
+          // Clear filter
+          clearFilterBtn.addEventListener("click", function () {
+            minPriceInput.value = "";
+            maxPriceInput.value = "";
+            currentFilters.minPrice = "";
+            currentFilters.maxPrice = "";
+            loadProducts(1);
+          });
+
+          // Sort filter
+          sortSelect.addEventListener("change", function () {
+            currentFilters.sortBy = this.value;
+            loadProducts(1);
+          });
+
+          // Search filter with debounce
+          let searchTimeout;
+          searchInput.addEventListener("input", function () {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+              currentFilters.search = this.value;
+              loadProducts(1);
+            }, 500);
+          });
+        }
+
         async function loadUserCart() {
           try {
             const token = localStorage.getItem("supabase_token");
             if (!token) {
               cart = [];
-              updateCartDisplay(); // This will set cart count to 0
+              updateCartDisplay();
+              updateProfileDropdown();
               return;
             }
 
@@ -1224,7 +1295,8 @@
               if (response.status === 401) {
                 // Not authenticated, clear cart
                 cart = [];
-                updateCartDisplay(); // This will set cart count to 0
+                updateCartDisplay();
+                updateProfileDropdown();
                 return;
               }
               throw new Error("Failed to fetch cart");
@@ -1232,11 +1304,13 @@
 
             const cartData = await response.json();
             cart = cartData.items || [];
-            updateCartDisplay(); // This will update the cart count with the actual number
+            updateCartDisplay();
+            updateProfileDropdown();
           } catch (error) {
             console.error("Load cart error:", error);
             cart = [];
-            updateCartDisplay(); // This will set cart count to 0 on error
+            updateCartDisplay();
+            updateProfileDropdown();
           }
         }
 
@@ -1244,9 +1318,30 @@
           try {
             showLoadingState();
 
-            const response = await fetch(
-              `/admin/shop-items?page=${page}&limit=${itemsPerPage}`
-            );
+            // Build query string from current filters
+            const queryParams = new URLSearchParams({
+              page: page,
+              limit: itemsPerPage,
+            });
+
+            // Add filters to query params
+            if (currentFilters.category && currentFilters.category !== "all") {
+              queryParams.append("category", currentFilters.category);
+            }
+            if (currentFilters.minPrice) {
+              queryParams.append("minPrice", currentFilters.minPrice);
+            }
+            if (currentFilters.maxPrice) {
+              queryParams.append("maxPrice", currentFilters.maxPrice);
+            }
+            if (currentFilters.sortBy) {
+              queryParams.append("sortBy", currentFilters.sortBy);
+            }
+            if (currentFilters.search) {
+              queryParams.append("search", currentFilters.search);
+            }
+
+            const response = await fetch(`/admin/shop-items?${queryParams}`);
 
             if (!response.ok) {
               throw new Error("Failed to fetch products");
@@ -1331,6 +1426,9 @@
 
           productsGrid.style.display = "grid";
           emptyState.style.display = "none";
+
+          // Update product count
+          document.getElementById("productCount").textContent = totalItems;
 
           productsGrid.innerHTML = products
             .map((product) => {
@@ -1470,24 +1568,26 @@
             const cartItem = document.createElement("div");
             cartItem.className = "cart-item";
             cartItem.innerHTML = `
-      <img src="${
-        item.shop_items.image_url ||
-        "https://via.placeholder.com/50x50/222/666?text=No+Img"
-      }" alt="${item.shop_items.name}">
-      <div class="cart-item-details">
-        <div class="cart-item-name">${item.shop_items.name}</div>
-        <div class="cart-item-price">
-          ₦${item.shop_items.price.toLocaleString()} x ${item.quantity}
-        </div>
-        <div class="cart-item-total" style="color: #e53637; font-weight: bold;">
-          ₦${itemTotal.toLocaleString()}
-        </div>
-      </div>
-      <button class="remove-cart-item" data-product-id="${item.product_id}" 
-              style="background: none; border: none; color: #e53637; cursor: pointer; margin-left: 10px;">
-        <i class="fa fa-times"></i>
-      </button>
-    `;
+              <img src="${
+                item.shop_items.image_url ||
+                "https://via.placeholder.com/50x50/222/666?text=No+Img"
+              }" alt="${item.shop_items.name}">
+              <div class="cart-item-details">
+                <div class="cart-item-name">${item.shop_items.name}</div>
+                <div class="cart-item-price">
+                  ₦${item.shop_items.price.toLocaleString()} x ${item.quantity}
+                </div>
+                <div class="cart-item-total" style="color: #e53637; font-weight: bold;">
+                  ₦${itemTotal.toLocaleString()}
+                </div>
+              </div>
+              <button class="remove-cart-item" data-product-id="${
+                item.product_id
+              }" 
+                      style="background: none; border: none; color: #e53637; cursor: pointer; margin-left: 10px;">
+                <i class="fa fa-times"></i>
+              </button>
+            `;
             cartItems.appendChild(cartItem);
           });
 
@@ -1502,6 +1602,7 @@
           // Update total
           cartTotal.textContent = `₦${total.toLocaleString()}`;
         }
+
         async function removeFromCart(productId) {
           const token = localStorage.getItem("supabase_token");
           if (!token) {
@@ -1528,6 +1629,28 @@
           } catch (error) {
             console.error("Remove from cart error:", error);
             showModal("Error", "Error removing item from cart");
+          }
+        }
+
+        function updateProfileDropdown() {
+          const token = localStorage.getItem("supabase_token");
+          const loginLinks = document.querySelectorAll(".login-link");
+          const registerLinks = document.querySelectorAll(".register-link");
+          const logoutLinks = document.querySelectorAll(".logout-link");
+          const profileLinks = document.querySelectorAll(".profile-link");
+
+          if (token) {
+            // User is logged in
+            loginLinks.forEach((link) => (link.style.display = "none"));
+            registerLinks.forEach((link) => (link.style.display = "none"));
+            logoutLinks.forEach((link) => (link.style.display = "block"));
+            profileLinks.forEach((link) => (link.style.display = "block"));
+          } else {
+            // User is not logged in
+            loginLinks.forEach((link) => (link.style.display = "block"));
+            registerLinks.forEach((link) => (link.style.display = "block"));
+            logoutLinks.forEach((link) => (link.style.display = "none"));
+            profileLinks.forEach((link) => (link.style.display = "none"));
           }
         }
 
@@ -1566,28 +1689,6 @@
           });
         }
 
-        // Update profile dropdown based on login status
-        updateProfileDropdown();
-
-        function updateProfileDropdown() {
-          const token = localStorage.getItem("supabase_token");
-          const loginLinks = document.querySelectorAll(".login-link");
-          const registerLinks = document.querySelectorAll(".register-link");
-          const logoutLinks = document.querySelectorAll(".logout-link");
-
-          if (token) {
-            // User is logged in
-            loginLinks.forEach((link) => (link.style.display = "none"));
-            registerLinks.forEach((link) => (link.style.display = "none"));
-            logoutLinks.forEach((link) => (link.style.display = "block"));
-          } else {
-            // User is not logged in
-            loginLinks.forEach((link) => (link.style.display = "block"));
-            registerLinks.forEach((link) => (link.style.display = "block"));
-            logoutLinks.forEach((link) => (link.style.display = "none"));
-          }
-        }
-
         // Logout functionality
         document.querySelectorAll(".logout-link").forEach((link) => {
           link.addEventListener("click", async function (e) {
@@ -1623,7 +1724,7 @@
         window.changePage = changePage;
         window.loadProducts = loadProducts;
         window.currentPage = currentPage;
-        window.showModal = showModal; // Make modal function globally available
+        window.showModal = showModal;
       });
     </script>
   </body>

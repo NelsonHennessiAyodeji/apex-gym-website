@@ -77,37 +77,72 @@ const getDashboardStats = async (req, res) => {
 // Shop Items CRUD with Pagination
 const getShopItems = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 20;
-    const startIndex = (page - 1) * limit;
+    let query = supabase.from("shop_items").select("*");
 
-    // Get total count
-    const { count, error: countError } = await supabase
-      .from("shop_items")
-      .select("*", { count: "exact", head: true });
+    // Handle category filter
+    if (req.query.category && req.query.category !== "all") {
+      query = query.eq("category", req.query.category);
+    }
 
-    if (countError) throw countError;
+    // Handle price range filter
+    if (req.query.minPrice) {
+      query = query.gte("price", parseFloat(req.query.minPrice));
+    }
+    if (req.query.maxPrice) {
+      query = query.lte("price", parseFloat(req.query.maxPrice));
+    }
 
-    // Get paginated data
-    const { data, error } = await supabase
-      .from("shop_items")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .range(startIndex, startIndex + limit - 1);
+    // Handle search
+    if (req.query.search) {
+      query = query.or(
+        `name.ilike.%${req.query.search}%,description.ilike.%${req.query.search}%`
+      );
+    }
+
+    // Handle sorting
+    if (req.query.sortBy) {
+      switch (req.query.sortBy) {
+        case "name_asc":
+          query = query.order("name", { ascending: true });
+          break;
+        case "name_desc":
+          query = query.order("name", { ascending: false });
+          break;
+        case "price_asc":
+          query = query.order("price", { ascending: true });
+          break;
+        case "price_desc":
+          query = query.order("price", { ascending: false });
+          break;
+        case "newest":
+          query = query.order("created_at", { ascending: false });
+          break;
+        default:
+          query = query.order("created_at", { ascending: false });
+      }
+    } else {
+      query = query.order("created_at", { ascending: false });
+    }
+
+    const { data, error } = await query;
 
     if (error) throw error;
 
-    const totalPages = Math.ceil(count / limit);
+    // Add pagination info
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+
+    const paginatedData = data.slice(startIndex, endIndex);
 
     res.json({
-      data,
+      data: paginatedData,
       pagination: {
         currentPage: page,
-        totalPages,
-        totalItems: count,
+        totalPages: Math.ceil(data.length / limit),
+        totalItems: data.length,
         itemsPerPage: limit,
-        hasNextPage: page < totalPages,
-        hasPrevPage: page > 1,
       },
     });
   } catch (error) {
