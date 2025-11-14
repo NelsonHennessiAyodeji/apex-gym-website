@@ -621,6 +621,62 @@
   </head>
 
   <body>
+    <!-- Message Modal -->
+    <div
+      id="messageModal"
+      class="modal"
+      style="
+        display: none;
+        position: fixed;
+        z-index: 10000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+      "
+    >
+      <div
+        class="modal-content"
+        style="
+          background: #1a1a1a;
+          margin: 15% auto;
+          padding: 30px;
+          border-radius: 10px;
+          width: 90%;
+          max-width: 400px;
+          border: 2px solid #e53637;
+          text-align: center;
+        "
+      >
+        <h2 id="modalTitle" style="color: #e53637; margin-bottom: 15px">
+          Message
+        </h2>
+        <p
+          id="modalMessage"
+          style="color: #fff; margin-bottom: 25px; line-height: 1.5"
+        >
+          This is a message
+        </p>
+        <div class="modal-actions">
+          <button
+            id="modalConfirmBtn"
+            class="btn-primary"
+            style="
+              background: #e53637;
+              color: #fff;
+              border: none;
+              padding: 10px 20px;
+              border-radius: 4px;
+              cursor: pointer;
+              font-size: 14px;
+            "
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
     <!-- Page Preloder -->
     <div id="preloder">
       <div class="loader"></div>
@@ -639,7 +695,7 @@
       <div class="canvas-cart-profile">
         <div class="cart-icon">
           <i class="fa fa-shopping-cart"></i>
-          <span class="cart-count">0</span>
+          <span class="cart-count"></span>
         </div>
         <div class="profile-icon">
           <i class="fa fa-user"></i>
@@ -729,7 +785,7 @@
               <!-- Cart Icon -->
               <div class="cart-icon">
                 <i class="fa fa-shopping-cart"></i>
-                <span class="cart-count">0</span>
+                <span class="cart-count"></span>
                 <div class="cart-dropdown">
                   <div class="cart-items">
                     <div class="empty-cart">Your cart is empty</div>
@@ -1099,6 +1155,12 @@
         const productsGrid = document.getElementById("productsGrid");
         const pagination = document.getElementById("pagination");
 
+        // Modal elements
+        const messageModal = document.getElementById("messageModal");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalMessage = document.getElementById("modalMessage");
+        const modalConfirmBtn = document.getElementById("modalConfirmBtn");
+
         let cart = [];
         let products = [];
         let currentPage = 1;
@@ -1106,8 +1168,77 @@
         let totalPages = 1;
         let totalItems = 0;
 
+        // Modal functionality
+        modalConfirmBtn.addEventListener("click", function () {
+          messageModal.style.display = "none";
+        });
+
+        // Function to show modal messages
+        function showModal(title, message) {
+          modalTitle.textContent = title;
+          modalMessage.textContent = message;
+          messageModal.style.display = "block";
+        }
+
+        // Initialize cart
+        initializeCart();
+
         // Load products from Supabase
         loadProducts(currentPage);
+
+        async function initializeCart() {
+          try {
+            const token = localStorage.getItem("supabase_token");
+            if (!token) {
+              // User not logged in, show empty cart
+              updateCartDisplay();
+              return;
+            }
+
+            // Load user's cart from backend
+            await loadUserCart();
+          } catch (error) {
+            console.error("Cart initialization error:", error);
+            updateCartDisplay();
+          }
+        }
+
+        async function loadUserCart() {
+          try {
+            const token = localStorage.getItem("supabase_token");
+            if (!token) {
+              cart = [];
+              updateCartDisplay(); // This will set cart count to 0
+              return;
+            }
+
+            const response = await fetch("/cart", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            });
+
+            if (!response.ok) {
+              if (response.status === 401) {
+                // Not authenticated, clear cart
+                cart = [];
+                updateCartDisplay(); // This will set cart count to 0
+                return;
+              }
+              throw new Error("Failed to fetch cart");
+            }
+
+            const cartData = await response.json();
+            cart = cartData.items || [];
+            updateCartDisplay(); // This will update the cart count with the actual number
+          } catch (error) {
+            console.error("Load cart error:", error);
+            cart = [];
+            updateCartDisplay(); // This will set cart count to 0 on error
+          }
+        }
 
         async function loadProducts(page = 1) {
           try {
@@ -1255,41 +1386,77 @@
           });
         }
 
-        function addToCart(button) {
+        async function addToCart(button) {
           const productId = button.getAttribute("data-id");
           const productName = button.getAttribute("data-name");
           const productPrice = parseFloat(button.getAttribute("data-price"));
           const productImage = button.getAttribute("data-image");
 
-          // Add item to cart
-          cart.push({
-            id: productId,
-            name: productName,
-            price: productPrice,
-            image: productImage,
-          });
+          // Check if user is logged in
+          const token = localStorage.getItem("supabase_token");
+          if (!token) {
+            showModal("Login Required", "Please login to add items to cart");
+            setTimeout(() => {
+              window.location.href = "login.html";
+            }, 2000);
+            return;
+          }
 
-          updateCartDisplay();
+          try {
+            const response = await fetch("/cart/add", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                productId: parseInt(productId),
+                quantity: 1,
+              }),
+            });
 
-          // Show feedback
-          const originalText = button.textContent;
-          button.textContent = "Added!";
-          button.style.background = "#28a745";
-          setTimeout(() => {
-            button.textContent = originalText;
-            button.style.background = "#e53637";
-          }, 1000);
+            if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(errorData.error || "Failed to add to cart");
+            }
+
+            const result = await response.json();
+
+            // Reload cart to get updated data
+            await loadUserCart();
+
+            // Show feedback
+            const originalText = button.textContent;
+            button.textContent = "Added!";
+            button.style.background = "#28a745";
+            setTimeout(() => {
+              button.textContent = originalText;
+              button.style.background = "#e53637";
+            }, 1000);
+          } catch (error) {
+            console.error("Add to cart error:", error);
+            showModal("Error", "Error adding to cart: " + error.message);
+          }
         }
 
         function updateCartDisplay() {
-          // Update cart count
-          cartCount.textContent = cart.length;
+          // Get ALL cart count elements (desktop and mobile)
+          const cartCountElements = document.querySelectorAll(".cart-count");
+
+          // Update all cart count elements
+          cartCountElements.forEach((element) => {
+            element.textContent = cart.length;
+          });
 
           // Show/hide empty cart message
           if (cart.length === 0) {
             emptyCart.style.display = "block";
+            document.querySelector(".cart-total").style.display = "none";
+            document.querySelector(".cart-actions").style.display = "none";
           } else {
             emptyCart.style.display = "none";
+            document.querySelector(".cart-total").style.display = "flex";
+            document.querySelector(".cart-actions").style.display = "flex";
           }
 
           // Update cart items
@@ -1297,26 +1464,95 @@
           let total = 0;
 
           cart.forEach((item) => {
-            total += item.price;
+            const itemTotal = item.quantity * item.shop_items.price;
+            total += itemTotal;
 
             const cartItem = document.createElement("div");
             cartItem.className = "cart-item";
             cartItem.innerHTML = `
-              <img src="${
-                item.image ||
-                "https://via.placeholder.com/50x50/222/666?text=No+Img"
-              }" alt="${item.name}">
-              <div class="cart-item-details">
-                <div class="cart-item-name">${item.name}</div>
-                <div class="cart-item-price">₦${item.price.toLocaleString()}</div>
-              </div>
-            `;
+      <img src="${
+        item.shop_items.image_url ||
+        "https://via.placeholder.com/50x50/222/666?text=No+Img"
+      }" alt="${item.shop_items.name}">
+      <div class="cart-item-details">
+        <div class="cart-item-name">${item.shop_items.name}</div>
+        <div class="cart-item-price">
+          ₦${item.shop_items.price.toLocaleString()} x ${item.quantity}
+        </div>
+        <div class="cart-item-total" style="color: #e53637; font-weight: bold;">
+          ₦${itemTotal.toLocaleString()}
+        </div>
+      </div>
+      <button class="remove-cart-item" data-product-id="${item.product_id}" 
+              style="background: none; border: none; color: #e53637; cursor: pointer; margin-left: 10px;">
+        <i class="fa fa-times"></i>
+      </button>
+    `;
             cartItems.appendChild(cartItem);
+          });
+
+          // Add event listeners to remove buttons
+          document.querySelectorAll(".remove-cart-item").forEach((button) => {
+            button.addEventListener("click", function () {
+              const productId = this.getAttribute("data-product-id");
+              removeFromCart(productId);
+            });
           });
 
           // Update total
           cartTotal.textContent = `₦${total.toLocaleString()}`;
         }
+        async function removeFromCart(productId) {
+          const token = localStorage.getItem("supabase_token");
+          if (!token) {
+            showModal("Login Required", "Please login to modify cart");
+            return;
+          }
+
+          try {
+            const response = await fetch(`/cart/remove/${productId}`, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            });
+
+            if (!response.ok) {
+              throw new Error("Failed to remove item from cart");
+            }
+
+            // Reload cart
+            await loadUserCart();
+            // No modal for removal - it happens silently as requested
+          } catch (error) {
+            console.error("Remove from cart error:", error);
+            showModal("Error", "Error removing item from cart");
+          }
+        }
+
+        // Update cart actions to work with authenticated user
+        document
+          .querySelector(".view-cart")
+          .addEventListener("click", function (e) {
+            e.preventDefault();
+            showModal("Coming Soon", "View cart page is coming soon!");
+          });
+
+        document
+          .querySelector(".checkout")
+          .addEventListener("click", function (e) {
+            e.preventDefault();
+            const token = localStorage.getItem("supabase_token");
+            if (!token) {
+              showModal("Login Required", "Please login to checkout");
+              setTimeout(() => {
+                window.location.href = "login.html";
+              }, 2000);
+              return;
+            }
+            showModal("Coming Soon", "Checkout page is coming soon!");
+          });
 
         // Profile dropdown functionality for mobile
         const mobileProfileIcon = document.querySelector(
@@ -1330,10 +1566,64 @@
           });
         }
 
+        // Update profile dropdown based on login status
+        updateProfileDropdown();
+
+        function updateProfileDropdown() {
+          const token = localStorage.getItem("supabase_token");
+          const loginLinks = document.querySelectorAll(".login-link");
+          const registerLinks = document.querySelectorAll(".register-link");
+          const logoutLinks = document.querySelectorAll(".logout-link");
+
+          if (token) {
+            // User is logged in
+            loginLinks.forEach((link) => (link.style.display = "none"));
+            registerLinks.forEach((link) => (link.style.display = "none"));
+            logoutLinks.forEach((link) => (link.style.display = "block"));
+          } else {
+            // User is not logged in
+            loginLinks.forEach((link) => (link.style.display = "block"));
+            registerLinks.forEach((link) => (link.style.display = "block"));
+            logoutLinks.forEach((link) => (link.style.display = "none"));
+          }
+        }
+
+        // Logout functionality
+        document.querySelectorAll(".logout-link").forEach((link) => {
+          link.addEventListener("click", async function (e) {
+            e.preventDefault();
+
+            try {
+              const response = await fetch("/auth/logout", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              });
+
+              localStorage.removeItem("supabase_token");
+              cart = [];
+              updateCartDisplay();
+              updateProfileDropdown();
+
+              showModal("Success", "Logout successful!");
+              // Refresh the page to update UI
+              setTimeout(() => {
+                window.location.reload();
+              }, 2000);
+            } catch (error) {
+              console.error("Logout error:", error);
+              localStorage.removeItem("supabase_token");
+              window.location.reload();
+            }
+          });
+        });
+
         // Make functions global for pagination
         window.changePage = changePage;
         window.loadProducts = loadProducts;
         window.currentPage = currentPage;
+        window.showModal = showModal; // Make modal function globally available
       });
     </script>
   </body>

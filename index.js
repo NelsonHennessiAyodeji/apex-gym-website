@@ -13,7 +13,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
 app.use("/auth", require("./routes/auth.route"));
-app.use("/admin", require("./routes/admin.route")); // Add this line
+app.use("/admin", require("./routes/admin.route"));
+app.use("/cart", require("./routes/cart.route"));
 
 // Route to serve HTML files
 app.get("/", (req, res) => {
