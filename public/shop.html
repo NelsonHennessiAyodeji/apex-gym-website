@@ -677,6 +677,7 @@
         </div>
       </div>
     </div>
+
     <!-- Page Preloder -->
     <div id="preloder">
       <div class="loader"></div>
@@ -700,7 +701,9 @@
         <div class="profile-icon">
           <i class="fa fa-user"></i>
           <div class="profile-dropdown">
-            <a href="./profile.html" class="profile-link">My Profile</a>
+            <a href="./profile.html" class="profile-link" style="display: none"
+              >My Profile</a
+            >
             <a href="./login.html" class="login-link">Login</a>
             <a href="./registration.html" class="register-link">Register</a>
             <a href="#" class="logout-link" style="display: none">Logout</a>
@@ -787,14 +790,31 @@
                 <span class="cart-count"></span>
                 <div class="cart-dropdown">
                   <div class="cart-items">
-                    <div class="empty-cart">Your cart is empty</div>
+                    <div class="empty-cart">
+                      <i
+                        class="fa fa-shopping-cart"
+                        style="
+                          font-size: 24px;
+                          margin-bottom: 10px;
+                          color: #b7b7b7;
+                        "
+                      ></i>
+                      <p style="margin: 0; color: #b7b7b7">
+                        Your cart is empty
+                      </p>
+                      <p
+                        style="margin: 5px 0 0 0; font-size: 12px; color: #888"
+                      >
+                        Add items to see them in your cart
+                      </p>
+                    </div>
                     <!-- Cart items will be added here dynamically -->
                   </div>
-                  <div class="cart-total">
+                  <div class="cart-total" style="display: none">
                     <span>Total:</span>
-                    <span>N0</span>
+                    <span>₦0</span>
                   </div>
-                  <div class="cart-actions">
+                  <div class="cart-actions" style="display: none">
                     <a href="#" class="view-cart">View Cart</a>
                     <a href="#" class="checkout">Checkout</a>
                   </div>
@@ -804,7 +824,12 @@
               <div class="profile-icon">
                 <i class="fa fa-user"></i>
                 <div class="profile-dropdown">
-                  <a href="./profile.html" class="profile-link">My Profile</a>
+                  <a
+                    href="./profile.html"
+                    class="profile-link"
+                    style="display: none"
+                    >My Profile</a
+                  >
                   <a href="./login.html" class="login-link">Login</a>
                   <a href="./registration.html" class="register-link"
                     >Register</a
@@ -1198,20 +1223,31 @@
           messageModal.style.display = "block";
         }
 
-        // Initialize cart
-        initializeCart();
+        // Initialize the page
+        initializePage();
 
-        // Load products from Supabase with current filters
-        loadProducts(currentPage);
+        function initializePage() {
+          // Check login status first
+          checkLoginStatus();
+          // Initialize cart
+          initializeCart();
+          // Load products from Supabase with current filters
+          loadProducts(currentPage);
+          // Setup filter event listeners
+          setupFilters();
+        }
 
-        // Setup filter event listeners
-        setupFilters();
+        function checkLoginStatus() {
+          const token = localStorage.getItem("supabase_token");
+          updateProfileDropdown(!!token);
+        }
 
         async function initializeCart() {
           try {
             const token = localStorage.getItem("supabase_token");
             if (!token) {
               // User not logged in, show empty cart
+              cart = [];
               updateCartDisplay();
               return;
             }
@@ -1220,6 +1256,7 @@
             await loadUserCart();
           } catch (error) {
             console.error("Cart initialization error:", error);
+            cart = [];
             updateCartDisplay();
           }
         }
@@ -1279,7 +1316,6 @@
             if (!token) {
               cart = [];
               updateCartDisplay();
-              updateProfileDropdown();
               return;
             }
 
@@ -1296,7 +1332,6 @@
                 // Not authenticated, clear cart
                 cart = [];
                 updateCartDisplay();
-                updateProfileDropdown();
                 return;
               }
               throw new Error("Failed to fetch cart");
@@ -1305,12 +1340,10 @@
             const cartData = await response.json();
             cart = cartData.items || [];
             updateCartDisplay();
-            updateProfileDropdown();
           } catch (error) {
             console.error("Load cart error:", error);
             cart = [];
             updateCartDisplay();
-            updateProfileDropdown();
           }
         }
 
@@ -1546,15 +1579,23 @@
             element.textContent = cart.length;
           });
 
-          // Show/hide empty cart message
+          // Show/hide empty cart message and other elements
           if (cart.length === 0) {
             emptyCart.style.display = "block";
-            document.querySelector(".cart-total").style.display = "none";
-            document.querySelector(".cart-actions").style.display = "none";
+            if (document.querySelector(".cart-total")) {
+              document.querySelector(".cart-total").style.display = "none";
+            }
+            if (document.querySelector(".cart-actions")) {
+              document.querySelector(".cart-actions").style.display = "none";
+            }
           } else {
             emptyCart.style.display = "none";
-            document.querySelector(".cart-total").style.display = "flex";
-            document.querySelector(".cart-actions").style.display = "flex";
+            if (document.querySelector(".cart-total")) {
+              document.querySelector(".cart-total").style.display = "flex";
+            }
+            if (document.querySelector(".cart-actions")) {
+              document.querySelector(".cart-actions").style.display = "flex";
+            }
           }
 
           // Update cart items
@@ -1600,7 +1641,9 @@
           });
 
           // Update total
-          cartTotal.textContent = `₦${total.toLocaleString()}`;
+          if (cartTotal) {
+            cartTotal.textContent = `₦${total.toLocaleString()}`;
+          }
         }
 
         async function removeFromCart(productId) {
@@ -1632,21 +1675,20 @@
           }
         }
 
-        function updateProfileDropdown() {
-          const token = localStorage.getItem("supabase_token");
+        function updateProfileDropdown(isLoggedIn) {
           const loginLinks = document.querySelectorAll(".login-link");
           const registerLinks = document.querySelectorAll(".register-link");
           const logoutLinks = document.querySelectorAll(".logout-link");
           const profileLinks = document.querySelectorAll(".profile-link");
 
-          if (token) {
-            // User is logged in
+          if (isLoggedIn) {
+            // User is logged in - show Profile and Logout, hide Login/Register
             loginLinks.forEach((link) => (link.style.display = "none"));
             registerLinks.forEach((link) => (link.style.display = "none"));
             logoutLinks.forEach((link) => (link.style.display = "block"));
             profileLinks.forEach((link) => (link.style.display = "block"));
           } else {
-            // User is not logged in
+            // User is not logged in - show Login and Register, hide Profile/Logout
             loginLinks.forEach((link) => (link.style.display = "block"));
             registerLinks.forEach((link) => (link.style.display = "block"));
             logoutLinks.forEach((link) => (link.style.display = "none"));
@@ -1655,16 +1697,18 @@
         }
 
         // Update cart actions to work with authenticated user
-        document
-          .querySelector(".view-cart")
-          .addEventListener("click", function (e) {
+        const viewCartBtn = document.querySelector(".view-cart");
+        const checkoutBtn = document.querySelector(".checkout");
+
+        if (viewCartBtn) {
+          viewCartBtn.addEventListener("click", function (e) {
             e.preventDefault();
             showModal("Coming Soon", "View cart page is coming soon!");
           });
+        }
 
-        document
-          .querySelector(".checkout")
-          .addEventListener("click", function (e) {
+        if (checkoutBtn) {
+          checkoutBtn.addEventListener("click", function (e) {
             e.preventDefault();
             const token = localStorage.getItem("supabase_token");
             if (!token) {
@@ -1676,6 +1720,7 @@
             }
             showModal("Coming Soon", "Checkout page is coming soon!");
           });
+        }
 
         // Profile dropdown functionality for mobile
         const mobileProfileIcon = document.querySelector(
@@ -1705,7 +1750,7 @@
               localStorage.removeItem("supabase_token");
               cart = [];
               updateCartDisplay();
-              updateProfileDropdown();
+              updateProfileDropdown(false);
 
               showModal("Success", "Logout successful!");
               // Refresh the page to update UI
@@ -1715,6 +1760,7 @@
             } catch (error) {
               console.error("Logout error:", error);
               localStorage.removeItem("supabase_token");
+              updateProfileDropdown(false);
               window.location.reload();
             }
           });
