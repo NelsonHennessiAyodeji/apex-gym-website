@@ -233,12 +233,58 @@
 
   <body>
     <!-- Message Modal -->
-    <div id="messageModal" class="modal" style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8);">
-      <div class="modal-content" style="background: #1a1a1a; margin: 15% auto; padding: 30px; border-radius: 10px; width: 90%; max-width: 400px; border: 2px solid #e53637; text-align: center;">
-        <h2 id="modalTitle" style="color: #e53637; margin-bottom: 15px;">Message</h2>
-        <p id="modalMessage" style="color: #fff; margin-bottom: 25px; line-height: 1.5;">This is a message</p>
+    <div
+      id="messageModal"
+      class="modal"
+      style="
+        display: none;
+        position: fixed;
+        z-index: 10000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+      "
+    >
+      <div
+        class="modal-content"
+        style="
+          background: #1a1a1a;
+          margin: 15% auto;
+          padding: 30px;
+          border-radius: 10px;
+          width: 90%;
+          max-width: 400px;
+          border: 2px solid #e53637;
+          text-align: center;
+        "
+      >
+        <h2 id="modalTitle" style="color: #e53637; margin-bottom: 15px">
+          Message
+        </h2>
+        <p
+          id="modalMessage"
+          style="color: #fff; margin-bottom: 25px; line-height: 1.5"
+        >
+          This is a message
+        </p>
         <div class="modal-actions">
-          <button id="modalConfirmBtn" class="btn-primary" style="background: #e53637; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 14px;">OK</button>
+          <button
+            id="modalConfirmBtn"
+            class="btn-primary"
+            style="
+              background: #e53637;
+              color: #fff;
+              border: none;
+              padding: 10px 20px;
+              border-radius: 4px;
+              cursor: pointer;
+              font-size: 14px;
+            "
+          >
+            OK
+          </button>
         </div>
       </div>
     </div>
@@ -266,7 +312,9 @@
         <div class="profile-icon">
           <i class="fa fa-user"></i>
           <div class="profile-dropdown">
-            <a href="./profile.html" class="profile-link" style="display: none">My Profile</a>
+            <a href="./profile.html" class="profile-link" style="display: none"
+              >My Profile</a
+            >
             <a href="./login.html" class="login-link">Login</a>
             <a href="./registration.html" class="register-link">Register</a>
             <a href="#" class="logout-link" style="display: none">Logout</a>
@@ -330,17 +378,30 @@
                 <div class="cart-dropdown">
                   <div class="cart-items">
                     <div class="empty-cart">
-                      <i class="fa fa-shopping-cart" style="font-size: 24px; margin-bottom: 10px; color: #b7b7b7;"></i>
-                      <p style="margin: 0; color: #b7b7b7;">Your cart is empty</p>
-                      <p style="margin: 5px 0 0 0; font-size: 12px; color: #888;">Add items to see them in your cart</p>
+                      <i
+                        class="fa fa-shopping-cart"
+                        style="
+                          font-size: 24px;
+                          margin-bottom: 10px;
+                          color: #b7b7b7;
+                        "
+                      ></i>
+                      <p style="margin: 0; color: #b7b7b7">
+                        Your cart is empty
+                      </p>
+                      <p
+                        style="margin: 5px 0 0 0; font-size: 12px; color: #888"
+                      >
+                        Add items to see them in your cart
+                      </p>
                     </div>
                     <!-- Cart items will be added here dynamically -->
                   </div>
-                  <div class="cart-total" style="display: none;">
+                  <div class="cart-total" style="display: none">
                     <span>Total:</span>
                     <span>₦0</span>
                   </div>
-                  <div class="cart-actions" style="display: none;">
+                  <div class="cart-actions" style="display: none">
                     <a href="#" class="view-cart">View Cart</a>
                     <a href="#" class="checkout">Checkout</a>
                   </div>
@@ -350,10 +411,19 @@
               <div class="profile-icon">
                 <i class="fa fa-user"></i>
                 <div class="profile-dropdown">
-                  <a href="./profile.html" class="profile-link" style="display: none">My Profile</a>
+                  <a
+                    href="./profile.html"
+                    class="profile-link"
+                    style="display: none"
+                    >My Profile</a
+                  >
                   <a href="./login.html" class="login-link">Login</a>
-                  <a href="./registration.html" class="register-link">Register</a>
-                  <a href="#" class="logout-link" style="display: none">Logout</a>
+                  <a href="./registration.html" class="register-link"
+                    >Register</a
+                  >
+                  <a href="#" class="logout-link" style="display: none"
+                    >Logout</a
+                  >
                 </div>
               </div>
               <div class="to-social">
@@ -806,7 +876,7 @@
     <script src="js/jquery.slicknav.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
-    
+
     <!-- Profile Navigation Script -->
     <script>
       document.addEventListener("DOMContentLoaded", function () {
@@ -891,7 +961,6 @@
 
             const cartData = await response.json();
             updateCartDisplay(cartData.items || []);
-            
           } catch (error) {
             console.error("Load cart error:", error);
             updateCartDisplay();
@@ -900,17 +969,17 @@
 
         function updateCartDisplay(cartItems = []) {
           // Get ALL cart count elements (desktop and mobile)
-          const cartCountElements = document.querySelectorAll('.cart-count');
-          
+          const cartCountElements = document.querySelectorAll(".cart-count");
+
           // Update all cart count elements
-          cartCountElements.forEach(element => {
+          cartCountElements.forEach((element) => {
             element.textContent = cartItems.length;
           });
 
-          const cartItemsContainer = document.querySelector('.cart-items');
-          const emptyCart = document.querySelector('.empty-cart');
-          const cartTotal = document.querySelector('.cart-total');
-          const cartActions = document.querySelector('.cart-actions');
+          const cartItemsContainer = document.querySelector(".cart-items");
+          const emptyCart = document.querySelector(".empty-cart");
+          const cartTotal = document.querySelector(".cart-total");
+          const cartActions = document.querySelector(".cart-actions");
 
           if (cartItems.length === 0) {
             if (emptyCart) emptyCart.style.display = "block";
@@ -920,10 +989,10 @@
             if (emptyCart) emptyCart.style.display = "none";
             if (cartTotal) cartTotal.style.display = "flex";
             if (cartActions) cartActions.style.display = "flex";
-            
+
             // Update cart items
             if (cartItemsContainer) {
-              cartItemsContainer.innerHTML = '';
+              cartItemsContainer.innerHTML = "";
               let total = 0;
 
               cartItems.forEach((item) => {
@@ -940,7 +1009,9 @@
                   <div class="cart-item-details">
                     <div class="cart-item-name">${item.shop_items.name}</div>
                     <div class="cart-item-price">
-                      ₦${item.shop_items.price.toLocaleString()} x ${item.quantity}
+                      ₦${item.shop_items.price.toLocaleString()} x ${
+                  item.quantity
+                }
                     </div>
                     <div class="cart-item-total" style="color: #e53637; font-weight: bold;">
                       ₦${itemTotal.toLocaleString()}
@@ -952,7 +1023,9 @@
 
               // Update total
               if (cartTotal) {
-                cartTotal.querySelector('span:last-child').textContent = `₦${total.toLocaleString()}`;
+                cartTotal.querySelector(
+                  "span:last-child"
+                ).textContent = `₦${total.toLocaleString()}`;
               }
             }
           }
@@ -966,24 +1039,24 @@
 
           if (isLoggedIn) {
             // User is logged in - show Profile and Logout, hide Login/Register
-            loginLinks.forEach(link => link.style.display = "none");
-            registerLinks.forEach(link => link.style.display = "none");
-            logoutLinks.forEach(link => link.style.display = "block");
-            profileLinks.forEach(link => link.style.display = "block");
+            loginLinks.forEach((link) => (link.style.display = "none"));
+            registerLinks.forEach((link) => (link.style.display = "none"));
+            logoutLinks.forEach((link) => (link.style.display = "block"));
+            profileLinks.forEach((link) => (link.style.display = "block"));
           } else {
             // User is not logged in - show Login and Register, hide Profile/Logout
-            loginLinks.forEach(link => link.style.display = "block");
-            registerLinks.forEach(link => link.style.display = "block");
-            logoutLinks.forEach(link => link.style.display = "none");
-            profileLinks.forEach(link => link.style.display = "none");
+            loginLinks.forEach((link) => (link.style.display = "block"));
+            registerLinks.forEach((link) => (link.style.display = "block"));
+            logoutLinks.forEach((link) => (link.style.display = "none"));
+            profileLinks.forEach((link) => (link.style.display = "none"));
           }
         }
 
-        // Logout functionality
-        document.querySelectorAll(".logout-link").forEach(link => {
-          link.addEventListener("click", async function(e) {
+        // Logout functionality - UPDATED TO REDIRECT TO HOME PAGE
+        document.querySelectorAll(".logout-link").forEach((link) => {
+          link.addEventListener("click", async function (e) {
             e.preventDefault();
-            
+
             try {
               const response = await fetch("/auth/logout", {
                 method: "POST",
@@ -995,17 +1068,21 @@
               localStorage.removeItem("supabase_token");
               updateCartDisplay();
               updateProfileDropdown(false);
-              
-              showModal("Success", "Logout successful!");
-              // Refresh the page to update UI
+
+              showModal(
+                "Success",
+                "Logout successful! Redirecting to home page..."
+              );
+              // Redirect to home page after logout
               setTimeout(() => {
-                window.location.reload();
+                window.location.href = "index.html";
               }, 2000);
             } catch (error) {
               console.error("Logout error:", error);
               localStorage.removeItem("supabase_token");
               updateProfileDropdown(false);
-              window.location.reload();
+              // Redirect to home page even if there's an error
+              window.location.href = "index.html";
             }
           });
         });
@@ -1013,16 +1090,16 @@
         // Cart actions
         const viewCartBtn = document.querySelector(".view-cart");
         const checkoutBtn = document.querySelector(".checkout");
-        
+
         if (viewCartBtn) {
-          viewCartBtn.addEventListener("click", function(e) {
+          viewCartBtn.addEventListener("click", function (e) {
             e.preventDefault();
             showModal("Coming Soon", "View cart page is coming soon!");
           });
         }
 
         if (checkoutBtn) {
-          checkoutBtn.addEventListener("click", function(e) {
+          checkoutBtn.addEventListener("click", function (e) {
             e.preventDefault();
             const token = localStorage.getItem("supabase_token");
             if (!token) {

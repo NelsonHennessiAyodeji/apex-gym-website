@@ -1235,6 +1235,8 @@
           loadProducts(currentPage);
           // Setup filter event listeners
           setupFilters();
+          // Setup profile dropdown behavior
+          setupProfileDropdown();
         }
 
         function checkLoginStatus() {
@@ -1307,6 +1309,65 @@
               currentFilters.search = this.value;
               loadProducts(1);
             }, 500);
+          });
+        }
+
+        function setupProfileDropdown() {
+          // Desktop profile dropdown behavior
+          const desktopProfileIcon = document.querySelector(
+            ".top-option .profile-icon"
+          );
+          if (desktopProfileIcon) {
+            let dropdownTimer;
+
+            desktopProfileIcon.addEventListener("mouseenter", function () {
+              clearTimeout(dropdownTimer);
+              this.querySelector(".profile-dropdown").style.display = "block";
+            });
+
+            desktopProfileIcon.addEventListener("mouseleave", function () {
+              const dropdown = this.querySelector(".profile-dropdown");
+              dropdownTimer = setTimeout(() => {
+                dropdown.style.display = "none";
+              }, 300);
+            });
+
+            // Keep dropdown open when hovering over it
+            const desktopDropdown =
+              desktopProfileIcon.querySelector(".profile-dropdown");
+            if (desktopDropdown) {
+              desktopDropdown.addEventListener("mouseenter", function () {
+                clearTimeout(dropdownTimer);
+                this.style.display = "block";
+              });
+
+              desktopDropdown.addEventListener("mouseleave", function () {
+                this.style.display = "none";
+              });
+            }
+          }
+
+          // Mobile profile dropdown behavior
+          const mobileProfileIcon = document.querySelector(
+            ".canvas-cart-profile .profile-icon"
+          );
+          if (mobileProfileIcon) {
+            mobileProfileIcon.addEventListener("click", function (e) {
+              e.stopPropagation();
+              const dropdown = this.querySelector(".profile-dropdown");
+              dropdown.style.display =
+                dropdown.style.display === "block" ? "none" : "block";
+            });
+          }
+
+          // Close mobile dropdown when clicking elsewhere
+          document.addEventListener("click", function () {
+            const mobileDropdown = document.querySelector(
+              ".canvas-cart-profile .profile-dropdown"
+            );
+            if (mobileDropdown) {
+              mobileDropdown.style.display = "none";
+            }
           });
         }
 
@@ -1694,6 +1755,54 @@
             logoutLinks.forEach((link) => (link.style.display = "none"));
             profileLinks.forEach((link) => (link.style.display = "none"));
           }
+
+          // Setup logout functionality after updating dropdown
+          setupLogoutFunctionality();
+        }
+
+        function setupLogoutFunctionality() {
+          // Remove any existing event listeners first
+          const logoutLinks = document.querySelectorAll(".logout-link");
+          logoutLinks.forEach((link) => {
+            link.replaceWith(link.cloneNode(true));
+          });
+
+          // Add new event listeners
+          document.querySelectorAll(".logout-link").forEach((link) => {
+            link.addEventListener("click", async function (e) {
+              e.preventDefault();
+              e.stopPropagation(); // Prevent the dropdown from closing immediately
+
+              try {
+                const response = await fetch("/auth/logout", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                });
+
+                localStorage.removeItem("supabase_token");
+                cart = [];
+                updateCartDisplay();
+                updateProfileDropdown(false);
+
+                showModal(
+                  "Success",
+                  "Logout successful! Redirecting to home page..."
+                );
+                // Redirect to home page after logout
+                setTimeout(() => {
+                  window.location.href = "index.html";
+                }, 2000);
+              } catch (error) {
+                console.error("Logout error:", error);
+                localStorage.removeItem("supabase_token");
+                updateProfileDropdown(false);
+                // Redirect to home page even if there's an error
+                window.location.href = "index.html";
+              }
+            });
+          });
         }
 
         // Update cart actions to work with authenticated user
@@ -1721,50 +1830,6 @@
             showModal("Coming Soon", "Checkout page is coming soon!");
           });
         }
-
-        // Profile dropdown functionality for mobile
-        const mobileProfileIcon = document.querySelector(
-          ".canvas-cart-profile .profile-icon"
-        );
-        if (mobileProfileIcon) {
-          mobileProfileIcon.addEventListener("click", function () {
-            const dropdown = this.querySelector(".profile-dropdown");
-            dropdown.style.display =
-              dropdown.style.display === "block" ? "none" : "block";
-          });
-        }
-
-        // Logout functionality
-        document.querySelectorAll(".logout-link").forEach((link) => {
-          link.addEventListener("click", async function (e) {
-            e.preventDefault();
-
-            try {
-              const response = await fetch("/auth/logout", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              });
-
-              localStorage.removeItem("supabase_token");
-              cart = [];
-              updateCartDisplay();
-              updateProfileDropdown(false);
-
-              showModal("Success", "Logout successful!");
-              // Refresh the page to update UI
-              setTimeout(() => {
-                window.location.reload();
-              }, 2000);
-            } catch (error) {
-              console.error("Logout error:", error);
-              localStorage.removeItem("supabase_token");
-              updateProfileDropdown(false);
-              window.location.reload();
-            }
-          });
-        });
 
         // Make functions global for pagination
         window.changePage = changePage;
