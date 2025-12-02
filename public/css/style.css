@@ -120,7 +120,7 @@ ol {
 
 .section-title span {
   font-size: 16px;
-  color: #13b657;
+  color: #ffffff; /* Changed from teal to white */
   text-transform: uppercase;
   font-weight: 700;
 }
@@ -168,12 +168,14 @@ ol {
   display: inline-block;
   font-size: 14px;
   padding: 17px 30px 16px;
-  color: #ffffff;
-  background: #13b657;
+  color: #000000; /* Changed from white to black for contrast */
+  background: #ffffff; /* Changed from teal to white */
   line-height: normal;
   letter-spacing: 1px;
   text-transform: uppercase;
   font-weight: 700;
+  transition: all 0.3s ease;
+  border: 2px solid #ffffff;
 }
 
 .primary-btn.btn-normal {
@@ -183,8 +185,9 @@ ol {
 }
 
 .primary-btn.btn-normal:hover {
-  background: #13b657;
-  border-color: #13b657;
+  background: #000000; /* Black background on hover */
+  color: #ffffff; /* White text on hover */
+  border-color: #000000;
 }
 
 /* Preloder */
@@ -216,19 +219,19 @@ ol {
   0% {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
-    border: 4px solid #f44336;
+    border: 4px solid #ffffff;
     border-left-color: transparent;
   }
   50% {
     -webkit-transform: rotate(180deg);
     transform: rotate(180deg);
-    border: 4px solid #673ab7;
+    border: 4px solid #aaaaaa;
     border-left-color: transparent;
   }
   100% {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
-    border: 4px solid #f44336;
+    border: 4px solid #ffffff;
     border-left-color: transparent;
   }
 }
@@ -236,17 +239,17 @@ ol {
 @-webkit-keyframes loader {
   0% {
     -webkit-transform: rotate(0deg);
-    border: 4px solid #f44336;
+    border: 4px solid #ffffff;
     border-left-color: transparent;
   }
   50% {
     -webkit-transform: rotate(180deg);
-    border: 4px solid #673ab7;
+    border: 4px solid #aaaaaa;
     border-left-color: transparent;
   }
   100% {
     -webkit-transform: rotate(360deg);
-    border: 4px solid #f44336;
+    border: 4px solid #ffffff;
     border-left-color: transparent;
   }
 }
@@ -386,7 +389,7 @@ ol {
 }
 
 .nav-menu ul li.active > a {
-  color: #13b657;
+  color: #ffffff; /* Changed from teal to white */
 }
 
 .nav-menu ul li.active > a:after {
@@ -394,7 +397,7 @@ ol {
 }
 
 .nav-menu ul li:hover > a {
-  color: #13b657;
+  color: #ffffff; /* Changed from teal to white */
 }
 
 .nav-menu ul li:hover > a:after {
@@ -427,7 +430,7 @@ ol {
   top: 22px;
   height: 1px;
   width: 100%;
-  background: #13b657;
+  background: #000000; /* Changed from teal to white */
   content: "";
   -webkit-transform: rotate(-20deg);
   -ms-transform: rotate(-20deg);
@@ -549,7 +552,7 @@ ol {
 .hs-slider .hs-item .hi-text span {
   display: block;
   font-size: 18px;
-  color: #ffffff;
+  color: #000000;
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 6px;
@@ -561,7 +564,7 @@ ol {
 
 .hs-slider .hs-item .hi-text h1 {
   font-size: 80px;
-  color: #ffffff;
+  color: #000000;
   font-weight: 700;
   text-transform: uppercase;
   line-height: 90px;
@@ -572,7 +575,7 @@ ol {
 }
 
 .hs-slider .hs-item .hi-text h1 strong {
-  color: #13b657;
+  color: #000000; /* Changed from teal to white */
 }
 
 .hs-slider .hs-item .hi-text .primary-btn {
@@ -596,8 +599,8 @@ ol {
 }
 
 .cs-item:hover span {
-  background: #13b657;
-  color: #ffffff;
+  background: #ffffff; /* Changed from teal to white */
+  color: #000000; /* Black text when icon background is white */
 }
 
 .cs-item span {
@@ -606,7 +609,7 @@ ol {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 50%;
   display: inline-block;
-  color: #13b657;
+  color: #ffffff; /* Changed from teal to white */
   line-height: 90px;
   text-align: center;
   -webkit-transition: all 0.3s;
@@ -667,7 +670,7 @@ ol {
 }
 
 .class-item .ci-text span {
-  color: #13b657;
+  color: #ffffff; /* Changed from teal to white */
   font-size: 12px;
   text-transform: uppercase;
   font-weight: 700;
@@ -742,19 +745,25 @@ ol {
 
 .bs-text .primary-btn {
   background: transparent;
-  border: 2px solid #13b657;
+  border: 2px solid #ffffff; /* Changed from teal to white */
+  color: #ffffff;
+}
+
+.bs-text .primary-btn:hover {
+  background: #ffffff;
+  color: #000000; /* Black text on white background */
 }
 
 .bs-text .play-btn {
   display: inline-block;
   height: 70px;
   width: 70px;
-  background: #13b657;
+  background: #ffffff; /* Changed from teal to white */
   border-radius: 50%;
   line-height: 70px;
   text-align: center;
   font-size: 36px;
-  color: #ffffff;
+  color: #000000; /* Black icon on white background */
 }
 
 /*---------------------
@@ -784,25 +793,27 @@ ol {
 }
 
 .ps-item:hover {
-  background: #ffffff;
+  background: #ffffff; /* White background on hover */
   border-color: #ffffff;
 }
 
 .ps-item:hover h3 {
-  color: #111111;
+  color: #000000; /* Black text on white background */
 }
 
 .ps-item:hover .pi-price span {
-  color: #444444;
+  color: #000000; /* Black text on white background */
 }
 
 .ps-item:hover ul li {
-  color: #111111;
+  color: #000000; /* Black text on white background */
   font-weight: 600;
 }
 
 .ps-item:hover .primary-btn.pricing-btn {
-  background: #13b657;
+  background: #000000; /* Black button on white background */
+  color: #ffffff; /* White text on black button */
+  border-color: #000000;
 }
 
 .ps-item:hover .thumb-icon {
@@ -829,7 +840,7 @@ ol {
 
 .ps-item .pi-price h2 {
   font-size: 60px;
-  color: #13b657;
+  color: #ffffff; /* Changed from teal to white */
   font-weight: 600;
 }
 
@@ -860,11 +871,13 @@ ol {
   -webkit-transform: skewY(4deg);
   -ms-transform: skewY(4deg);
   transform: skewY(4deg);
+  color: #ffffff;
+  border: 2px solid #333333;
 }
 
 .ps-item .thumb-icon {
   font-size: 48px;
-  color: #13b657;
+  color: #ffffff; /* Changed from teal to white */
   position: absolute;
   left: 50px;
   bottom: 120px;
@@ -873,6 +886,10 @@ ol {
   transform: skewY(4deg);
   opacity: 0;
   visibility: hidden;
+}
+
+.ps-item:hover .thumb-icon {
+  color: #000000; /* Black icon on white background */
 }
 
 /*---------------------
@@ -911,7 +928,7 @@ ol {
 
 .gallery .gs-item .thumb-icon {
   font-size: 48px;
-  color: #13b657;
+  color: #ffffff; /* Changed from teal to white */
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -978,9 +995,15 @@ ol {
 
 .primary-btn.appoinment-btn {
   background: transparent;
-  border: 2px solid #13b657;
+  border: 2px solid #ffffff; /* Changed from teal to white */
+  color: #ffffff;
   float: right;
   margin-top: 10px;
+}
+
+.primary-btn.appoinment-btn:hover {
+  background: #ffffff;
+  color: #000000; /* Black text on white background */
 }
 
 .ts-slider .col-lg-4 {
@@ -1003,7 +1026,7 @@ ol {
 }
 
 .ts-slider.owl-carousel .owl-dots button.active {
-  background: #13b657;
+  background: #ffffff; /* Changed from teal to white */
 }
 
 .ts-slider.owl-carousel .owl-dots button:last-child {
@@ -1073,11 +1096,11 @@ ol {
 
 .gt-text i {
   font-size: 30px;
-  color: #ffffff;
+  color: #000000; /* Black icon */
   display: inline-block;
   height: 65px;
   width: 65px;
-  background: #13b657;
+  background: #ffffff; /* Changed from teal to white */
   border-radius: 50%;
   line-height: 65px;
   text-align: center;
@@ -1232,7 +1255,7 @@ ol {
 
 .copyright-text a,
 .copyright-text i {
-  color: #13b657;
+  color: #ffffff; /* Changed from teal to white */
 }
 
 /* ----------------------------------- Other Pages Styles ----------------------------------- */
@@ -1275,7 +1298,7 @@ ol {
 
 .breadcrumb-text .bt-option span {
   font-size: 18px;
-  color: #13b657;
+  color: #ffffff; /* Changed from teal to white */
   font-weight: 700;
 }
 
@@ -1300,12 +1323,12 @@ ol {
   display: inline-block;
   height: 70px;
   width: 70px;
-  background: #13b657;
+  background: #ffffff; /* Changed from teal to white */
   border-radius: 50%;
   line-height: 70px;
   text-align: center;
   font-size: 36px;
-  color: #ffffff;
+  color: #000000; /* Black icon on white background */
 }
 
 .about-text {
@@ -1416,7 +1439,7 @@ ol {
 
 .ts_slider .ts_item .ti_text .tt-rating i {
   font-size: 12px;
-  color: #d49d09;
+  color: #ffffff; /* Changed from gold to white */
 }
 
 /*---------------------
@@ -1448,7 +1471,7 @@ ol {
 }
 
 .ss-text:hover a {
-  color: #13b657;
+  color: #ffffff; /* Changed from teal to white */
 }
 
 .ss-text:hover:after {
@@ -1633,8 +1656,8 @@ ol {
 
 .class-timetable table thead tr th {
   font-size: 14px;
-  color: #ffffff;
-  background: #13b657;
+  color: #000000; /* Black text */
+  background: #ffffff; /* Changed from teal to white */
   border-right: 1px solid #363636;
   padding: 15px 0;
   font-weight: 400;
@@ -1647,7 +1670,7 @@ ol {
 
 .class-timetable table tbody tr td.class-time {
   font-size: 12px;
-  color: #13b657;
+  color: #ffffff; /* Changed from teal to white */
   background: #000000;
   border: 1px solid #363636;
 }
@@ -1663,7 +1686,7 @@ ol {
 }
 
 .class-timetable table tbody tr td.hover-bg:hover {
-  background: #13b657;
+  background: #ffffff; /* Changed from teal to white */
 }
 
 .class-timetable table tbody tr td.blank-td {
@@ -1822,7 +1845,7 @@ ol {
 }
 
 .sidebar-option .so-categories ul li:hover a {
-  color: #13b657;
+  color: #ffffff; /* Changed from teal to white */
 }
 
 .sidebar-option .so-categories ul li:hover a span {
@@ -2053,13 +2076,13 @@ ol {
 
 .chart-calculate-form form button {
   font-size: 14px;
-  color: #ffffff;
+  color: #000000; /* Black text */
   text-transform: uppercase;
   font-weight: 700;
   width: 100%;
   border: none;
   padding: 15px 0;
-  background: #13b657;
+  background: #ffffff; /* Changed from teal to white */
 }
 
 /*---------------------
@@ -2553,13 +2576,13 @@ ol {
 
 .leave-comment form button {
   font-size: 14px;
-  color: #ffffff;
+  color: #000000; /* Black text */
   text-transform: uppercase;
   font-weight: 700;
   width: 100%;
   border: none;
   padding: 14px 0 12px;
-  background: #13b657;
+  background: #ffffff; /* Changed from teal to white */
 }
 
 /*---------------------
@@ -2582,11 +2605,11 @@ ol {
 
 .contact-widget .cw-text i {
   font-size: 30px;
-  color: #13b657;
+  color: #000000; /* Black icon */
   display: inline-block;
   height: 65px;
   width: 65px;
-  background: #363636;
+  background: #ffffff; /* Changed from teal to white */
   border-radius: 50%;
   line-height: 65px;
   text-align: center;
@@ -2697,7 +2720,7 @@ ol {
   color: #ffffffb3;
   height: 46px;
   width: 100%;
-  background: #13b657;
+  background: #ffffff; /* Changed from teal to white */
   border: none;
   padding-left: 20px;
 }
@@ -2724,7 +2747,7 @@ ol {
 
 .text-404 .search-404 button {
   font-size: 16px;
-  color: #ffffff;
+  color: #000000; /* Black text */
   background: transparent;
   border: none;
   position: absolute;
@@ -2753,7 +2776,7 @@ ol {
 }
 
 .text-404 a i {
-  color: #13b657;
+  color: #ffffff; /* Changed from teal to white */
   margin-right: 5px;
 }
 
@@ -2961,12 +2984,12 @@ ol {
   .offcanvas-menu-wrapper .slicknav_nav .slicknav_row:hover {
     border-radius: 0;
     background: transparent;
-    color: #13b657;
+    color: #ffffff; /* Changed from teal to white */
   }
   .offcanvas-menu-wrapper .slicknav_nav a:hover {
     border-radius: 0;
     background: transparent;
-    color: #13b657;
+    color: #ffffff; /* Changed from teal to white */
   }
   .nav-menu {
     display: none;
@@ -3107,15 +3130,15 @@ ol {
   .offcanvas-menu-wrapper .slicknav_nav .slicknav_row:hover {
     border-radius: 0;
     background: transparent;
-    color: #13b657;
+    color: #ffffff; /* Changed from teal to white */
   }
   .offcanvas-menu-wrapper .slicknav_nav .slicknav_row:hover a {
-    color: #13b657;
+    color: #ffffff; /* Changed from teal to white */
   }
   .offcanvas-menu-wrapper .slicknav_nav a:hover {
     border-radius: 0;
     background: transparent;
-    color: #13b657;
+    color: #ffffff; /* Changed from teal to white */
   }
   .nav-menu {
     display: none;
