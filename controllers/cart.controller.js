@@ -5,7 +5,10 @@ const getCart = async (req, res) => {
     // Get the access token from the Authorization header
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-      return res.status(401).json({ error: "No authorization header" });
+      return res.status(401).json({
+        success: false,
+        error: "No authorization header",
+      });
     }
 
     const token = authHeader.replace("Bearer ", "");
@@ -17,7 +20,10 @@ const getCart = async (req, res) => {
     } = await supabase.auth.getUser(token);
 
     if (authError || !user) {
-      return res.status(401).json({ error: "Not authenticated" });
+      return res.status(401).json({
+        success: false,
+        error: "Not authenticated",
+      });
     }
 
     // Get cart items with product details
@@ -41,13 +47,16 @@ const getCart = async (req, res) => {
 
     if (error) {
       console.error("Get cart error:", error);
-      return res.status(400).json({ error: error.message });
+      return res.status(400).json({
+        success: false,
+        error: error.message,
+      });
     }
 
     // Calculate total
     let total = 0;
-    const items = cartItems.map((item) => {
-      const itemTotal = item.quantity * item.shop_items.price;
+    const items = (cartItems || []).map((item) => {
+      const itemTotal = item.quantity * (item.shop_items?.price || 0);
       total += itemTotal;
       return {
         ...item,
@@ -56,13 +65,17 @@ const getCart = async (req, res) => {
     });
 
     res.json({
-      items,
-      total,
-      count: cartItems.length,
+      success: true,
+      items: items,
+      total: total,
+      count: items.length,
     });
   } catch (error) {
     console.error("Get cart error:", error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({
+      success: false,
+      error: "Internal server error",
+    });
   }
 };
 
@@ -73,7 +86,10 @@ const addToCart = async (req, res) => {
     // Get the access token from the Authorization header
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-      return res.status(401).json({ error: "No authorization header" });
+      return res.status(401).json({
+        success: false,
+        error: "No authorization header",
+      });
     }
 
     const token = authHeader.replace("Bearer ", "");
@@ -85,7 +101,10 @@ const addToCart = async (req, res) => {
     } = await supabase.auth.getUser(token);
 
     if (authError || !user) {
-      return res.status(401).json({ error: "Not authenticated" });
+      return res.status(401).json({
+        success: false,
+        error: "Not authenticated",
+      });
     }
 
     // Check if product exists and is available
@@ -96,11 +115,17 @@ const addToCart = async (req, res) => {
       .single();
 
     if (productError || !product) {
-      return res.status(404).json({ error: "Product not found" });
+      return res.status(404).json({
+        success: false,
+        error: "Product not found",
+      });
     }
 
     if (product.status !== "active" || product.stock < 1) {
-      return res.status(400).json({ error: "Product is not available" });
+      return res.status(400).json({
+        success: false,
+        error: "Product is not available",
+      });
     }
 
     // Check if item already exists in cart
@@ -121,7 +146,10 @@ const addToCart = async (req, res) => {
       // Update quantity if item exists
       const newQuantity = existingItem.quantity + quantity;
       if (newQuantity > product.stock) {
-        return res.status(400).json({ error: "Not enough stock available" });
+        return res.status(400).json({
+          success: false,
+          error: "Not enough stock available",
+        });
       }
 
       const { data, error } = await supabase
@@ -160,13 +188,17 @@ const addToCart = async (req, res) => {
       .eq("user_id", user.id);
 
     res.json({
+      success: true,
       message: "Item added to cart",
       cartItem: result,
       cartCount: count,
     });
   } catch (error) {
     console.error("Add to cart error:", error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({
+      success: false,
+      error: "Internal server error",
+    });
   }
 };
 

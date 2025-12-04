@@ -295,7 +295,7 @@
           <div class="admin-user-info">
             <div class="admin-user-name">Administrator</div>
             <div class="admin-user-email" id="adminEmailDisplay">
-              admin@apexgym.com
+              Loading...
             </div>
           </div>
           <button class="logout-btn" id="logoutBtn">Logout</button>
@@ -381,30 +381,8 @@
               <i class="fa fa-shopping-bag"></i>
             </div>
             <div class="activity-content">
-              <div class="activity-text">
-                New product "Protein Powder" added to shop
-              </div>
-              <div class="activity-time">2 hours ago</div>
-            </div>
-          </li>
-          <li class="activity-item">
-            <div class="activity-icon">
-              <i class="fa fa-file-text"></i>
-            </div>
-            <div class="activity-content">
-              <div class="activity-text">
-                Blog article "Fitness Tips" published
-              </div>
-              <div class="activity-time">1 day ago</div>
-            </div>
-          </li>
-          <li class="activity-item">
-            <div class="activity-icon">
-              <i class="fa fa-user"></i>
-            </div>
-            <div class="activity-content">
-              <div class="activity-text">New user registration: John Doe</div>
-              <div class="activity-time">2 days ago</div>
+              <div class="activity-text">Loading recent activities...</div>
+              <div class="activity-time">Just now</div>
             </div>
           </li>
         </ul>
@@ -412,36 +390,107 @@
     </div>
 
     <script>
+      let adminSessionToken = null;
+
+      // Get session token from URL or localStorage
+      function getSessionToken() {
+        // Check URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const tokenFromUrl = urlParams.get("sessionToken");
+
+        if (tokenFromUrl) {
+          // Store in localStorage for this session
+          localStorage.setItem("admin_session_token", tokenFromUrl);
+          // Remove from URL
+          window.history.replaceState(
+            {},
+            document.title,
+            window.location.pathname
+          );
+          return tokenFromUrl;
+        }
+
+        return localStorage.getItem("admin_session_token");
+      }
+
+      // Set up headers for API calls
+      function getHeaders() {
+        const token = getSessionToken();
+        return {
+          "Content-Type": "application/json",
+          "x-admin-session": token,
+        };
+      }
+
       document.addEventListener("DOMContentLoaded", function () {
-        // Check authentication
-        if (localStorage.getItem("admin_authenticated") !== "true") {
+        // Check for session token
+        adminSessionToken = getSessionToken();
+
+        if (!adminSessionToken) {
           window.location.href = "admin-login.html";
           return;
         }
 
         // Display admin email
-        const adminEmail =
-          localStorage.getItem("admin_email") || "admin@apexgym.com";
-        document.getElementById("adminEmailDisplay").textContent = adminEmail;
+        document.getElementById("adminEmailDisplay").textContent =
+          "admin@apexgym.com";
+
+        // Load dashboard stats
+        loadDashboardStats();
 
         // Logout functionality
         document
           .getElementById("logoutBtn")
-          .addEventListener("click", function () {
-            localStorage.removeItem("admin_authenticated");
-            localStorage.removeItem("admin_email");
-            window.location.href = "admin-login.html";
+          .addEventListener("click", async function () {
+            try {
+              const response = await fetch("/admin/logout", {
+                method: "POST",
+                headers: getHeaders(),
+              });
+
+              if (response.ok) {
+                localStorage.removeItem("admin_session_token");
+                window.location.href = "admin-login.html";
+              }
+            } catch (error) {
+              console.error("Logout error:", error);
+              localStorage.removeItem("admin_session_token");
+              window.location.href = "admin-login.html";
+            }
           });
 
-        // Load dashboard stats (mock data for demo)
-        loadDashboardStats();
+        async function loadDashboardStats() {
+          try {
+            const response = await fetch("/admin/dashboard/stats", {
+              headers: getHeaders(),
+            });
 
-        function loadDashboardStats() {
-          // In a real application, these would be API calls
-          document.getElementById("totalProducts").textContent = "24";
-          document.getElementById("totalBlogs").textContent = "12";
-          document.getElementById("totalUsers").textContent = "156";
-          document.getElementById("totalSales").textContent = "N1,245,000";
+            if (!response.ok) {
+              if (response.status === 401) {
+                localStorage.removeItem("admin_session_token");
+                window.location.href = "admin-login.html";
+                return;
+              }
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            document.getElementById("totalProducts").textContent =
+              data.totalProducts;
+            document.getElementById("totalBlogs").textContent = data.totalBlogs;
+            document.getElementById("totalUsers").textContent = data.totalUsers;
+            document.getElementById(
+              "totalSales"
+            ).textContent = `₦${data.totalSales.toLocaleString()}`;
+          } catch (error) {
+            console.error("Error loading stats:", error);
+            // If unauthorized, redirect to login
+            if (error.message.includes("401")) {
+              localStorage.removeItem("admin_session_token");
+              window.location.href = "admin-login.html";
+            }
+          }
         }
       });
     </script>

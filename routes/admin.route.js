@@ -1,9 +1,13 @@
+// src/routes/admin.route.js
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const path = require("path");
 const {
   adminLogin,
+  adminLogout,
+  verifyAdminSession,
+  getActiveSessions,
+  getDashboardStats,
   getShopItems,
   createShopItem,
   updateShopItem,
@@ -12,56 +16,81 @@ const {
   createBlogPost,
   updateBlogPost,
   deleteBlogPost,
-  getDashboardStats,
 } = require("../controllers/admin.controller.js");
 
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../../public/uploads"));
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, "product-" + uniqueSuffix + path.extname(file.originalname));
-  },
-});
-
+// Configure multer for memory storage
+const storage = multer.memoryStorage();
 const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB limit
+    fileSize: 10 * 1024 * 1024, // 10MB limit
   },
   fileFilter: (req, file, cb) => {
     const allowedTypes = /jpeg|jpg|png|gif|webp/;
-    const extname = allowedTypes.test(
-      path.extname(file.originalname).toLowerCase()
-    );
     const mimetype = allowedTypes.test(file.mimetype);
 
-    if (mimetype && extname) {
+    if (mimetype) {
       return cb(null, true);
     } else {
-      cb(new Error("Only image files are allowed"));
+      cb(new Error("Only image files (jpeg, jpg, png, gif, webp) are allowed"));
     }
   },
 });
 
-// Admin login
+// Error handling middleware for multer
+const handleMulterError = (err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    if (err.code === "LIMIT_FILE_SIZE") {
+      return res.status(400).json({
+        success: false,
+        error: "File too large. Maximum size is 10MB",
+      });
+    }
+    return res.status(400).json({
+      success: false,
+      error: err.message,
+    });
+  } else if (err) {
+    return res.status(400).json({
+      success: false,
+      error: err.message,
+    });
+  }
+  next();
+};
+
+// Public routes
 router.post("/login", adminLogin);
 
-// Dashboard
-router.get("/dashboard/stats", getDashboardStats);
+// Debug route (remove in production)
+router.get("/debug/sessions", getActiveSessions);
 
-// Shop items routes with file upload
-router.get("/shop-items", getShopItems);
-router.post("/shop-items", upload.single("image"), createShopItem);
-router.put("/shop-items/:id", upload.single("image"), updateShopItem);
-router.delete("/shop-items/:id", deleteShopItem);
+// Protected routes
+router.post("/logout", verifyAdminSession, adminLogout);
+router.get("/dashboard/stats", verifyAdminSession, getDashboardStats);
+
+// Shop items routes
+router.get("/shop-items", verifyAdminSession, getShopItems);
+router.post(
+  "/shop-items",
+  verifyAdminSession,
+  upload.single("image"),
+  handleMulterError,
+  createShopItem
+);
+router.put(
+  "/shop-items/:id",
+  verifyAdminSession,
+  upload.single("image"),
+  handleMulterError,
+  updateShopItem
+);
+router.delete("/shop-items/:id", verifyAdminSession, deleteShopItem);
 
 // Blog posts routes
-router.get("/blog-posts", getBlogPosts);
-router.post("/blog-posts", createBlogPost);
-router.put("/blog-posts/:id", updateBlogPost);
-router.delete("/blog-posts/:id", deleteBlogPost);
+router.get("/blog-posts", verifyAdminSession, getBlogPosts);
+router.post("/blog-posts", verifyAdminSession, createBlogPost);
+router.put("/blog-posts/:id", verifyAdminSession, updateBlogPost);
+router.delete("/blog-posts/:id", verifyAdminSession, deleteBlogPost);
 
 module.exports = router;

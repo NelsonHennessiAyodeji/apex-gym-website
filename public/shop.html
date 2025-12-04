@@ -713,8 +713,8 @@
       <nav class="canvas-menu mobile-menu">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="services.html">Services</a></li>
           <li class="active"><a href="shop.html">Shop</a></li>
+          <li><a href="services.html">Services</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </nav>
@@ -743,8 +743,8 @@
             <nav class="nav-menu">
               <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="services.html">Services</a></li>
                 <li class="active"><a href="shop.html">Shop</a></li>
+                <li><a href="services.html">Services</a></li>
                 <li><a href="contact.html">Contact</a></li>
               </ul>
             </nav>
@@ -1201,7 +1201,7 @@
           checkLoginStatus();
           // Initialize cart
           initializeCart();
-          // Load products from Supabase with current filters
+          // Load products from public API
           loadProducts(currentPage);
           // Setup filter event listeners
           setupFilters();
@@ -1248,6 +1248,11 @@
               loadProducts(1); // Reset to page 1 when filter changes
             });
           });
+
+          // Set first category as active
+          if (categoryLinks.length > 0) {
+            categoryLinks[0].classList.add("active");
+          }
 
           // Price filter
           filterPriceBtn.addEventListener("click", function () {
@@ -1369,6 +1374,11 @@
             }
 
             const cartData = await response.json();
+
+            if (!cartData.success) {
+              throw new Error(cartData.error || "Failed to load cart");
+            }
+
             cart = cartData.items || [];
             updateCartDisplay();
           } catch (error) {
@@ -1405,17 +1415,29 @@
               queryParams.append("search", currentFilters.search);
             }
 
-            const response = await fetch(`/admin/shop-items?${queryParams}`);
+            // Use public API endpoint instead of admin endpoint
+            const response = await fetch(`/api/shop-items?${queryParams}`);
 
             if (!response.ok) {
-              throw new Error("Failed to fetch products");
+              const errorText = await response.text();
+              console.error("API Error:", errorText);
+              throw new Error(`Failed to fetch products: ${response.status}`);
             }
 
             const data = await response.json();
-            products = data.data;
-            currentPage = data.pagination.currentPage;
-            totalPages = data.pagination.totalPages;
-            totalItems = data.pagination.totalItems;
+
+            if (!data.success) {
+              throw new Error(data.error || "Failed to load products");
+            }
+
+            products = data.data || [];
+            currentPage = data.pagination?.currentPage || 1;
+            totalPages = data.pagination?.totalPages || 1;
+            totalItems = data.pagination?.totalItems || 0;
+
+            console.log(
+              `Loaded ${products.length} products, total: ${totalItems}`
+            );
 
             renderProducts(products);
             updatePagination();
@@ -1503,13 +1525,24 @@
                 ? "primary-btn disabled"
                 : "primary-btn add-to-cart-btn";
 
+              // Format price
+              const price =
+                typeof product.price === "number"
+                  ? product.price.toLocaleString("en-NG", {
+                      style: "currency",
+                      currency: "NGN",
+                    })
+                  : "₦0";
+
+              // Get image URL or use placeholder
+              const imageUrl =
+                product.image_url ||
+                "https://via.placeholder.com/500x300/222/666?text=No+Image";
+
               return `
               <div class="product-item">
                 <div class="product-img">
-                  <img src="${
-                    product.image_url ||
-                    "https://via.placeholder.com/500x300/222/666?text=No+Image"
-                  }" 
+                  <img src="${imageUrl}" 
                        alt="${product.name}" 
                        onerror="this.src='https://via.placeholder.com/500x300/222/666?text=No+Image'" />
                   ${
@@ -1520,16 +1553,12 @@
                 </div>
                 <div class="product-text">
                   <h5>${product.name}</h5>
-                  <p>₦${
-                    typeof product.price === "number"
-                      ? product.price.toLocaleString()
-                      : "0"
-                  }</p>
+                  <p>${price}</p>
                   <button class="${buttonClass}" 
                          data-id="${product.id}"
                          data-name="${product.name}"
                          data-price="${product.price}"
-                         data-image="${product.image_url}"
+                         data-image="${product.image_url || ""}"
                          ${!isAvailable ? "disabled" : ""}>
                     ${buttonText}
                   </button>
@@ -1584,6 +1613,10 @@
 
             const result = await response.json();
 
+            if (!result.success) {
+              throw new Error(result.error || "Failed to add to cart");
+            }
+
             // Reload cart to get updated data
             await loadUserCart();
 
@@ -1608,6 +1641,7 @@
           // Update all cart count elements
           cartCountElements.forEach((element) => {
             element.textContent = cart.length;
+            element.style.display = cart.length > 0 ? "flex" : "none";
           });
 
           // Show/hide empty cart message and other elements
@@ -1634,20 +1668,23 @@
           let total = 0;
 
           cart.forEach((item) => {
-            const itemTotal = item.quantity * item.shop_items.price;
+            const itemPrice = item.shop_items?.price || 0;
+            const itemTotal = item.quantity * itemPrice;
             total += itemTotal;
 
             const cartItem = document.createElement("div");
             cartItem.className = "cart-item";
             cartItem.innerHTML = `
               <img src="${
-                item.shop_items.image_url ||
+                item.shop_items?.image_url ||
                 "https://via.placeholder.com/50x50/222/666?text=No+Img"
-              }" alt="${item.shop_items.name}">
+              }" alt="${item.shop_items?.name || "Product"}">
               <div class="cart-item-details">
-                <div class="cart-item-name">${item.shop_items.name}</div>
+                <div class="cart-item-name">${
+                  item.shop_items?.name || "Product"
+                }</div>
                 <div class="cart-item-price">
-                  ₦${item.shop_items.price.toLocaleString()} x ${item.quantity}
+                  ₦${itemPrice.toLocaleString()} x ${item.quantity}
                 </div>
                 <div class="cart-item-total" style="color: #e53637; font-weight: bold;">
                   ₦${itemTotal.toLocaleString()}
@@ -1697,9 +1734,14 @@
               throw new Error("Failed to remove item from cart");
             }
 
+            const result = await response.json();
+
+            if (!result.success) {
+              throw new Error(result.error || "Failed to remove item");
+            }
+
             // Reload cart
             await loadUserCart();
-            // No modal for removal - it happens silently as requested
           } catch (error) {
             console.error("Remove from cart error:", error);
             showModal("Error", "Error removing item from cart");
