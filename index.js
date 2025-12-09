@@ -1,4 +1,3 @@
-// src/index.js
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
@@ -32,41 +31,26 @@ app.get("/register", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "registration.html"));
 });
 
-// Admin HTML routes with basic protection
+// Admin routes with session verification
+const { verifyAdminSession } = require("./controllers/admin.controller");
+
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin-login.html"));
 });
 
-// Admin dashboard routes - HTML files will handle their own API auth
-app.get("/admin/dashboard", (req, res) => {
+app.get("/admin/dashboard", verifyAdminSession, (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin-dashboard.html"));
 });
 
-app.get("/admin/shop", (req, res) => {
+app.get("/admin/shop", verifyAdminSession, (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin-shop.html"));
 });
 
-app.get("/admin/blog", (req, res) => {
+app.get("/admin/blog", verifyAdminSession, (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin-blog.html"));
 });
 
-// Debug route for admin sessions
-app.get("/admin/sessions", async (req, res) => {
-  // This would require admin auth in production
-  const supabase = require("./db/supabase");
-  const { data, error } = await supabase
-    .from("admin_sessions")
-    .select("*")
-    .order("login_time", { ascending: false });
-
-  if (error) {
-    return res.status(500).json({ error: error.message });
-  }
-
-  res.json(data);
-});
-
-// Public shop routes
+// Public API for shop items (no authentication required)
 app.get("/api/shop-items", async (req, res) => {
   try {
     const supabase = require("./db/supabase");

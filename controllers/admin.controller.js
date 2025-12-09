@@ -1,4 +1,3 @@
-// src/controllers/admin.controller.js
 const supabase = require("../db/supabase");
 const { createClient } = require("@supabase/supabase-js");
 const crypto = require("crypto");
