@@ -47,6 +47,37 @@
       href="img/favicon/favicon-16x16.png"
     />
     <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Custom CSS for logo adjustment -->
+    <style>
+      /* Adjust logo position on large screens only */
+      @media (min-width: 992px) {
+        .header-section .logo {
+          position: relative;
+          top: -15px; /* Move logo higher */
+          left: 5px; /* Move logo more to the left */
+          transform: scale(1.1); /* Optional: slightly enlarge logo */
+        }
+
+        .header-section .logo img {
+          max-height: 70px; /* Adjust height if needed */
+        }
+      }
+
+      /* Reset for smaller screens - keep original positioning */
+      @media (max-width: 991.98px) {
+        .header-section .logo {
+          position: static;
+          transform: none;
+          top: 0;
+          left: 0;
+        }
+
+        .header-section .logo img {
+          max-height: 50px; /* Original size for mobile */
+        }
+      }
+    </style>
   </head>
 
   <body>
@@ -493,9 +524,9 @@
               <h4>Useful links</h4>
               <ul>
                 <li><a href="#">About</a></li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">Classes</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="class-timetable.html">Classes</a></li>
+                <!-- <li><a href="contact.html">Contact</a></li> -->
               </ul>
             </div>
           </div>
