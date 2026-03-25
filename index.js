@@ -31,6 +31,30 @@ app.get("/register", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "registration.html"));
 });
 
+// Componenets Routes
+// Update the static file serving section
+app.use(
+  express.static(path.join(__dirname, "public"), {
+    setHeaders: (res, path) => {
+      if (path.endsWith(".css")) {
+        res.setHeader("Content-Type", "text/css");
+      }
+      if (path.endsWith(".js")) {
+        res.setHeader("Content-Type", "application/javascript");
+      }
+    },
+  })
+);
+
+// Add route for header and footer includes
+app.get("/header", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "header.html"));
+});
+
+app.get("/footer", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "footer.html"));
+});
+
 // Admin routes with session verification
 const { verifyAdminSession } = require("./controllers/admin.controller");
 

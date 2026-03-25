@@ -1,242 +1,249 @@
 <!DOCTYPE html>
-<html lang="eng">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Gym Template" />
-    <meta name="keywords" content="Gym, unica, creative, html" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Ape-X Store - My Profile</title>
-
-    <!-- Google Font -->
-    <link
-      href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css?family=Oswald:300,400,500,600,700&amp;display=swap"
-      rel="stylesheet"
+    <title>Ape-X Gym – My Profile</title>
+    <meta
+      name="description"
+      content="View and manage your Ape-X Gym profile."
     />
 
-    <!-- Css Styles -->
-    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/flaticon.css" type="text/css" />
-    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/barfiller.css" type="text/css" />
-    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css" />
-    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css" />
-    <link rel="stylesheet" href="css/style.css" type="text/css" />
-    <link rel="stylesheet" href="css/profile.css" type="text/css" />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Main Stylesheet (new system) -->
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/responsive.css" />
+
     <style>
-      /* Global black background */
+      /* Custom styles for profile page */
+      :root {
+        --profile-card-bg: rgba(26, 26, 26, 0.95);
+        --profile-border: rgba(229, 54, 55, 0.3);
+        --profile-glow: rgba(229, 54, 55, 0.5);
+        --input-bg: #222;
+        --text-light: #b7b7b7;
+      }
+
       body {
-        background-color: #000;
-        color: #fff;
-      }
-
-      /* Override any existing white backgrounds */
-      .shop-section,
-      .breadcrumb-section,
-      .header-section,
-      .offcanvas-menu-wrapper,
-      .gettouch-section,
-      .footer-section {
-        background-color: #000 !important;
-      }
-
-      .breadcrumb-section.set-bg {
-        background-color: #111 !important;
-      }
-
-      /* Cart and Profile Styles */
-      .top-option {
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+        min-height: 100vh;
         display: flex;
+        flex-direction: column;
+      }
+
+      .profile-wrapper {
+        flex: 1;
+        padding: 4rem 2rem;
+        max-width: 900px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .profile-card {
+        background: var(--profile-card-bg);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2.5rem;
+        border: 1px solid var(--profile-border);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        transition: all 0.3s ease;
+      }
+
+      .profile-card:hover {
+        border-color: var(--accent-red);
+        box-shadow: 0 20px 40px rgba(229, 54, 55, 0.1);
+      }
+
+      .profile-header {
+        display: flex;
+        justify-content: space-between;
         align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .profile-title h1 {
+        font-family: "Playfair Display", serif;
+        font-size: 2rem;
+        background: linear-gradient(135deg, #fff, var(--accent-red));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 0.25rem;
+      }
+
+      .profile-title p {
+        color: var(--text-light);
+        font-size: 0.9rem;
+      }
+
+      .member-since {
+        color: var(--text-light);
+        background: #222;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+      }
+
+      .edit-controls {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
         justify-content: flex-end;
       }
 
-      .cart-icon,
-      .profile-icon {
-        position: relative;
-        margin-left: 20px;
+      .btn-edit,
+      .btn-save,
+      .btn-cancel {
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
         cursor: pointer;
-      }
-
-      .cart-icon i,
-      .profile-icon i {
-        font-size: 20px;
-        color: #fff;
         transition: all 0.3s;
+        border: none;
       }
 
-      .cart-icon:hover i,
-      .profile-icon:hover i {
-        color: #e53637;
+      .btn-edit {
+        background: var(--accent-red);
+        color: white;
       }
 
-      .cart-count {
-        position: absolute;
-        top: -8px;
-        right: -8px;
-        background: #e53637;
-        color: #fff;
-        border-radius: 50%;
-        width: 18px;
-        height: 18px;
-        font-size: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
+      .btn-edit:hover {
+        background: #e0352a;
+        transform: translateY(-2px);
       }
 
-      .profile-dropdown {
-        position: absolute;
-        top: 100%;
-        right: 0;
-        background: #1a1a1a;
-        border: 1px solid #333;
-        border-radius: 4px;
-        padding: 10px 0;
-        min-width: 150px;
-        z-index: 1000;
-        display: none;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      .btn-save {
+        background: #2ecc71;
+        color: white;
       }
 
-      .profile-dropdown a {
-        display: block;
-        padding: 8px 15px;
-        color: #b7b7b7;
-        text-decoration: none;
-        transition: all 0.3s;
+      .btn-save:hover {
+        background: #27ae60;
       }
 
-      .profile-dropdown a:hover {
-        background: #333;
-        color: #e53637;
+      .btn-cancel {
+        background: #555;
+        color: white;
       }
 
-      .profile-icon {
-        position: relative;
+      .btn-cancel:hover {
+        background: #666;
       }
 
-      .profile-icon:hover .profile-dropdown {
-        display: block;
-      }
-
-      .cart-dropdown {
-        position: absolute;
-        top: 100%;
-        right: 0;
-        background: #1a1a1a;
-        border: 1px solid #333;
-        border-radius: 4px;
-        padding: 15px;
-        min-width: 280px;
-        z-index: 1000;
-        display: none;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      }
-
-      .cart-icon {
-        position: relative;
-      }
-
-      .cart-icon:hover .cart-dropdown {
-        display: block;
-      }
-
-      .cart-items {
-        max-height: 200px;
-        overflow-y: auto;
-      }
-
-      .cart-item {
-        display: flex;
-        align-items: center;
-        padding: 10px 0;
+      .form-section {
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
         border-bottom: 1px solid #333;
       }
 
-      .cart-item:last-child {
-        border-bottom: none;
+      .form-section h3 {
+        color: var(--accent-red);
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
       }
 
-      .cart-item img {
-        width: 50px;
-        height: 50px;
-        object-fit: cover;
-        margin-right: 10px;
-        border-radius: 4px;
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
       }
 
-      .cart-item-details {
-        flex-grow: 1;
+      .form-group {
+        margin-bottom: 1.5rem;
       }
 
-      .cart-item-name {
-        color: #fff;
-        font-size: 14px;
-        margin-bottom: 5px;
+      .form-group label {
+        display: block;
+        color: var(--white);
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        font-size: 0.9rem;
       }
 
-      .cart-item-price {
-        color: #e53637;
-        font-weight: bold;
-        font-size: 14px;
+      .form-control {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        background: var(--input-bg);
+        border: 1px solid #333;
+        border-radius: 8px;
+        color: var(--white);
+        font-size: 1rem;
+        transition: all 0.3s;
       }
 
-      .cart-total {
+      .form-control:focus {
+        outline: none;
+        border-color: var(--accent-red);
+        box-shadow: 0 0 0 2px var(--profile-glow);
+      }
+
+      .form-control[readonly] {
+        background: #2a2a2a;
+        cursor: default;
+        opacity: 0.8;
+      }
+
+      select.form-control {
+        cursor: pointer;
+      }
+
+      .checkbox-group {
         display: flex;
-        justify-content: space-between;
-        margin-top: 15px;
-        padding-top: 15px;
-        border-top: 1px solid #333;
-        font-weight: bold;
-        color: #fff;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 0.5rem;
       }
 
-      .cart-actions {
-        margin-top: 15px;
+      .checkbox-group label {
         display: flex;
-        gap: 10px;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-light);
+        font-weight: normal;
+        cursor: pointer;
       }
 
-      .cart-actions a {
-        flex: 1;
-        text-align: center;
-        padding: 8px 0;
-        border-radius: 4px;
-        font-size: 14px;
-        text-decoration: none;
+      .checkbox-group input {
+        width: auto;
+        margin-right: 0.3rem;
       }
 
-      .view-cart {
-        background: #333;
-        color: #fff;
+      .alert {
+        padding: 0.8rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        display: none;
+        font-size: 0.9rem;
       }
 
-      .checkout {
-        background: #e53637;
-        color: #fff;
+      .alert-error {
+        background: rgba(229, 54, 55, 0.2);
+        border: 1px solid var(--accent-red);
+        color: #ff6b6b;
       }
 
-      .empty-cart {
-        text-align: center;
-        color: #b7b7b7;
-        padding: 20px 0;
+      .alert-success {
+        background: rgba(46, 204, 113, 0.2);
+        border: 1px solid #2ecc71;
+        color: #2ecc71;
       }
-    </style>
-  </head>
 
-  <body>
-    <!-- Message Modal -->
-    <div
-      id="messageModal"
-      class="modal"
-      style="
+      /* Modal (same as before) */
+      .modal {
         display: none;
         position: fixed;
         z-index: 10000;
@@ -245,873 +252,960 @@
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.8);
-      "
-    >
-      <div
-        class="modal-content"
-        style="
-          background: #1a1a1a;
-          margin: 15% auto;
-          padding: 30px;
-          border-radius: 10px;
-          width: 90%;
-          max-width: 400px;
-          border: 2px solid #e53637;
-          text-align: center;
-        "
-      >
-        <h2 id="modalTitle" style="color: #e53637; margin-bottom: 15px">
-          Message
-        </h2>
-        <p
-          id="modalMessage"
-          style="color: #fff; margin-bottom: 25px; line-height: 1.5"
-        >
-          This is a message
-        </p>
-        <div class="modal-actions">
-          <button
-            id="modalConfirmBtn"
-            class="btn-primary"
-            style="
-              background: #e53637;
-              color: #fff;
-              border: none;
-              padding: 10px 20px;
-              border-radius: 4px;
-              cursor: pointer;
-              font-size: 14px;
-            "
-          >
-            OK
+      }
+
+      .modal-content {
+        background: #1a1a1a;
+        margin: 15% auto;
+        padding: 2rem;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px;
+        border: 2px solid var(--accent-red);
+        text-align: center;
+      }
+
+      .modal-content h2 {
+        color: var(--accent-red);
+        margin-bottom: 1rem;
+      }
+
+      .modal-content p {
+        color: white;
+        margin-bottom: 1.5rem;
+      }
+
+      .modal-btn {
+        background: var(--accent-red);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      .modal-btn:hover {
+        background: #fff;
+        color: var(--accent-red);
+      }
+
+      @media (max-width: 768px) {
+        .form-row {
+          grid-template-columns: 1fr;
+          gap: 0;
+        }
+        .profile-wrapper {
+          padding: 2rem 1rem;
+        }
+        .profile-card {
+          padding: 1.5rem;
+        }
+        .profile-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header (same as new system) -->
+    <header class="site-header">
+      <div class="header-container">
+        <div class="logo">
+          <a href="/">
+            <div class="logo-circle">
+              <img
+                src="/images/20251201_192548.png"
+                alt="Ape-X Gym Logo"
+                class="logo-img"
+              />
+            </div>
+            <span class="logo-text">Ape-X Gym</span>
+          </a>
+        </div>
+        <nav class="main-nav desktop-nav">
+          <ul class="nav-links">
+            <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+            <li class="nav-item">
+              <a href="#memberships" class="nav-link">Memberships</a>
+            </li>
+            <li class="nav-item">
+              <a href="#why" class="nav-link">Why Ape-X</a>
+            </li>
+            <li class="nav-item">
+              <a href="#workout" class="nav-link">Work Out With Us</a>
+            </li>
+            <li class="nav-item">
+              <a href="/shop" class="nav-link">Ape-X Store</a>
+            </li>
+          </ul>
+        </nav>
+        <div class="header-right">
+          <div class="cart-icon" id="cartIcon">
+            <i class="fa fa-shopping-cart"></i>
+            <span class="cart-count" id="cartCount">0</span>
+            <div class="cart-dropdown" id="cartDropdown">
+              <div class="cart-items" id="cartItems">
+                <div class="empty-cart">
+                  <i class="fa fa-shopping-cart"></i>
+                  <p>Your cart is empty</p>
+                </div>
+              </div>
+              <div
+                class="cart-total"
+                id="cartTotalContainer"
+                style="display: none"
+              >
+                <span>Total:</span><span id="cartTotal">₦0</span>
+              </div>
+              <div class="cart-actions" id="cartActions" style="display: none">
+                <a href="#" class="view-cart">View Cart</a
+                ><a href="#" class="checkout">Checkout</a>
+              </div>
+            </div>
+          </div>
+          <div class="profile-icon" id="profileIcon">
+            <i class="fa fa-user"></i>
+            <div class="profile-dropdown" id="profileDropdown">
+              <a href="/profile" class="profile-link" style="display: none"
+                >My Profile</a
+              >
+              <a href="/login" class="login-link">Login</a>
+              <a href="/register" class="register-link">Register</a>
+              <a href="#" class="logout-link" style="display: none">Logout</a>
+            </div>
+          </div>
+          <button class="mobile-menu-toggle" id="mobileMenuToggle">
+            <span class="bar"></span><span class="bar"></span
+            ><span class="bar"></span>
           </button>
         </div>
       </div>
-    </div>
-
-    <!-- Page Preloder -->
-    <div id="preloder">
-      <div class="loader"></div>
-    </div>
-
-    <!-- Offcanvas Menu Section Begin -->
-    <div class="offcanvas-menu-overlay"></div>
-    <div class="offcanvas-menu-wrapper">
-      <div class="canvas-close">
-        <i class="fa fa-close"></i>
-      </div>
-      <div class="canvas-search search-switch">
-        <i class="fa fa-search"></i>
-      </div>
-      <!-- Mobile cart and profile -->
-      <div class="canvas-cart-profile">
-        <div class="cart-icon">
-          <i class="fa fa-shopping-cart"></i>
-          <span class="cart-count"></span>
-        </div>
-        <div class="profile-icon">
-          <i class="fa fa-user"></i>
-          <div class="profile-dropdown">
-            <a href="./profile.html" class="profile-link" style="display: none"
-              >My Profile</a
-            >
-            <a href="./login.html" class="login-link">Login</a>
-            <a href="./registration.html" class="register-link">Register</a>
-            <a href="#" class="logout-link" style="display: none">Logout</a>
-          </div>
-        </div>
-      </div>
-      <nav class="canvas-menu mobile-menu">
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="about-us.html">About Us</a></li>
-          <li><a href="class-details.html">Classes</a></li>
-          <li><a href="services.html">Services</a></li>
-          <li><a href="shop.html">Shop</a></li>
-          <li><a href="team.html">Our Team</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </nav>
-      <div id="mobile-menu-wrap"></div>
-      <div class="canvas-social">
-        <a href="#"><i class="fa fa-facebook"></i></a>
-        <a href="#"><i class="fa fa-twitter"></i></a>
-        <a href="#"><i class="fa fa-youtube-play"></i></a>
-        <a href="#"><i class="fa fa-instagram"></i></a>
-      </div>
-    </div>
-    <!-- Offcanvas Menu Section End -->
-
-    <!-- Header Section Begin -->
-    <header class="header-section">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-3">
+      <nav class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-container">
+          <div class="mobile-nav-header">
             <div class="logo">
-              <a href="index.html">
-                <img src="img/logo5.jpg" alt="" />
-              </a>
+              <img src="/images/20251201_192548.png" alt="Ape-X Gym" /><span
+                >Ape-X Gym</span
+              >
             </div>
+            <button class="close-menu" id="closeMenu">&times;</button>
           </div>
-          <div class="col-lg-6">
-            <nav class="nav-menu">
-              <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="shop.html">Shop</a></li>
-                <li><a href="services.html">Services</a></li>
-                <li><a href="contact.html">Contact</a></li>
-              </ul>
-            </nav>
-          </div>
-          <div class="col-lg-3">
-            <div class="top-option">
-              <div class="to-search search-switch">
-                <i class="fa fa-search"></i>
-              </div>
-              <!-- Cart Icon -->
-              <div class="cart-icon">
-                <i class="fa fa-shopping-cart"></i>
-                <span class="cart-count"></span>
-                <div class="cart-dropdown">
-                  <div class="cart-items">
-                    <div class="empty-cart">
-                      <i
-                        class="fa fa-shopping-cart"
-                        style="
-                          font-size: 24px;
-                          margin-bottom: 10px;
-                          color: #b7b7b7;
-                        "
-                      ></i>
-                      <p style="margin: 0; color: #b7b7b7">
-                        Your cart is empty
-                      </p>
-                      <p
-                        style="margin: 5px 0 0 0; font-size: 12px; color: #888"
-                      >
-                        Add items to see them in your cart
-                      </p>
-                    </div>
-                    <!-- Cart items will be added here dynamically -->
-                  </div>
-                  <div class="cart-total" style="display: none">
-                    <span>Total:</span>
-                    <span>₦0</span>
-                  </div>
-                  <div class="cart-actions" style="display: none">
-                    <a href="#" class="view-cart">View Cart</a>
-                    <a href="#" class="checkout">Checkout</a>
-                  </div>
-                </div>
-              </div>
-              <!-- Profile Icon -->
-              <div class="profile-icon">
-                <i class="fa fa-user"></i>
-                <div class="profile-dropdown">
-                  <a
-                    href="./profile.html"
-                    class="profile-link"
-                    style="display: none"
-                    >My Profile</a
-                  >
-                  <a href="./login.html" class="login-link">Login</a>
-                  <a href="./registration.html" class="register-link"
-                    >Register</a
-                  >
-                  <a href="#" class="logout-link" style="display: none"
-                    >Logout</a
-                  >
-                </div>
-              </div>
-              <div class="to-social">
-                <a href="#"><i class="fa fa-facebook"></i></a>
-                <a href="#"><i class="fa fa-twitter"></i></a>
-                <a href="#"><i class="fa fa-youtube-play"></i></a>
-                <a href="#"><i class="fa fa-instagram"></i></a>
-              </div>
-            </div>
-          </div>
+          <ul class="mobile-nav-links">
+            <li><a href="/" class="mobile-nav-link">Home</a></li>
+            <li>
+              <a href="#memberships" class="mobile-nav-link">Memberships</a>
+            </li>
+            <li><a href="#why" class="mobile-nav-link">Why Ape-X</a></li>
+            <li>
+              <a href="#workout" class="mobile-nav-link">Work Out With Us</a>
+            </li>
+            <li><a href="/shop" class="mobile-nav-link">Ape-X Store</a></li>
+            <li><a href="/profile" class="mobile-nav-link">My Profile</a></li>
+            <li>
+              <a href="#" class="mobile-nav-link logout-mobile">Logout</a>
+            </li>
+          </ul>
         </div>
-        <div class="canvas-open">
-          <i class="fa fa-bars"></i>
-        </div>
-      </div>
+      </nav>
     </header>
-    <!-- Header End -->
 
-    <!-- Rest of your profile.html content remains the same -->
-    <!-- Breadcrumb Section Begin -->
-    <section
-      class="breadcrumb-section set-bg"
-      data-setbg="img/breadcrumb-bg.jpg"
-    >
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12 text-center">
-            <div class="breadcrumb-text">
-              <h2>My Profile</h2>
-              <div class="bt-option">
-                <a href="index.html">Home</a>
-                <span>Profile</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Breadcrumb Section End -->
-
-    <!-- Profile Section Begin -->
-    <section class="profile-section">
-      <div class="profile-container">
-        <!-- Profile Header -->
+    <div class="profile-wrapper">
+      <div class="profile-card">
         <div class="profile-header">
-          <div class="profile-image">
-            <img
-              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-              alt="Profile Image"
-            />
+          <div class="profile-title">
+            <h1>My Profile</h1>
+            <p>Manage your personal information and fitness details</p>
           </div>
-          <div class="profile-info">
-            <h1>Loading...</h1>
-            <p>Loading email...</p>
-            <p class="member-since">Member since...</p>
-            <a href="#" class="edit-profile-btn">Edit Profile</a>
-          </div>
+          <div class="member-since" id="memberSince">Member since --</div>
         </div>
 
-        <!-- Stats Section -->
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-value">-- kg</div>
-            <div class="stat-label">Weight</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value">--</div>
-            <div class="stat-label">BMI</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value">--</div>
-            <div class="stat-label">Membership Type</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value">--</div>
-            <div class="stat-label">Membership Status</div>
-          </div>
+        <div id="errorAlert" class="alert alert-error"></div>
+        <div id="successAlert" class="alert alert-success"></div>
+
+        <div class="edit-controls" id="editControls">
+          <button class="btn-edit" id="editBtn">Edit Profile</button>
         </div>
 
-        <div class="profile-content">
-          <!-- Sidebar Navigation -->
-          <div class="profile-sidebar">
-            <ul class="profile-nav">
-              <li>
-                <a href="#" class="active" data-tab="account-overview"
-                  ><i class="fa fa-user"></i> Account Overview</a
-                >
-              </li>
-              <li>
-                <a href="#" data-tab="purchase-history"
-                  ><i class="fa fa-shopping-bag"></i> Purchase History</a
-                >
-              </li>
-              <li>
-                <a href="#" data-tab="health-metrics"
-                  ><i class="fa fa-heart"></i> Health Metrics</a
-                >
-              </li>
-              <li>
-                <a href="#" data-tab="class-bookings"
-                  ><i class="fa fa-calendar"></i> Class Bookings</a
-                >
-              </li>
-              <li>
-                <a href="#" data-tab="billing-payments"
-                  ><i class="fa fa-credit-card"></i> Billing & Payments</a
-                >
-              </li>
-              <li>
-                <a href="#" data-tab="account-settings"
-                  ><i class="fa fa-cog"></i> Account Settings</a
-                >
-              </li>
-              <li>
-                <a href="#" data-tab="help-support"
-                  ><i class="fa fa-question-circle"></i> Help & Support</a
-                >
-              </li>
-            </ul>
-          </div>
-
-          <!-- Main Content -->
-          <div class="profile-main">
-            <!-- Account Details Section -->
-            <div class="profile-tab active" id="account-overview">
-              <div class="section-title">Account Details</div>
-              <div class="account-details">
-                <div class="form-group">
-                  <label for="firstName">First Name</label>
-                  <input
-                    type="text"
-                    id="firstName"
-                    class="form-control"
-                    value="Loading..."
-                    readonly
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="lastName">Last Name</label>
-                  <input
-                    type="text"
-                    id="lastName"
-                    class="form-control"
-                    value="Loading..."
-                    readonly
-                  />
-                </div>
-                <div class="form-group full-width">
-                  <label for="email">Email Address</label>
-                  <input
-                    type="email"
-                    id="email"
-                    class="form-control"
-                    value="Loading..."
-                    readonly
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="phone">Phone Number</label>
-                  <input
-                    type="text"
-                    id="phone"
-                    class="form-control"
-                    value="Loading..."
-                    readonly
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="dob">Date of Birth</label>
-                  <input
-                    type="date"
-                    id="dob"
-                    class="form-control"
-                    value=""
-                    readonly
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="gender">Gender</label>
-                  <select id="gender" class="form-control" disabled>
-                    <option value="">Loading...</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="fitnessLevel">Fitness Level</label>
-                  <select id="fitnessLevel" class="form-control" disabled>
-                    <option value="">Loading...</option>
-                  </select>
-                </div>
-                <div class="form-group full-width">
-                  <label for="address">Address</label>
-                  <input
-                    type="text"
-                    id="address"
-                    class="form-control"
-                    value="Loading..."
-                    readonly
-                  />
-                </div>
-                <div class="form-group full-width">
-                  <label for="emergencyContact">Emergency Contact</label>
-                  <input
-                    type="text"
-                    id="emergencyContact"
-                    class="form-control"
-                    value="Loading..."
-                    readonly
-                  />
-                </div>
-                <div class="form-group full-width">
-                  <button class="save-btn" style="display: none">
-                    Save Changes
-                  </button>
-                </div>
+        <form id="profileForm">
+          <!-- Personal Information -->
+          <div class="form-section">
+            <h3>Personal Information</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input
+                  type="text"
+                  id="firstName"
+                  class="form-control"
+                  readonly
+                  required
+                />
               </div>
-
-              <!-- Membership Details Section -->
-              <div class="membership-details">
-                <div class="section-title">Membership Details</div>
-
-                <div class="membership-card">
-                  <div class="membership-header">
-                    <div class="membership-name">Loading Membership</div>
-                    <div class="membership-status status-active">Active</div>
-                  </div>
-                  <div class="membership-info">
-                    <div class="info-item">
-                      <span class="info-label">Plan Type</span>
-                      <span class="info-value">Loading...</span>
-                    </div>
-                    <div class="info-item">
-                      <span class="info-label">Monthly Cost</span>
-                      <span class="info-value">--</span>
-                    </div>
-                    <div class="info-item">
-                      <span class="info-label">Start Date</span>
-                      <span class="info-value">--</span>
-                    </div>
-                    <div class="info-item">
-                      <span class="info-label">Expiration Date</span>
-                      <span class="info-value">--</span>
-                    </div>
-                    <div class="info-item">
-                      <span class="info-label">Auto-Renewal</span>
-                      <span class="info-value">--</span>
-                    </div>
-                    <div class="info-item">
-                      <span class="info-label">Payment Method</span>
-                      <span class="info-value">--</span>
-                    </div>
-                  </div>
-                  <div class="membership-actions">
-                    <a href="#" class="membership-btn renew-btn"
-                      >Renew Membership</a
-                    >
-                    <a href="#" class="membership-btn upgrade-btn"
-                      >Upgrade Plan</a
-                    >
-                  </div>
-                </div>
-              </div>
-
-              <!-- Health Information Section -->
-              <div class="health-section">
-                <div class="section-title">Health Information</div>
-                <div class="health-grid">
-                  <div class="health-item">
-                    <div class="health-label">Health Conditions</div>
-                    <ul class="conditions-list">
-                      <li>Loading...</li>
-                    </ul>
-                  </div>
-                  <div class="health-item">
-                    <div class="health-label">Additional Health Notes</div>
-                    <div class="health-value">
-                      Loading health information...
-                    </div>
-                  </div>
-                  <div class="health-item">
-                    <div class="health-label">Fitness Goals</div>
-                    <div class="health-value">
-                      <a href="#" style="color: #e53637; text-decoration: none">
-                        Set your fitness goals (Coming Soon)
-                      </a>
-                    </div>
-                  </div>
-                  <div class="health-item">
-                    <div class="health-label">Preferred Training Style</div>
-                    <div class="health-value">
-                      <a href="#" style="color: #e53637; text-decoration: none">
-                        Update training preferences (Coming Soon)
-                      </a>
-                    </div>
-                  </div>
-                </div>
+              <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input
+                  type="text"
+                  id="lastName"
+                  class="form-control"
+                  readonly
+                  required
+                />
               </div>
             </div>
-
-            <!-- Other tabs remain the same -->
-            <!-- ... rest of your profile tabs ... -->
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Profile Section End -->
-
-    <!-- Get In Touch Section Begin -->
-    <div class="gettouch-section">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-4">
-            <div class="gt-text">
-              <i class="fa fa-map-marker"></i>
-              <p>
-                333 Middle Winchendon Rd, Rindge,<br />
-                NH 03461
-              </p>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="gt-text">
-              <i class="fa fa-mobile"></i>
-              <ul>
-                <li>125-711-811</li>
-                <li>125-668-886</li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="gt-text email">
-              <i class="fa fa-envelope"></i>
-              <p>Support.gymcenter@gmail.com</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Get In Touch Section End -->
-
-    <!-- Footer Section Begin -->
-    <section class="footer-section">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-4">
-            <div class="fs-about">
-              <div class="fa-logo">
-                <a href="#"><img src="img/logo.png" alt="" /></a>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" class="form-control" readonly />
               </div>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore dolore magna aliqua endisse
-                ultrices gravida lorem.
-              </p>
-              <div class="fa-social">
-                <a href="#"><i class="fa fa-facebook"></i></a>
-                <a href="#"><i class="fa fa-twitter"></i></a>
-                <a href="#"><i class="fa fa-youtube-play"></i></a>
-                <a href="#"><i class="fa fa-instagram"></i></a>
-                <a href="#"><i class="fa fa-envelope-o"></i></a>
+              <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  class="form-control"
+                  readonly
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input
+                  type="date"
+                  id="dob"
+                  class="form-control"
+                  readonly
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="gender">Gender</label>
+                <select id="gender" class="form-control" disabled required>
+                  <option value="">Select</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="address">Address</label>
+              <input type="text" id="address" class="form-control" readonly />
+            </div>
+          </div>
+
+          <!-- Fitness & Membership -->
+          <div class="form-section">
+            <h3>Fitness & Membership</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fitnessLevel">Fitness Level</label>
+                <select
+                  id="fitnessLevel"
+                  class="form-control"
+                  disabled
+                  required
+                >
+                  <option value="">Select</option>
+                  <option value="beginner">Beginner</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="advanced">Advanced</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="membershipPlan">Membership Plan</label>
+                <select
+                  id="membershipPlan"
+                  class="form-control"
+                  disabled
+                  required
+                >
+                  <option value="classic">Classic – ₦5,000/month</option>
+                  <option value="elite">Elite – ₦8,000/month</option>
+                </select>
               </div>
             </div>
           </div>
-          <div class="col-lg-2 col-md-3 col-sm-6">
-            <div class="fs-widget">
-              <h4>Useful links</h4>
-              <ul>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">Classes</a></li>
-                <li><a href="#">Contact</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-lg-2 col-md-3 col-sm-6">
-            <div class="fs-widget">
-              <h4>Support</h4>
-              <ul>
-                <li><a href="#">Login</a></li>
-                <li><a href="#">My account</a></li>
-                <li><a href="#">Subscribe</a></li>
-                <li><a href="#">Contact</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6">
-            <div class="fs-widget">
-              <h4>Tips & Guides</h4>
-              <div class="fw-recent">
-                <h6>
-                  <a href="#"
-                    >Physical fitness may help prevent depression, anxiety</a
-                  >
-                </h6>
-                <ul>
-                  <li>3 min read</li>
-                  <li>20 Comment</li>
-                </ul>
-              </div>
-              <div class="fw-recent">
-                <h6>
-                  <a href="#"
-                    >Fitness: The best exercise to lose belly fat and tone
-                    up...</a
-                  >
-                </h6>
-                <ul>
-                  <li>3 min read</li>
-                  <li>20 Comment</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12 text-center">
-            <div class="copyright-text">
-              <p>
-                Copyright &copy;
-                <script>
-                  document.write(new Date().getFullYear());
-                </script>
-                All rights reserved | This template is made with
-                <i class="fa fa-heart" aria-hidden="true"></i> by
-                <a href="https://colorlib.com/" target="_blank">Colorlib</a>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Footer Section End -->
 
-    <!-- Search model Begin -->
-    <div class="search-model">
-      <div class="h-100 d-flex align-items-center justify-content-center">
-        <div class="search-close-switch">+</div>
-        <form class="search-model-form">
-          <input type="text" id="search-input" placeholder="Search here....." />
+          <!-- Emergency Contact -->
+          <div class="form-section">
+            <h3>Emergency Contact</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="emergencyContactName">Full Name</label>
+                <input
+                  type="text"
+                  id="emergencyContactName"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+              <div class="form-group">
+                <label for="emergencyContactPhone">Phone Number</label>
+                <input
+                  type="tel"
+                  id="emergencyContactPhone"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Health Information -->
+          <div class="form-section">
+            <h3>Health Information</h3>
+            <div class="form-group">
+              <label>Do you have any of the following conditions?</label>
+              <div class="checkbox-group" id="healthConditionsGroup">
+                <label
+                  ><input type="checkbox" value="heart" disabled /> Heart
+                  Condition</label
+                >
+                <label
+                  ><input type="checkbox" value="bloodPressure" disabled /> High
+                  Blood Pressure</label
+                >
+                <label
+                  ><input type="checkbox" value="diabetes" disabled />
+                  Diabetes</label
+                >
+                <label
+                  ><input type="checkbox" value="asthma" disabled />
+                  Asthma</label
+                >
+                <label
+                  ><input type="checkbox" value="joint" disabled /> Joint
+                  Problems</label
+                >
+                <label
+                  ><input type="checkbox" value="none" disabled /> None</label
+                >
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="healthNotes"
+                >Additional Notes (injuries, allergies, etc.)</label
+              >
+              <textarea
+                id="healthNotes"
+                class="form-control"
+                rows="3"
+                readonly
+              ></textarea>
+            </div>
+          </div>
+
+          <div style="display: none" id="saveCancelButtons">
+            <button type="submit" class="btn-save" id="saveBtn">
+              Save Changes
+            </button>
+            <button type="button" class="btn-cancel" id="cancelBtn">
+              Cancel
+            </button>
+          </div>
         </form>
       </div>
     </div>
-    <!-- Search model end -->
 
-    <!-- Js Plugins -->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/masonry.pkgd.min.js"></script>
-    <script src="js/jquery.barfiller.js"></script>
-    <script src="js/jquery.slicknav.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/main.js"></script>
+    <!-- Message Modal (for general messages) -->
+    <div id="messageModal" class="modal">
+      <div class="modal-content">
+        <h2 id="modalTitle">Message</h2>
+        <p id="modalMessage"></p>
+        <button class="modal-btn" id="modalConfirmBtn">OK</button>
+      </div>
+    </div>
 
-    <!-- Profile Navigation Script -->
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <img src="/images/20251201_192548.png" alt="Ape-X Gym" /><span
+                >Ape-X Gym</span
+              >
+            </div>
+            <p class="footer-tagline">Where Excellence Meets Fitness</p>
+            <div class="social-links">
+              <a href="#" class="social-link"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-link"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+              <a href="#" class="social-link"
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
+            </div>
+          </div>
+          <div class="footer-links">
+            <div class="footer-column">
+              <h4>Info</h4>
+              <ul>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Press Room</a></li>
+              </ul>
+            </div>
+            <div class="footer-column">
+              <h4>Legal</h4>
+              <ul>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms & Conditions</a></li>
+              </ul>
+            </div>
+            <div class="footer-column">
+              <h4>Support</h4>
+              <ul>
+                <li><a href="#">FAQs</a></li>
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">Blog</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="footer-middle">
+          <div class="newsletter">
+            <h4>Stay Updated</h4>
+            <form id="newsletterForm" class="newsletter-form">
+              <input type="email" placeholder="Your email" /><button
+                type="submit"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <div class="copyright">
+            <p>&copy; 2025 Ape-X Gym Nigeria. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/js/mobile-menu.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // Modal functionality
-        const messageModal = document.getElementById("messageModal");
-        const modalTitle = document.getElementById("modalTitle");
-        const modalMessage = document.getElementById("modalMessage");
-        const modalConfirmBtn = document.getElementById("modalConfirmBtn");
+        // ---------- Authentication & Header ----------
+        const token = localStorage.getItem("supabase_token");
+        if (!token) {
+          window.location.href = "/login";
+          return;
+        }
 
-        if (modalConfirmBtn) {
-          modalConfirmBtn.addEventListener("click", function () {
-            messageModal.style.display = "none";
+        // Update header dropdowns based on login status
+        function updateAuthUI() {
+          const isLoggedIn = !!token;
+          document
+            .querySelectorAll(".profile-link")
+            .forEach(
+              (link) => (link.style.display = isLoggedIn ? "block" : "none")
+            );
+          document
+            .querySelectorAll(".login-link")
+            .forEach(
+              (link) => (link.style.display = isLoggedIn ? "none" : "block")
+            );
+          document
+            .querySelectorAll(".register-link")
+            .forEach(
+              (link) => (link.style.display = isLoggedIn ? "none" : "block")
+            );
+          document
+            .querySelectorAll(".logout-link, .logout-mobile")
+            .forEach(
+              (link) => (link.style.display = isLoggedIn ? "block" : "none")
+            );
+        }
+        updateAuthUI();
+
+        // Logout function
+        async function logout() {
+          try {
+            await fetch("/auth/logout", { method: "POST" });
+          } catch (e) {}
+          localStorage.removeItem("supabase_token");
+          window.location.href = "/";
+        }
+        document
+          .querySelectorAll(".logout-link, .logout-mobile")
+          .forEach((link) => {
+            link.addEventListener("click", (e) => {
+              e.preventDefault();
+              logout();
+            });
           });
+
+        // ---------- Profile Data ----------
+        let profileData = null;
+        let isEditing = false;
+        let originalValues = {};
+
+        const profileForm = document.getElementById("profileForm");
+        const editBtn = document.getElementById("editBtn");
+        const saveCancelDiv = document.getElementById("saveCancelButtons");
+        const saveBtn = document.getElementById("saveBtn");
+        const cancelBtn = document.getElementById("cancelBtn");
+        const errorAlert = document.getElementById("errorAlert");
+        const successAlert = document.getElementById("successAlert");
+
+        // Helper to show messages
+        function showMessage(alertElement, message, isError = false) {
+          alertElement.textContent = message;
+          alertElement.style.display = "block";
+          setTimeout(() => (alertElement.style.display = "none"), 5000);
         }
 
-        // Function to show modal messages
-        window.showModal = function (title, message) {
-          if (modalTitle && modalMessage && messageModal) {
-            modalTitle.textContent = title;
-            modalMessage.textContent = message;
-            messageModal.style.display = "block";
+        // Toggle edit mode
+        function setEditMode(enable) {
+          isEditing = enable;
+          const fields = [
+            "firstName",
+            "lastName",
+            "phone",
+            "dob",
+            "address",
+            "emergencyContactName",
+            "emergencyContactPhone",
+            "healthNotes",
+          ];
+          const selects = ["gender", "fitnessLevel", "membershipPlan"];
+          const checkboxes = document.querySelectorAll(
+            "#healthConditionsGroup input"
+          );
+
+          if (enable) {
+            // Store original values
+            fields.forEach(
+              (id) => (originalValues[id] = document.getElementById(id).value)
+            );
+            selects.forEach(
+              (id) => (originalValues[id] = document.getElementById(id).value)
+            );
+            checkboxes.forEach((cb) => (originalValues[cb.value] = cb.checked));
+
+            fields.forEach((id) =>
+              document.getElementById(id).removeAttribute("readonly")
+            );
+            selects.forEach(
+              (id) => (document.getElementById(id).disabled = false)
+            );
+            checkboxes.forEach((cb) => (cb.disabled = false));
+
+            editBtn.style.display = "none";
+            saveCancelDiv.style.display = "flex";
           } else {
-            alert(title + ": " + message);
-          }
-        };
+            // Restore original values
+            fields.forEach(
+              (id) =>
+                (document.getElementById(id).value = originalValues[id] || "")
+            );
+            selects.forEach(
+              (id) =>
+                (document.getElementById(id).value = originalValues[id] || "")
+            );
+            checkboxes.forEach(
+              (cb) => (cb.checked = originalValues[cb.value] || false)
+            );
 
-        // Initialize cart and profile dropdown
-        initializeNavigation();
+            fields.forEach((id) =>
+              document.getElementById(id).setAttribute("readonly", true)
+            );
+            selects.forEach(
+              (id) => (document.getElementById(id).disabled = true)
+            );
+            checkboxes.forEach((cb) => (cb.disabled = true));
 
-        function initializeNavigation() {
-          // Check login status and update profile dropdown
-          checkLoginStatus();
-          // Initialize cart
-          initializeCart();
-        }
-
-        function checkLoginStatus() {
-          const token = localStorage.getItem("supabase_token");
-          updateProfileDropdown(!!token);
-        }
-
-        async function initializeCart() {
-          try {
-            const token = localStorage.getItem("supabase_token");
-            if (!token) {
-              // User not logged in, show empty cart
-              updateCartDisplay();
-              return;
-            }
-
-            // Load user's cart from backend
-            await loadUserCart();
-          } catch (error) {
-            console.error("Cart initialization error:", error);
-            updateCartDisplay();
+            editBtn.style.display = "inline-block";
+            saveCancelDiv.style.display = "none";
           }
         }
 
-        async function loadUserCart() {
+        // Load profile data from server
+        async function loadProfile() {
           try {
-            const token = localStorage.getItem("supabase_token");
-            if (!token) {
-              updateCartDisplay();
-              return;
+            const response = await fetch("/auth/profile", {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            if (!response.ok) {
+              if (response.status === 401) {
+                localStorage.removeItem("supabase_token");
+                window.location.href = "/login";
+                return;
+              }
+              throw new Error("Failed to load profile");
             }
+            const data = await response.json();
+            profileData = data;
 
-            const response = await fetch("/cart", {
-              method: "GET",
+            // Populate form fields
+            const user = data.user;
+            const profile = data.profile;
+
+            document.getElementById("firstName").value =
+              profile.first_name || "";
+            document.getElementById("lastName").value = profile.last_name || "";
+            document.getElementById("email").value = user.email || "";
+            document.getElementById("phone").value = profile.phone || "";
+            document.getElementById("dob").value = profile.date_of_birth || "";
+            document.getElementById("gender").value = profile.gender || "";
+            document.getElementById("fitnessLevel").value =
+              profile.fitness_level || "";
+            document.getElementById("address").value = profile.address || "";
+            document.getElementById("emergencyContactName").value =
+              profile.emergency_contact_name || "";
+            document.getElementById("emergencyContactPhone").value =
+              profile.emergency_contact_phone || "";
+            document.getElementById("healthNotes").value =
+              profile.health_notes || "";
+
+            // Membership plan
+            const membershipPlan = profile.membership_plan || "classic";
+            document.getElementById("membershipPlan").value = membershipPlan;
+
+            // Health conditions checkboxes
+            const conditions = profile.health_conditions || [];
+            const checkboxes = document.querySelectorAll(
+              "#healthConditionsGroup input"
+            );
+            checkboxes.forEach((cb) => {
+              if (cb.value === "none") {
+                cb.checked =
+                  conditions.length === 0 ||
+                  (conditions.length === 1 && conditions[0] === "none");
+              } else {
+                cb.checked = conditions.includes(cb.value);
+              }
+            });
+
+            // Update "none" checkbox logic
+            const noneCheckbox = document.querySelector(
+              '#healthConditionsGroup input[value="none"]'
+            );
+            const otherCheckboxes = document.querySelectorAll(
+              '#healthConditionsGroup input:not([value="none"])'
+            );
+            function updateNoneCheckbox() {
+              const anyChecked = Array.from(otherCheckboxes).some(
+                (cb) => cb.checked
+              );
+              if (anyChecked) {
+                noneCheckbox.checked = false;
+                noneCheckbox.disabled = true;
+              } else {
+                noneCheckbox.disabled = false;
+              }
+            }
+            if (!isEditing) {
+              // Initial read-only state: disable all except the none logic
+              updateNoneCheckbox();
+            }
+            // Attach event listeners for edit mode
+            otherCheckboxes.forEach((cb) =>
+              cb.addEventListener("change", updateNoneCheckbox)
+            );
+            noneCheckbox.addEventListener("change", function () {
+              if (this.checked) {
+                otherCheckboxes.forEach((cb) => (cb.checked = false));
+              }
+            });
+
+            // Member since
+            const memberSinceDate = new Date(
+              user.created_at
+            ).toLocaleDateString("en-US", { year: "numeric", month: "long" });
+            document.getElementById(
+              "memberSince"
+            ).textContent = `Member since ${memberSinceDate}`;
+
+            // Store original values for cancel
+            const fields = [
+              "firstName",
+              "lastName",
+              "phone",
+              "dob",
+              "address",
+              "emergencyContactName",
+              "emergencyContactPhone",
+              "healthNotes",
+            ];
+            const selects = ["gender", "fitnessLevel", "membershipPlan"];
+            fields.forEach(
+              (id) => (originalValues[id] = document.getElementById(id).value)
+            );
+            selects.forEach(
+              (id) => (originalValues[id] = document.getElementById(id).value)
+            );
+            checkboxes.forEach((cb) => (originalValues[cb.value] = cb.checked));
+          } catch (err) {
+            console.error(err);
+            showMessage(
+              errorAlert,
+              "Error loading profile: " + err.message,
+              true
+            );
+          }
+        }
+
+        // Save profile changes
+        async function saveProfile() {
+          // Gather updated data
+          const updates = {
+            first_name: document.getElementById("firstName").value,
+            last_name: document.getElementById("lastName").value,
+            phone: document.getElementById("phone").value,
+            date_of_birth: document.getElementById("dob").value,
+            gender: document.getElementById("gender").value,
+            fitness_level: document.getElementById("fitnessLevel").value,
+            address: document.getElementById("address").value,
+            emergency_contact_name: document.getElementById(
+              "emergencyContactName"
+            ).value,
+            emergency_contact_phone: document.getElementById(
+              "emergencyContactPhone"
+            ).value,
+            membership_plan: document.getElementById("membershipPlan").value,
+            health_notes: document.getElementById("healthNotes").value,
+          };
+
+          // Health conditions
+          const checkboxes = document.querySelectorAll(
+            "#healthConditionsGroup input"
+          );
+          const conditions = [];
+          checkboxes.forEach((cb) => {
+            if (cb.checked && cb.value !== "none") conditions.push(cb.value);
+            if (cb.value === "none" && cb.checked) conditions.push("none");
+          });
+          updates.health_conditions = conditions;
+
+          try {
+            const userId = profileData.user.id;
+            const response = await fetch(`/auth/profile/${userId}`, {
+              method: "PUT",
               headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
               },
+              body: JSON.stringify(updates),
             });
 
             if (!response.ok) {
-              if (response.status === 401) {
-                updateCartDisplay();
-                return;
-              }
-              throw new Error("Failed to fetch cart");
+              const errorData = await response.json();
+              throw new Error(errorData.error || "Failed to update profile");
             }
 
-            const cartData = await response.json();
-            updateCartDisplay(cartData.items || []);
-          } catch (error) {
-            console.error("Load cart error:", error);
-            updateCartDisplay();
+            showMessage(successAlert, "Profile updated successfully!", false);
+            setEditMode(false); // exit edit mode
+            // Reload to ensure consistency
+            await loadProfile();
+          } catch (err) {
+            console.error(err);
+            showMessage(
+              errorAlert,
+              "Error updating profile: " + err.message,
+              true
+            );
           }
         }
 
-        function updateCartDisplay(cartItems = []) {
-          // Get ALL cart count elements (desktop and mobile)
-          const cartCountElements = document.querySelectorAll(".cart-count");
-
-          // Update all cart count elements
-          cartCountElements.forEach((element) => {
-            element.textContent = cartItems.length;
-          });
-
-          const cartItemsContainer = document.querySelector(".cart-items");
-          const emptyCart = document.querySelector(".empty-cart");
-          const cartTotal = document.querySelector(".cart-total");
-          const cartActions = document.querySelector(".cart-actions");
-
-          if (cartItems.length === 0) {
-            if (emptyCart) emptyCart.style.display = "block";
-            if (cartTotal) cartTotal.style.display = "none";
-            if (cartActions) cartActions.style.display = "none";
-          } else {
-            if (emptyCart) emptyCart.style.display = "none";
-            if (cartTotal) cartTotal.style.display = "flex";
-            if (cartActions) cartActions.style.display = "flex";
-
-            // Update cart items
-            if (cartItemsContainer) {
-              cartItemsContainer.innerHTML = "";
-              let total = 0;
-
-              cartItems.forEach((item) => {
-                const itemTotal = item.quantity * item.shop_items.price;
-                total += itemTotal;
-
-                const cartItem = document.createElement("div");
-                cartItem.className = "cart-item";
-                cartItem.innerHTML = `
-                  <img src="${
-                    item.shop_items.image_url ||
-                    "https://via.placeholder.com/50x50/222/666?text=No+Img"
-                  }" alt="${item.shop_items.name}">
-                  <div class="cart-item-details">
-                    <div class="cart-item-name">${item.shop_items.name}</div>
-                    <div class="cart-item-price">
-                      ₦${item.shop_items.price.toLocaleString()} x ${
-                  item.quantity
-                }
-                    </div>
-                    <div class="cart-item-total" style="color: #e53637; font-weight: bold;">
-                      ₦${itemTotal.toLocaleString()}
-                    </div>
-                  </div>
-                `;
-                cartItemsContainer.appendChild(cartItem);
-              });
-
-              // Update total
-              if (cartTotal) {
-                cartTotal.querySelector(
-                  "span:last-child"
-                ).textContent = `₦${total.toLocaleString()}`;
-              }
-            }
-          }
-        }
-
-        function updateProfileDropdown(isLoggedIn) {
-          const loginLinks = document.querySelectorAll(".login-link");
-          const registerLinks = document.querySelectorAll(".register-link");
-          const logoutLinks = document.querySelectorAll(".logout-link");
-          const profileLinks = document.querySelectorAll(".profile-link");
-
-          if (isLoggedIn) {
-            // User is logged in - show Profile and Logout, hide Login/Register
-            loginLinks.forEach((link) => (link.style.display = "none"));
-            registerLinks.forEach((link) => (link.style.display = "none"));
-            logoutLinks.forEach((link) => (link.style.display = "block"));
-            profileLinks.forEach((link) => (link.style.display = "block"));
-          } else {
-            // User is not logged in - show Login and Register, hide Profile/Logout
-            loginLinks.forEach((link) => (link.style.display = "block"));
-            registerLinks.forEach((link) => (link.style.display = "block"));
-            logoutLinks.forEach((link) => (link.style.display = "none"));
-            profileLinks.forEach((link) => (link.style.display = "none"));
-          }
-        }
-
-        // Logout functionality - UPDATED TO REDIRECT TO HOME PAGE
-        document.querySelectorAll(".logout-link").forEach((link) => {
-          link.addEventListener("click", async function (e) {
-            e.preventDefault();
-
-            try {
-              const response = await fetch("/auth/logout", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              });
-
-              localStorage.removeItem("supabase_token");
-              updateCartDisplay();
-              updateProfileDropdown(false);
-
-              showModal(
-                "Success",
-                "Logout successful! Redirecting to home page..."
-              );
-              // Redirect to home page after logout
-              setTimeout(() => {
-                window.location.href = "index.html";
-              }, 2000);
-            } catch (error) {
-              console.error("Logout error:", error);
-              localStorage.removeItem("supabase_token");
-              updateProfileDropdown(false);
-              // Redirect to home page even if there's an error
-              window.location.href = "index.html";
-            }
-          });
+        // Event listeners
+        editBtn.addEventListener("click", () => setEditMode(true));
+        cancelBtn.addEventListener("click", () => setEditMode(false));
+        profileForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          if (isEditing) saveProfile();
         });
 
-        // Cart actions
-        const viewCartBtn = document.querySelector(".view-cart");
-        const checkoutBtn = document.querySelector(".checkout");
+        // Initial load
+        loadProfile();
 
-        if (viewCartBtn) {
-          viewCartBtn.addEventListener("click", function (e) {
-            e.preventDefault();
-            showModal("Coming Soon", "View cart page is coming soon!");
-          });
-        }
-
-        if (checkoutBtn) {
-          checkoutBtn.addEventListener("click", function (e) {
-            e.preventDefault();
-            const token = localStorage.getItem("supabase_token");
-            if (!token) {
-              showModal("Login Required", "Please login to checkout");
-              setTimeout(() => {
-                window.location.href = "login.html";
-              }, 2000);
-              return;
+        // Cart count (optional, for consistency)
+        async function loadCartCount() {
+          try {
+            const res = await fetch("/cart", {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            const data = await res.json();
+            if (data.success) {
+              const totalQty =
+                data.totalQuantity ||
+                data.items.reduce((sum, item) => sum + item.quantity, 0);
+              const cartCount = document.getElementById("cartCount");
+              cartCount.textContent = totalQty;
+              cartCount.style.display = totalQty > 0 ? "flex" : "none";
             }
-            showModal("Coming Soon", "Checkout page is coming soon!");
-          });
+          } catch (err) {}
         }
+        if (token) loadCartCount();
       });
     </script>
 
-    <script src="js/profile-data.js"></script>
+    <!-- Additional styles for dropdown consistency -->
+    <style>
+      .cart-icon,
+      .profile-icon {
+        position: relative;
+        margin-left: 20px;
+        cursor: pointer;
+      }
+      .cart-icon i,
+      .profile-icon i {
+        font-size: 1.2rem;
+        color: var(--dark-grey);
+        transition: var(--transition);
+      }
+      .cart-icon:hover i,
+      .profile-icon:hover i {
+        color: var(--accent-red);
+      }
+      .cart-count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: var(--accent-red);
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
+      .cart-dropdown,
+      .profile-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: var(--dark-grey);
+        border: 1px solid #333;
+        border-radius: 8px;
+        padding: 1rem;
+        min-width: 280px;
+        z-index: 1000;
+        display: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+      .cart-icon:hover .cart-dropdown,
+      .profile-icon:hover .profile-dropdown {
+        display: block;
+      }
+      .cart-items {
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      .cart-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #333;
+      }
+      .cart-item img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 4px;
+      }
+      .cart-item-details {
+        flex: 1;
+      }
+      .cart-item-name {
+        color: white;
+        font-size: 0.9rem;
+      }
+      .cart-item-price {
+        color: var(--accent-red);
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+      .remove-item {
+        background: none;
+        border: none;
+        color: #b7b7b7;
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 0.25rem;
+      }
+      .remove-item:hover {
+        color: var(--accent-red);
+      }
+      .empty-cart {
+        text-align: center;
+        color: #b7b7b7;
+        padding: 1rem;
+      }
+      .empty-cart i {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+      .cart-total {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid #333;
+        color: white;
+        font-weight: 600;
+      }
+      .cart-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+      .cart-actions a {
+        flex: 1;
+        text-align: center;
+        padding: 0.5rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+      .view-cart {
+        background-color: #333;
+        color: white;
+      }
+      .checkout {
+        background-color: var(--accent-red);
+        color: white;
+      }
+      .profile-dropdown {
+        min-width: 150px;
+        padding: 0.5rem 0;
+      }
+      .profile-dropdown a {
+        display: block;
+        padding: 0.5rem 1rem;
+        color: white;
+        text-decoration: none;
+        transition: background 0.3s;
+      }
+      .profile-dropdown a:hover {
+        background-color: #333;
+        color: var(--accent-red);
+      }
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      @media (max-width: 768px) {
+        .cart-icon,
+        .profile-icon {
+          margin-left: 0;
+        }
+      }
+    </style>
   </body>
 </html>
