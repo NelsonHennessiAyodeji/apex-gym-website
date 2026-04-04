@@ -1,0 +1,284 @@
+/* Membership Page Specific Styles */
+
+/* Hero */
+.hero-membership {
+  padding: 6rem 2rem;
+  text-align: center;
+  color: var(--white);
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-membership .hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-membership h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+/* Membership Sections */
+.membership-section {
+  padding: 4rem 2rem;
+}
+
+.membership-section.alt-bg {
+  background-color: var(--light-bg);
+}
+
+.membership-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.membership-card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.membership-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.membership-card.featured {
+  border: 2px solid var(--accent-gold);
+  transform: scale(1.02);
+}
+
+.membership-card.featured:hover {
+  transform: scale(1.02) translateY(-5px);
+}
+
+.membership-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent-gold);
+  color: var(--primary-black);
+  padding: 0.3rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.card-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.card-header h3 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--accent-red);
+}
+
+.price-period {
+  font-size: 0.9rem;
+  font-weight: normal;
+  color: var(--light-grey);
+}
+
+.plan-desc {
+  font-size: 0.9rem;
+  color: var(--light-grey);
+  margin-top: 0.5rem;
+}
+
+.card-features {
+  margin: 1.5rem 0;
+}
+
+.card-features ul {
+  list-style: none;
+  padding: 0;
+}
+
+.card-features li {
+  padding: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--medium-grey);
+}
+
+.card-features li i {
+  color: var(--accent-gold);
+  width: 1.2rem;
+}
+
+.other-durations {
+  background: var(--light-bg);
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+.other-durations p {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.other-durations ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.other-durations li {
+  padding: 0.2rem 0;
+  color: var(--medium-grey);
+}
+
+.join-btn {
+  display: block;
+  text-align: center;
+  margin-top: auto;
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  background: var(--accent-red);
+  color: var(--white);
+  transition: background 0.3s;
+}
+
+.join-btn:hover {
+  background: #e0352a;
+  text-decoration: none;
+}
+
+/* Short-term Options */
+.short-term-section {
+  padding: 4rem 2rem;
+  background: var(--primary-black);
+  color: var(--white);
+}
+
+.short-term-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.short-term-card {
+  background: var(--dark-grey);
+  padding: 2rem;
+  text-align: center;
+  border-radius: 12px;
+  transition: transform 0.3s;
+}
+
+.short-term-card:hover {
+  transform: translateY(-5px);
+}
+
+.short-term-card i {
+  font-size: 3rem;
+  color: var(--accent-gold);
+  margin-bottom: 1rem;
+}
+
+.short-term-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.short-term-card .price {
+  font-size: 2rem;
+  margin: 1rem 0;
+  color: var(--accent-red);
+}
+
+.short-term-card p {
+  margin-bottom: 1.5rem;
+  color: var(--light-grey);
+}
+
+/* Comparison Table */
+.comparison-section {
+  padding: 4rem 2rem;
+  background: var(--light-bg);
+}
+
+.comparison-table {
+  overflow-x: auto;
+  margin-top: 2rem;
+}
+
+.comparison-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.comparison-table th {
+  background: var(--primary-black);
+  color: var(--white);
+  font-weight: 600;
+}
+
+.comparison-table tr:hover {
+  background: #f5f5f5;
+}
+
+#toggleComparison {
+  margin: 1rem auto 0;
+  display: block;
+  background: var(--accent-red);
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-membership h1 {
+    font-size: 2rem;
+  }
+  .membership-grid {
+    grid-template-columns: 1fr;
+  }
+  .membership-card.featured {
+    transform: none;
+  }
+  .short-term-grid {
+    grid-template-columns: 1fr;
+  }
+  .comparison-table th,
+  .comparison-table td {
+    padding: 0.8rem;
+    font-size: 0.8rem;
+  }
+}

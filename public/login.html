@@ -717,5 +717,42 @@
         }
       }
     </style>
+
+    <!-- Add this after the existing registration script, before </body> -->
+    <script>
+      // ---- Auth UI for header ----
+      function getToken() {
+        return localStorage.getItem("supabase_token");
+      }
+      function updateAuthUI() {
+        const isLoggedIn = !!getToken();
+        document
+          .querySelectorAll(".profile-link")
+          .forEach((l) => (l.style.display = isLoggedIn ? "block" : "none"));
+        document
+          .querySelectorAll(".login-link")
+          .forEach((l) => (l.style.display = isLoggedIn ? "none" : "block"));
+        document
+          .querySelectorAll(".register-link")
+          .forEach((l) => (l.style.display = isLoggedIn ? "none" : "block"));
+        document
+          .querySelectorAll(".logout-link")
+          .forEach((l) => (l.style.display = isLoggedIn ? "block" : "none"));
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        updateAuthUI();
+        // Logout handler (if any logout links exist)
+        document.querySelectorAll(".logout-link").forEach((link) => {
+          link.addEventListener("click", async (e) => {
+            e.preventDefault();
+            try {
+              await fetch("/auth/logout", { method: "POST" });
+            } catch (e) {}
+            localStorage.removeItem("supabase_token");
+            window.location.href = "/";
+          });
+        });
+      });
+    </script>
   </body>
 </html>

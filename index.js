@@ -28,7 +28,36 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/register", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "registration.html"));
+  res.sendFile(path.join(__dirname, "public", "register.html"));
+});
+
+// After existing routes (e.g., after app.get('/register', ...))
+app.get("/membership", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "membership.html"));
+});
+
+// Add this route after other HTML routes
+app.get("/why", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "why.html"));
+});
+
+// Add this route after other HTML routes
+app.get("/shop", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "shop.html"));
+});
+
+// Add this route for the About page
+app.get("/about", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "about.html"));
+});
+
+// Add these routes after existing HTML routes
+app.get("/terms", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "terms.html"));
+});
+
+app.get("/privacy", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "privacy.html"));
 });
 
 // Componenets Routes

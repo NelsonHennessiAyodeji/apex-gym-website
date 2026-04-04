@@ -1,0 +1,307 @@
+/* About Ape-X Gym Page Styles */
+
+/* Hero Section */
+.about-hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+    url("https://dummyimage.com/1920x600/222/666&text=Ape-X+Gym+Today");
+  background-size: cover;
+  background-position: center;
+  padding: 5rem 2rem;
+  text-align: center;
+  color: var(--white);
+}
+
+.about-hero h1 {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+  letter-spacing: 2px;
+  font-weight: 800;
+}
+
+.about-hero p {
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin: 0 auto 2rem;
+  color: #ddd;
+}
+
+/* Mission Section */
+.mission-section {
+  padding: 5rem 2rem;
+  background-color: var(--light-bg);
+}
+
+.mission-section .section-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.mission-content h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--primary-black);
+  font-family: "Playfair Display", serif;
+}
+
+.mission-content p {
+  color: var(--medium-grey);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.mission-image img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+/* Story Section */
+.story-section {
+  padding: 5rem 2rem;
+  background-color: var(--white);
+}
+
+.story-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.story-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.8fr;
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.story-text p {
+  color: var(--medium-grey);
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+}
+
+.story-text strong {
+  color: var(--primary-black);
+}
+
+.story-text em {
+  color: var(--accent-red);
+  font-style: italic;
+}
+
+.story-image {
+  position: relative;
+}
+
+.story-image img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+.story-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  background: var(--primary-black);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.stat {
+  text-align: center;
+  flex: 1;
+}
+
+.stat-number {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: #ccc;
+}
+
+/* Growth Section */
+.growth-section {
+  padding: 5rem 2rem;
+  background-color: var(--light-bg);
+}
+
+.growth-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.growth-text h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: var(--primary-black);
+}
+
+.growth-text p {
+  color: var(--medium-grey);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.growth-image img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+/* Journey CTA (full width) */
+.journey-cta {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.journey-content h2 {
+  font-size: 2.2rem;
+  color: var(--white);
+  margin-bottom: 1rem;
+  letter-spacing: 2px;
+}
+
+.journey-content p {
+  color: #ccc;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+/* Blog Preview Section */
+.blog-preview {
+  padding: 5rem 2rem;
+  background-color: var(--white);
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 2rem auto;
+}
+
+.blog-card {
+  background-color: var(--light-bg);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.blog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow);
+}
+
+.blog-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.blog-info {
+  padding: 1.5rem;
+}
+
+.blog-info h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  color: var(--primary-black);
+}
+
+.blog-info p {
+  color: var(--medium-grey);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.read-more {
+  color: var(--accent-red);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.read-more:hover {
+  color: var(--primary-black);
+}
+
+.blog-cta {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .mission-section .section-container,
+  .story-grid,
+  .growth-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .story-grid {
+    gap: 2rem;
+  }
+  .story-image {
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-hero h1 {
+    font-size: 2rem;
+  }
+  .about-hero p {
+    font-size: 1rem;
+  }
+  .mission-content h2 {
+    font-size: 1.6rem;
+  }
+  .journey-content h2 {
+    font-size: 1.8rem;
+  }
+  .blog-grid {
+    grid-template-columns: 1fr;
+  }
+  .story-stats {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-hero {
+    padding: 3rem 1rem;
+  }
+  .mission-section,
+  .story-section,
+  .growth-section,
+  .blog-preview {
+    padding: 3rem 1rem;
+  }
+  .mission-content h2 {
+    font-size: 1.4rem;
+  }
+  .growth-text h2 {
+    font-size: 1.4rem;
+  }
+  .journey-content h2 {
+    font-size: 1.4rem;
+  }
+}
