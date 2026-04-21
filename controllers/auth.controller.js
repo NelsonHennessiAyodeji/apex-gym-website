@@ -1,4 +1,10 @@
 const supabase = require("../db/supabase");
+const { createClient } = require("@supabase/supabase-js");
+
+const supabaseAdmin = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
 
 const register = async (req, res) => {
   try {
@@ -19,7 +25,7 @@ const register = async (req, res) => {
       healthNotes,
     } = req.body;
 
-    // Create user in Supabase Auth
+    // 1. Create user in Supabase Auth (with auto‑confirm disabled)
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
@@ -28,44 +34,67 @@ const register = async (req, res) => {
           first_name: firstName,
           last_name: lastName,
         },
-        emailRedirectTo: `${req.headers.origin}/login`, // Redirect to login after confirmation
+        emailRedirectTo: `${req.headers.origin}/login`,
       },
     });
 
     if (authError) {
-      console.log(authError);
+      console.error("Auth signup error:", authError);
       return res.status(400).json({ error: authError.message });
     }
 
-    // Create profile in profiles table
-    const { error: profileError } = await supabase.from("profiles").insert([
-      {
-        id: authData.user.id,
-        first_name: firstName,
-        last_name: lastName,
-        phone: phone,
-        date_of_birth: dob,
-        gender: gender,
-        fitness_level: fitnessLevel,
-        address: address,
-        emergency_contact_name: emergencyContactName,
-        emergency_contact_phone: emergencyContactPhone,
-        membership_plan: membershipPlan,
-        health_conditions: healthConditions,
-        health_notes: healthNotes,
-      },
-    ]);
-
-    if (profileError) {
-      console.log(profileError);
-      return res.status(400).json({ error: profileError.message });
+    if (!authData.user || !authData.user.id) {
+      return res
+        .status(500)
+        .json({ error: "User creation failed – please try again." });
     }
 
+    // 2. Auto‑confirm the user (bypass email confirmation)
+    const { error: confirmError } =
+      await supabaseAdmin.auth.admin.updateUserById(authData.user.id, {
+        email_confirm: true,
+      });
+
+    if (confirmError) {
+      console.error("Auto‑confirm error:", confirmError);
+      // Still continue – the user might be confirmed via email later, but we'll still insert profile.
+    }
+
+    // 3. Insert profile using service role
+    const { error: profileError } = await supabaseAdmin
+      .from("profiles")
+      .insert([
+        {
+          id: authData.user.id,
+          first_name: firstName,
+          last_name: lastName,
+          phone: phone,
+          date_of_birth: dob,
+          gender: gender,
+          fitness_level: fitnessLevel,
+          address: address,
+          emergency_contact_name: emergencyContactName,
+          emergency_contact_phone: emergencyContactPhone,
+          membership_plan: membershipPlan,
+          health_conditions: healthConditions,
+          health_notes: healthNotes,
+        },
+      ]);
+
+    if (profileError) {
+      console.error("Profile insert error:", profileError);
+      // Rollback: delete the auth user
+      await supabaseAdmin.auth.admin.deleteUser(authData.user.id);
+      return res
+        .status(400)
+        .json({ error: "Could not complete registration. Please try again." });
+    }
+
+    // 4. Return success (user can now log in immediately)
     res.json({
-      message:
-        "Registration successful! Please check your email to confirm your account.",
+      message: "Registration successful! You can now log in.",
       user: authData.user,
-      requiresConfirmation: true,
+      requiresConfirmation: false, // No email confirmation needed
     });
   } catch (error) {
     console.error("Registration error:", error);
@@ -83,13 +112,6 @@ const login = async (req, res) => {
     });
 
     if (error) {
-      // Check if error is due to email not confirmed
-      if (error.message.includes("Email not confirmed")) {
-        return res.status(400).json({
-          error: "EMAIL_NOT_CONFIRMED",
-          message: "Please confirm your email address before logging in.",
-        });
-      }
       return res.status(400).json({ error: error.message });
     }
 
@@ -104,36 +126,13 @@ const login = async (req, res) => {
   }
 };
 
-// Add resend confirmation endpoint
 const resendConfirmation = async (req, res) => {
-  try {
-    const { email } = req.body;
-
-    const { data, error } = await supabase.auth.resend({
-      type: "signup",
-      email: email,
-      options: {
-        emailRedirectTo: `${req.headers.origin}/login`,
-      },
-    });
-
-    if (error) {
-      return res.status(400).json({ error: error.message });
-    }
-
-    res.json({
-      message: "Confirmation email sent! Please check your inbox.",
-      data: data,
-    });
-  } catch (error) {
-    console.error("Resend confirmation error:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
+  // Not needed anymore, but keep for compatibility
+  res.json({ message: "Email confirmation is disabled for this demo." });
 };
 
 const getProfile = async (req, res) => {
   try {
-    // Get the access token from the Authorization header
     const authHeader = req.headers.authorization;
     if (!authHeader) {
       return res.status(401).json({ error: "No authorization header" });
@@ -141,7 +140,6 @@ const getProfile = async (req, res) => {
 
     const token = authHeader.replace("Bearer ", "");
 
-    // Get user from the token
     const {
       data: { user },
       error: authError,
@@ -171,11 +169,9 @@ const getProfile = async (req, res) => {
 const logout = async (req, res) => {
   try {
     const { error } = await supabase.auth.signOut();
-
     if (error) {
       return res.status(400).json({ error: error.message });
     }
-
     res.json({ message: "Logout successful" });
   } catch (error) {
     console.error("Logout error:", error);
@@ -183,13 +179,11 @@ const logout = async (req, res) => {
   }
 };
 
-// Add updateProfile function
 const updateProfile = async (req, res) => {
   try {
     const userId = req.params.userId;
     const updates = req.body;
 
-    // Verify the user is updating their own profile
     const token = req.headers.authorization?.replace("Bearer ", "");
     const {
       data: { user },
@@ -202,7 +196,6 @@ const updateProfile = async (req, res) => {
         .json({ error: "Not authorized to update this profile" });
     }
 
-    // Update profile in database
     const { data, error } = await supabase
       .from("profiles")
       .update(updates)
