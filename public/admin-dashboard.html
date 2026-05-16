@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ape-X Gym - Admin Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600;700;800;900&family=Oswald:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #000;
+        color: #fff;
+        font-family: "Muli", sans-serif;
+      }
+
+      .admin-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 1.5rem;
+      }
+
+      /* Header */
+      .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #333;
+        margin-bottom: 2rem;
+      }
+
+      .admin-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .admin-logo i {
+        font-size: 2.2rem;
+        color: #e53637;
+      }
+
+      .admin-title h1 {
+        color: #e53637;
+        font-size: 1.6rem;
+        font-family: "Oswald", sans-serif;
+      }
+
+      .admin-title p {
+        color: #b7b7b7;
+        font-size: 0.8rem;
+      }
+
+      .admin-user {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: #1a1a1a;
+        padding: 0.5rem 1rem;
+        border-radius: 30px;
+      }
+
+      .admin-user-info {
+        text-align: right;
+      }
+
+      .admin-user-name {
+        font-weight: 600;
+      }
+
+      .admin-user-email {
+        font-size: 0.75rem;
+        color: #b7b7b7;
+      }
+
+      .logout-btn {
+        background: #e53637;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 30px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+
+      .logout-btn:hover {
+        background: #fff;
+        color: #e53637;
+      }
+
+      /* Stats Grid - responsive: 2 columns on mobile, 4 on desktop */
+      .admin-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.25rem;
+        margin-bottom: 2rem;
+      }
+
+      .stat-card {
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        transition: transform 0.2s, border-color 0.2s;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-3px);
+        border-color: #e53637;
+      }
+
+      .stat-icon {
+        font-size: 2.5rem;
+        color: #e53637;
+        margin-bottom: 0.75rem;
+      }
+
+      .stat-number {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 0.25rem;
+      }
+
+      .stat-label {
+        color: #b7b7b7;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      /* Actions Grid - 2 columns on mobile, 4 on desktop */
+      .admin-actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.25rem;
+        margin-bottom: 2rem;
+      }
+
+      .action-card {
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.2s;
+        display: block;
+      }
+
+      .action-card:hover {
+        transform: translateY(-3px);
+        border-color: #e53637;
+      }
+
+      .action-icon {
+        font-size: 2.8rem;
+        color: #e53637;
+        margin-bottom: 1rem;
+      }
+
+      .action-title {
+        color: #fff;
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .action-description {
+        color: #b7b7b7;
+        font-size: 0.8rem;
+        line-height: 1.4;
+      }
+
+      /* Recent Activity */
+      .recent-activity {
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 12px;
+        padding: 1.5rem;
+      }
+
+      .section-title {
+        color: #e53637;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #333;
+      }
+
+      .activity-list {
+        list-style: none;
+      }
+
+      .activity-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 0;
+        border-bottom: 1px solid #333;
+      }
+
+      .activity-item:last-child {
+        border-bottom: none;
+      }
+
+      .activity-icon {
+        width: 40px;
+        height: 40px;
+        background: rgba(229, 54, 55, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #e53637;
+      }
+
+      .activity-content {
+        flex: 1;
+      }
+
+      .activity-text {
+        color: #fff;
+        margin-bottom: 0.25rem;
+      }
+
+      .activity-time {
+        color: #b7b7b7;
+        font-size: 0.7rem;
+      }
+
+      /* Mobile fine-tuning: keep 2 columns even on small screens */
+      @media (max-width: 640px) {
+        .admin-stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .admin-actions {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .admin-container {
+          padding: 1rem;
+        }
+        .admin-header {
+          flex-direction: column;
+          text-align: center;
+        }
+        .admin-user {
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .admin-stats {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 0.75rem;
+        }
+        .admin-actions {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 0.75rem;
+        }
+        .stat-card,
+        .action-card {
+          padding: 1rem;
+        }
+        .stat-number {
+          font-size: 1.5rem;
+        }
+        .action-title {
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="admin-container">
+      <!-- Header -->
+      <div class="admin-header">
+        <div class="admin-logo">
+          <i class="fas fa-dumbbell"></i>
+          <div class="admin-title">
+            <h1>Admin Dashboard</h1>
+            <p>Manage your gym operations</p>
+          </div>
+        </div>
+        <div class="admin-user">
+          <div class="admin-user-info">
+            <div class="admin-user-name">Administrator</div>
+            <div class="admin-user-email" id="adminEmailDisplay">
+              Loading...
+            </div>
+          </div>
+          <button class="logout-btn" id="logoutBtn">Logout</button>
+        </div>
+      </div>
+
+      <!-- Statistics Cards -->
+      <div class="admin-stats">
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fas fa-shopping-bag"></i></div>
+          <div class="stat-number" id="totalProducts">0</div>
+          <div class="stat-label">Total Products</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+          <div class="stat-number" id="totalBlogs">0</div>
+          <div class="stat-label">Blog Articles</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fas fa-users"></i></div>
+          <div class="stat-number" id="totalUsers">0</div>
+          <div class="stat-label">Registered Users</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+          <div class="stat-number" id="totalSales">0</div>
+          <div class="stat-label">Total Sales</div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="admin-actions">
+        <a href="admin-shop.html" class="action-card">
+          <div class="action-icon"><i class="fas fa-shopping-bag"></i></div>
+          <div class="action-title">Manage Shop</div>
+          <div class="action-description">Add, edit, or delete products</div>
+        </a>
+        <a href="admin-blog.html" class="action-card">
+          <div class="action-icon"><i class="fas fa-file-alt"></i></div>
+          <div class="action-title">Manage Blog</div>
+          <div class="action-description">Create and manage blog posts</div>
+        </a>
+        <a href="admin-users.html" class="action-card">
+          <div class="action-icon"><i class="fas fa-users"></i></div>
+          <div class="action-title">User Management</div>
+          <div class="action-description">View registered gym members</div>
+        </a>
+        <a href="admin-orders.html" class="action-card">
+          <div class="action-icon"><i class="fas fa-shopping-cart"></i></div>
+          <div class="action-title">Order Management</div>
+          <div class="action-description">Process and track shop orders</div>
+        </a>
+      </div>
+
+      <!-- Recent Activity (placeholder) -->
+      <div class="recent-activity">
+        <div class="section-title">Recent Activity</div>
+        <ul class="activity-list" id="activityList">
+          <li class="activity-item">
+            <div class="activity-icon"><i class="fas fa-chart-simple"></i></div>
+            <div class="activity-content">
+              <div class="activity-text">Welcome to the admin dashboard</div>
+              <div class="activity-time">Just now</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      // Helper functions
+      function getSessionToken() {
+        return localStorage.getItem("admin_session_token");
+      }
+
+      function getHeaders() {
+        return {
+          "Content-Type": "application/json",
+          "x-admin-session": getSessionToken(),
+        };
+      }
+
+      async function loadDashboardStats() {
+        try {
+          const response = await fetch("/admin/dashboard/stats", {
+            headers: getHeaders(),
+          });
+          if (response.status === 401) {
+            localStorage.removeItem("admin_session_token");
+            window.location.href = "admin-login.html";
+            return;
+          }
+          if (!response.ok) throw new Error("Failed to load stats");
+          const data = await response.json();
+          document.getElementById("totalProducts").textContent =
+            data.totalProducts || 0;
+          document.getElementById("totalBlogs").textContent =
+            data.totalBlogs || 0;
+          document.getElementById("totalUsers").textContent =
+            data.totalUsers || 0;
+          document.getElementById("totalSales").textContent =
+            "₦" + (data.totalSales || 0).toLocaleString();
+        } catch (err) {
+          console.error("Stats error:", err);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const token = getSessionToken();
+        if (!token) {
+          window.location.href = "admin-login.html";
+          return;
+        }
+
+        document.getElementById("adminEmailDisplay").textContent =
+          "admin@apexgym.com";
+        loadDashboardStats();
+
+        // Logout
+        document
+          .getElementById("logoutBtn")
+          .addEventListener("click", async () => {
+            try {
+              await fetch("/admin/logout", {
+                method: "POST",
+                headers: getHeaders(),
+              });
+            } catch (e) {}
+            localStorage.removeItem("admin_session_token");
+            window.location.href = "admin-login.html";
+          });
+      });
+    </script>
+  </body>
+</html>

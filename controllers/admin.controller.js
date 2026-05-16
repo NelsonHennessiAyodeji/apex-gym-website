@@ -612,6 +612,40 @@ const deleteShopItem = async (req, res) => {
   }
 };
 
+// Get single shop item by ID
+const getShopItemById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(`Fetching shop item with ID: ${id}`);
+
+    const { data, error } = await supabaseAdmin
+      .from("shop_items")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      console.error("Error fetching shop item:", error);
+      return res.status(404).json({
+        success: false,
+        error: "Product not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      data: data,
+    });
+  } catch (error) {
+    console.error("Get shop item by ID error:", error);
+    res.status(500).json({
+      success: false,
+      error: "Internal server error",
+      details: error.message,
+    });
+  }
+};
+
 // Blog Posts CRUD
 const getBlogPosts = async (req, res) => {
   try {
@@ -638,7 +672,11 @@ const getBlogPosts = async (req, res) => {
 
 const createBlogPost = async (req, res) => {
   try {
-    const { title, excerpt, content, category, status, image, tags } = req.body;
+    const { title, excerpt, content, category, status, image, tags, author } =
+      req.body;
+
+    // Debug log
+    console.log("Creating blog post with image URL:", image);
 
     const blogData = {
       title: title.trim(),
@@ -646,13 +684,13 @@ const createBlogPost = async (req, res) => {
       content: content.trim(),
       category: (category || "general").trim(),
       status: (status || "draft").trim(),
-      featured_image: image || "",
+      featured_image: image || "", // <-- CRITICAL: map 'image' to 'featured_image'
       tags: Array.isArray(tags)
         ? tags
         : tags
         ? tags.split(",").map((tag) => tag.trim())
         : [],
-      author: "Admin",
+      author: (author && author.trim()) || "Admin",
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
@@ -681,7 +719,11 @@ const createBlogPost = async (req, res) => {
 const updateBlogPost = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, excerpt, content, category, status, image, tags } = req.body;
+    const { title, excerpt, content, category, status, image, tags, author } =
+      req.body;
+
+    // Debug log
+    console.log("Updating blog post ID:", id, "with image URL:", image);
 
     const updateData = {
       title: title ? title.trim() : undefined,
@@ -689,12 +731,13 @@ const updateBlogPost = async (req, res) => {
       content: content ? content.trim() : undefined,
       category: category ? category.trim() : undefined,
       status: status ? status.trim() : undefined,
-      featured_image: image || undefined,
+      featured_image: image !== undefined ? image || "" : undefined, // <-- allow empty string
       tags: tags
         ? Array.isArray(tags)
           ? tags
           : tags.split(",").map((tag) => tag.trim())
         : undefined,
+      author: author ? author.trim() : undefined,
       updated_at: new Date().toISOString(),
     };
 
@@ -716,6 +759,8 @@ const updateBlogPost = async (req, res) => {
         error: "Blog post not found",
       });
     }
+
+    console.log("Updated post:", data[0]);
 
     res.json({
       success: true,
@@ -790,6 +835,7 @@ module.exports = {
   createShopItem,
   updateShopItem,
   deleteShopItem,
+  getShopItemById,
   getBlogPosts,
   createBlogPost,
   updateBlogPost,

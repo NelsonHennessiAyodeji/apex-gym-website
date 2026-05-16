@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ape-X Gym - Blog Management</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600;700;800;900&family=Oswald:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Quill Rich Text Editor -->
+    <link
+      href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* General admin styles (same as your original) */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: #000;
+        color: #fff;
+        font-family: "Muli", sans-serif;
+      }
+      .admin-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #333;
+        margin-bottom: 30px;
+      }
+      .admin-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .admin-logo i {
+        font-size: 2rem;
+        color: #e53637;
+      }
+      .admin-title h1 {
+        color: #e53637;
+        font-size: 1.8rem;
+      }
+      .admin-nav {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 30px;
+      }
+      .nav-btn {
+        background: #1a1a1a;
+        color: #b7b7b7;
+        border: 1px solid #333;
+        padding: 8px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: 0.3s;
+      }
+      .nav-btn:hover,
+      .nav-btn.active {
+        background: #e53637;
+        color: #fff;
+      }
+      .admin-actions {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+      .search-box {
+        display: flex;
+        gap: 10px;
+        flex: 1;
+      }
+      .search-input {
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 6px;
+        padding: 10px;
+        color: #fff;
+        flex: 1;
+      }
+      .btn-primary {
+        background: #e53637;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .btn-primary:hover {
+        background: #fff;
+        color: #e53637;
+      }
+      .blog-posts {
+        display: grid;
+        gap: 25px;
+      }
+      .blog-post-card {
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .blog-post-header {
+        padding: 20px;
+        border-bottom: 1px solid #333;
+      }
+      .blog-post-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      .blog-post-meta {
+        display: flex;
+        gap: 20px;
+        color: #b7b7b7;
+        font-size: 0.8rem;
+        flex-wrap: wrap;
+      }
+      .blog-post-content {
+        padding: 20px;
+      }
+      .blog-post-excerpt {
+        color: #b7b7b7;
+        margin-bottom: 20px;
+        line-height: 1.5;
+      }
+      .blog-post-actions {
+        display: flex;
+        gap: 10px;
+      }
+      .btn-edit,
+      .btn-delete,
+      .btn-preview {
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        border: none;
+        font-size: 0.8rem;
+      }
+      .btn-edit {
+        background: #333;
+        color: #fff;
+      }
+      .btn-delete {
+        background: #e53637;
+        color: #fff;
+      }
+      .btn-preview {
+        background: #2a2a2a;
+        color: #fff;
+        text-decoration: none;
+        display: inline-block;
+      }
+      .status-badge {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 600;
+      }
+      .status-published {
+        background: rgba(46, 204, 113, 0.2);
+        color: #2ecc71;
+      }
+      .status-draft {
+        background: rgba(241, 196, 15, 0.2);
+        color: #f1c40f;
+      }
+      .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #b7b7b7;
+      }
+
+      /* Modal for blog editor */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 10000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        overflow-y: auto;
+      }
+      .modal-content {
+        background: #1a1a1a;
+        margin: 3% auto;
+        padding: 25px;
+        border-radius: 12px;
+        width: 95%;
+        max-width: 1200px;
+        border: 2px solid #e53637;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+      .modal-title {
+        color: #e53637;
+      }
+      .close-modal {
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: #fff;
+        cursor: pointer;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      .form-label {
+        display: block;
+        color: #b7b7b7;
+        margin-bottom: 6px;
+      }
+      .form-control,
+      select.form-control {
+        width: 100%;
+        padding: 10px;
+        background: #222;
+        border: 1px solid #333;
+        border-radius: 6px;
+        color: #fff;
+      }
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+      .modal-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 20px;
+      }
+      .btn-cancel {
+        background: #333;
+        color: #fff;
+        padding: 8px 20px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+      }
+      .btn-save {
+        background: #e53637;
+        color: #fff;
+        padding: 8px 20px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+      }
+
+      /* Quill editor styling */
+      .quill-editor-wrapper {
+        background: #222;
+        border: 1px solid #333;
+        border-radius: 6px;
+      }
+      #blogEditor {
+        height: 400px;
+        color: #fff;
+        background: #222;
+      }
+      .ql-toolbar.ql-snow {
+        border: none;
+        border-bottom: 1px solid #333;
+        background: #1a1a1a;
+      }
+      .ql-container.ql-snow {
+        border: none;
+      }
+      .ql-editor {
+        font-family: "Muli", sans-serif;
+        font-size: 1rem;
+      }
+      .ql-editor.ql-blank::before {
+        color: #666;
+      }
+
+      /* Preview Modal */
+      .preview-content {
+        background: #fff;
+        color: #000;
+        padding: 2rem;
+        border-radius: 8px;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .preview-content h1,
+      .preview-content h2,
+      .preview-content h3 {
+        margin-top: 1rem;
+      }
+      .preview-content img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      @media (max-width: 768px) {
+        .admin-header {
+          flex-direction: column;
+          text-align: center;
+        }
+        .admin-actions {
+          flex-direction: column;
+        }
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+        .modal-content {
+          width: 95%;
+          margin: 5% auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="admin-container">
+      <div class="admin-header">
+        <div class="admin-logo">
+          <i class="fas fa-blog"></i>
+          <div class="admin-title"><h1>Blog Management</h1></div>
+        </div>
+        <button
+          class="btn-primary"
+          onclick="location.href='admin-dashboard.html'"
+        >
+          Back to Dashboard
+        </button>
+      </div>
+      <div class="admin-nav">
+        <a href="admin-dashboard.html" class="nav-btn">Dashboard</a>
+        <a href="admin-shop.html" class="nav-btn">Shop</a>
+        <a href="admin-blog.html" class="nav-btn active">Blog</a>
+        <a href="admin-users.html" class="nav-btn">Users</a>
+        <a href="admin-orders.html" class="nav-btn">Orders</a>
+      </div>
+      <div class="admin-actions">
+        <div class="search-box">
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="Search blog posts..."
+          />
+          <button class="btn-primary" onclick="searchPosts()">Search</button>
+        </div>
+        <button class="btn-primary" onclick="openAddPostModal()">
+          <i class="fas fa-plus"></i> New Blog Post
+        </button>
+      </div>
+      <div id="blogPostsContainer" class="blog-posts"></div>
+      <div id="emptyState" class="empty-state" style="display: none">
+        <i class="fas fa-file-alt" style="font-size: 3rem"></i>
+        <h3>No blog posts</h3>
+        <p>Create your first one!</p>
+      </div>
+    </div>
+
+    <!-- Editor Modal -->
+    <div id="blogModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="modalTitle">New Post</h2>
+          <button class="close-modal" onclick="closeModal()">&times;</button>
+        </div>
+        <form id="blogForm">
+          <input type="hidden" id="postId" />
+          <div class="form-group">
+            <label class="form-label">Title *</label>
+            <input type="text" id="blogTitle" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Excerpt (short summary) *</label>
+            <textarea
+              id="blogExcerpt"
+              class="form-control"
+              rows="2"
+              required
+            ></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Author</label>
+              <input
+                type="text"
+                id="blogAuthor"
+                class="form-control"
+                placeholder="Admin"
+                value="Admin"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Category</label>
+              <select id="blogCategory" class="form-control">
+                <option value="fitness">Fitness</option>
+                <option value="nutrition">Nutrition</option>
+                <option value="lifestyle">Lifestyle</option>
+                <option value="training">Training</option>
+                <option value="health">Health</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Status</label>
+              <select id="blogStatus" class="form-control">
+                <option value="published">Published</option>
+                <option value="draft">Draft</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Featured Image URL</label>
+              <input
+                type="url"
+                id="blogImage"
+                class="form-control"
+                placeholder="https://..."
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tags (comma separated)</label>
+            <input
+              type="text"
+              id="blogTags"
+              class="form-control"
+              placeholder="fitness, workout"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Content (Rich Text) *</label>
+            <div class="quill-editor-wrapper">
+              <div id="blogEditor"></div>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-cancel" onclick="closeModal()">
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn-primary"
+              id="previewBtn"
+              style="background: #555"
+            >
+              Preview
+            </button>
+            <button type="submit" class="btn-save">Save Post</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div id="previewModal" class="modal">
+      <div class="modal-content" style="max-width: 900px">
+        <div class="modal-header">
+          <h2 class="modal-title">Blog Preview</h2>
+          <button class="close-modal" onclick="closePreviewModal()">
+            &times;
+          </button>
+        </div>
+        <div id="previewContent" class="preview-content"></div>
+      </div>
+    </div>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+      // Quill editor instance
+      let quillEditor = null;
+
+      // Admin session helpers
+      function getToken() {
+        return localStorage.getItem("admin_session_token");
+      }
+      function getHeaders() {
+        return {
+          "Content-Type": "application/json",
+          "x-admin-session": getToken(),
+        };
+      }
+      if (!getToken()) window.location.href = "admin-login.html";
+
+      let allPosts = [],
+        searchTerm = "";
+
+      function initQuill() {
+        if (quillEditor) return;
+        const toolbarOptions = [
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          ["bold", "italic", "underline", "strike"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          [{ indent: "-1" }, { indent: "+1" }],
+          [{ align: [] }],
+          ["link", "image", "video"],
+          ["clean"],
+        ];
+        quillEditor = new Quill("#blogEditor", {
+          theme: "snow",
+          modules: { toolbar: toolbarOptions },
+          placeholder: "Write your blog post here...",
+        });
+
+        const toolbar = quillEditor.getModule("toolbar");
+        toolbar.addHandler("image", () => {
+          const input = document.createElement("input");
+          input.setAttribute("type", "file");
+          input.setAttribute("accept", "image/*");
+          input.onchange = async () => {
+            const file = input.files[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                const base64 = e.target.result;
+                const range = quillEditor.getSelection(true);
+                quillEditor.insertEmbed(range.index, "image", base64);
+              };
+              reader.readAsDataURL(file);
+            }
+          };
+          input.click();
+        });
+      }
+
+      async function loadPosts() {
+        try {
+          const res = await fetch("/admin/blog-posts", {
+            headers: getHeaders(),
+          });
+          if (res.status === 401) {
+            localStorage.removeItem("admin_session_token");
+            window.location.href = "admin-login.html";
+            return;
+          }
+          const data = await res.json();
+          if (!data.success) throw new Error(data.error);
+          allPosts = data.data || [];
+          renderPosts();
+        } catch (err) {
+          console.error(err);
+          alert("Failed to load posts");
+        }
+      }
+
+      function renderPosts() {
+        const container = document.getElementById("blogPostsContainer");
+        const emptyDiv = document.getElementById("emptyState");
+        let filtered = allPosts;
+        if (searchTerm)
+          filtered = allPosts.filter(
+            (p) =>
+              p.title.toLowerCase().includes(searchTerm) ||
+              (p.excerpt && p.excerpt.toLowerCase().includes(searchTerm)) ||
+              (p.tags && p.tags.join(",").toLowerCase().includes(searchTerm))
+          );
+        if (!filtered.length) {
+          container.innerHTML = "";
+          emptyDiv.style.display = "block";
+          return;
+        }
+        emptyDiv.style.display = "none";
+        container.innerHTML = filtered
+          .map(
+            (post) => `
+                <div class="blog-post-card">
+                    <div class="blog-post-header">
+                        <div class="blog-post-title">${escapeHtml(
+                          post.title
+                        )}</div>
+                        <div class="blog-post-meta">
+                            <span>Author: ${escapeHtml(
+                              post.author || "Admin"
+                            )}</span>
+                            <span>Category: ${post.category || "general"}</span>
+                            <span>Created: ${new Date(
+                              post.created_at
+                            ).toLocaleDateString()}</span>
+                            <span>Status: <span class="status-badge status-${
+                              post.status
+                            }">${post.status}</span></span>
+                        </div>
+                    </div>
+                    <div class="blog-post-content">
+                        <div class="blog-post-excerpt">${escapeHtml(
+                          post.excerpt || ""
+                        )}</div>
+                        <div class="blog-post-actions">
+                            <button class="btn-edit" onclick="editPost('${
+                              post.id
+                            }')"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="btn-delete" onclick="deletePost('${
+                              post.id
+                            }')"><i class="fas fa-trash"></i> Delete</button>
+                            <button class="btn-preview" onclick="previewPost('${
+                              post.id
+                            }')"><i class="fas fa-eye"></i> Preview</button>
+                        </div>
+                    </div>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      function searchPosts() {
+        searchTerm = document.getElementById("searchInput").value.toLowerCase();
+        renderPosts();
+      }
+
+      function openAddPostModal() {
+        initQuill();
+        document.getElementById("modalTitle").innerText = "New Blog Post";
+        document.getElementById("blogForm").reset();
+        document.getElementById("postId").value = "";
+        document.getElementById("blogAuthor").value = "Admin";
+        quillEditor.setContents([]);
+        document.getElementById("blogModal").style.display = "block";
+      }
+
+      function closeModal() {
+        document.getElementById("blogModal").style.display = "none";
+      }
+      function closePreviewModal() {
+        document.getElementById("previewModal").style.display = "none";
+      }
+
+      async function editPost(id) {
+        initQuill();
+        const post = allPosts.find((p) => p.id == id);
+        if (!post) return;
+        document.getElementById("modalTitle").innerText = "Edit Blog Post";
+        document.getElementById("postId").value = post.id;
+        document.getElementById("blogTitle").value = post.title;
+        document.getElementById("blogExcerpt").value = post.excerpt || "";
+        document.getElementById("blogAuthor").value = post.author || "Admin";
+        document.getElementById("blogCategory").value =
+          post.category || "fitness";
+        document.getElementById("blogStatus").value = post.status;
+        document.getElementById("blogImage").value = post.featured_image || "";
+        document.getElementById("blogTags").value = (post.tags || []).join(
+          ", "
+        );
+        if (post.content) {
+          quillEditor.root.innerHTML = post.content;
+        } else {
+          quillEditor.setContents([]);
+        }
+        document.getElementById("blogModal").style.display = "block";
+      }
+
+      async function deletePost(id) {
+        if (!confirm("Permanently delete this blog post?")) return;
+        try {
+          const res = await fetch(`/admin/blog-posts/${id}`, {
+            method: "DELETE",
+            headers: getHeaders(),
+          });
+          const data = await res.json();
+          if (!data.success) throw new Error(data.error);
+          alert("Post deleted");
+          loadPosts();
+        } catch (err) {
+          alert("Delete failed");
+        }
+      }
+
+      function previewPost(id) {
+        const post = allPosts.find((p) => p.id == id);
+        if (!post) return;
+        const previewDiv = document.getElementById("previewContent");
+        previewDiv.innerHTML = `
+                <h1>${escapeHtml(post.title)}</h1>
+                <p><em>${escapeHtml(post.excerpt || "")}</em></p>
+                <p><strong>Author:</strong> ${escapeHtml(
+                  post.author || "Admin"
+                )}</p>
+                ${
+                  post.featured_image
+                    ? `<img src="${post.featured_image}" style="max-width:100%; margin:1rem 0;">`
+                    : ""
+                }
+                <div>${post.content || ""}</div>
+            `;
+        document.getElementById("previewModal").style.display = "block";
+      }
+
+      // Save post (create or update) - with debug log
+      document
+        .getElementById("blogForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const id = document.getElementById("postId").value;
+          const imageUrl = document.getElementById("blogImage").value;
+          console.log("Featured Image URL being sent:", imageUrl);
+
+          const postData = {
+            title: document.getElementById("blogTitle").value,
+            excerpt: document.getElementById("blogExcerpt").value,
+            author: document.getElementById("blogAuthor").value,
+            content: quillEditor.root.innerHTML,
+            category: document.getElementById("blogCategory").value,
+            status: document.getElementById("blogStatus").value,
+            image: imageUrl, // Make sure this is sent
+            tags: document
+              .getElementById("blogTags")
+              .value.split(",")
+              .map((t) => t.trim())
+              .filter((t) => t),
+          };
+          console.log("Full postData:", postData);
+
+          const url = id ? `/admin/blog-posts/${id}` : "/admin/blog-posts";
+          const method = id ? "PUT" : "POST";
+          try {
+            const res = await fetch(url, {
+              method,
+              headers: getHeaders(),
+              body: JSON.stringify(postData),
+            });
+            const data = await res.json();
+            if (!data.success) throw new Error(data.error);
+            alert("Post saved");
+            closeModal();
+            loadPosts();
+          } catch (err) {
+            alert("Save failed: " + err.message);
+          }
+        });
+
+      document.getElementById("previewBtn").addEventListener("click", () => {
+        const title = document.getElementById("blogTitle").value;
+        const excerpt = document.getElementById("blogExcerpt").value;
+        const author = document.getElementById("blogAuthor").value;
+        const image = document.getElementById("blogImage").value;
+        const contentHTML = quillEditor ? quillEditor.root.innerHTML : "";
+        const previewDiv = document.getElementById("previewContent");
+        previewDiv.innerHTML = `
+                <h1>${escapeHtml(title || "Untitled")}</h1>
+                <p><em>${escapeHtml(excerpt || "")}</em></p>
+                <p><strong>Author:</strong> ${escapeHtml(author || "Admin")}</p>
+                ${
+                  image
+                    ? `<img src="${image}" style="max-width:100%; margin:1rem 0;">`
+                    : ""
+                }
+                <div>${contentHTML || ""}</div>
+            `;
+        document.getElementById("previewModal").style.display = "block";
+      });
+
+      function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, (m) => {
+          if (m === "&") return "&amp;";
+          if (m === "<") return "&lt;";
+          if (m === ">") return "&gt;";
+          return m;
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", loadPosts);
+      window.onclick = (e) => {
+        if (e.target === document.getElementById("blogModal")) closeModal();
+        if (e.target === document.getElementById("previewModal"))
+          closePreviewModal();
+      };
+    </script>
+  </body>
+</html>

@@ -11,6 +11,7 @@ const {
   createShopItem,
   updateShopItem,
   deleteShopItem,
+  getShopItemById,
   getBlogPosts,
   createBlogPost,
   updateBlogPost,
@@ -85,6 +86,8 @@ router.put(
   updateShopItem
 );
 router.delete("/shop-items/:id", verifyAdminSession, deleteShopItem);
+
+router.get("/shop-items/:id", verifyAdminSession, getShopItemById);
 
 // Blog posts routes
 router.get("/blog-posts", verifyAdminSession, getBlogPosts);

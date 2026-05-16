@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ape-X Gym - Admin Login</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600;700;800;900&family=Oswald:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #000;
+        font-family: "Muli", sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+
+      .admin-login-container {
+        max-width: 420px;
+        width: 100%;
+      }
+
+      .admin-login-card {
+        background: #1a1a1a;
+        border-radius: 16px;
+        padding: 2rem;
+        border: 1px solid #333;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      }
+
+      .admin-logo {
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .admin-logo i {
+        font-size: 4rem;
+        color: #e53637;
+      }
+
+      .admin-login-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .admin-login-header h2 {
+        color: #e53637;
+        font-size: 1.8rem;
+        font-family: "Oswald", sans-serif;
+        margin-bottom: 0.5rem;
+      }
+
+      .admin-login-header p {
+        color: #b7b7b7;
+        font-size: 0.9rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.25rem;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 0.9rem 1rem;
+        background: #222;
+        border: 1px solid #333;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 1rem;
+        transition: all 0.3s;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: #e53637;
+        box-shadow: 0 0 0 2px rgba(229, 54, 55, 0.2);
+      }
+
+      .admin-login-btn {
+        width: 100%;
+        background: #e53637;
+        color: #fff;
+        border: none;
+        padding: 0.9rem;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 0.5rem;
+      }
+
+      .admin-login-btn:hover {
+        background: #fff;
+        color: #e53637;
+      }
+
+      .alert {
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.25rem;
+        display: none;
+        font-size: 0.85rem;
+      }
+
+      .alert-error {
+        background: rgba(229, 54, 55, 0.2);
+        border: 1px solid #e53637;
+        color: #e53637;
+      }
+
+      @media (max-width: 480px) {
+        .admin-login-card {
+          padding: 1.5rem;
+        }
+        .admin-login-header h2 {
+          font-size: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="admin-login-container">
+      <div class="admin-login-card">
+        <div class="admin-logo">
+          <i class="fas fa-dumbbell"></i>
+        </div>
+        <div class="admin-login-header">
+          <h2>Admin Portal</h2>
+          <p>Access the management dashboard</p>
+        </div>
+        <div id="errorAlert" class="alert alert-error"></div>
+        <form id="adminLoginForm">
+          <div class="form-group">
+            <input
+              type="email"
+              id="adminEmail"
+              class="form-control"
+              placeholder="Admin Email"
+              required
+              value="admin@apexgym.com"
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="password"
+              id="adminPassword"
+              class="form-control"
+              placeholder="Admin Password"
+              required
+              value="admin123"
+            />
+          </div>
+          <button type="submit" class="admin-login-btn">Login to Admin</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // If already logged in, redirect to dashboard
+        if (localStorage.getItem("admin_session_token")) {
+          window.location.href = "admin-dashboard.html";
+        }
+
+        const form = document.getElementById("adminLoginForm");
+        const errorAlert = document.getElementById("errorAlert");
+
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const email = document.getElementById("adminEmail").value.trim();
+          const password = document.getElementById("adminPassword").value;
+
+          if (!email || !password) {
+            showError("Please fill in all fields");
+            return;
+          }
+
+          const submitBtn = form.querySelector('button[type="submit"]');
+          const originalText = submitBtn.textContent;
+          submitBtn.textContent = "Logging in...";
+          submitBtn.disabled = true;
+
+          try {
+            const response = await fetch("/admin/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, password }),
+            });
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+              throw new Error(data.error || "Login failed");
+            }
+
+            // Store session token
+            localStorage.setItem("admin_session_token", data.sessionToken);
+            window.location.href = "admin-dashboard.html";
+          } catch (err) {
+            showError(err.message);
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+          }
+        });
+
+        function showError(msg) {
+          errorAlert.textContent = msg;
+          errorAlert.style.display = "block";
+          setTimeout(() => {
+            errorAlert.style.display = "none";
+          }, 5000);
+        }
+      });
+    </script>
+  </body>
+</html>

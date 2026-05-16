@@ -5,9 +5,12 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Admin routes with session verification
+const { verifyAdminSession } = require("./controllers/admin.controller");
+
 // Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
 
 // Serve static files (CSS, JS, images) from 'public'
@@ -31,7 +34,10 @@ app.get("/register", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "register.html"));
 });
 
-// After existing routes (e.g., after app.get('/register', ...))
+app.get("/profile", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "profile.html"));
+});
+
 app.get("/membership", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "membership.html"));
 });
@@ -60,6 +66,22 @@ app.get("/privacy", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "privacy.html"));
 });
 
+app.get("/admin", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin-login.html"));
+});
+
+app.get("/admin/dashboard", verifyAdminSession, (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin-dashboard.html"));
+});
+
+app.get("/admin/shop", verifyAdminSession, (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin-shop.html"));
+});
+
+app.get("/admin/blog", verifyAdminSession, (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin-blog.html"));
+});
+
 // Componenets Routes
 // Update the static file serving section
 app.use(
@@ -83,9 +105,6 @@ app.get("/header", (req, res) => {
 app.get("/footer", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "footer.html"));
 });
-
-// Admin routes with session verification
-const { verifyAdminSession } = require("./controllers/admin.controller");
 
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin-login.html"));
