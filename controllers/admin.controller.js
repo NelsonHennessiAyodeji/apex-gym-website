@@ -247,63 +247,97 @@ const deleteImageFromSupabase = async (imageUrl) => {
   }
 };
 
-// Get dashboard stats
 const getDashboardStats = async (req, res) => {
   try {
-    // Get total products
-    const { count: productsCount } = await supabaseAdmin
-      .from("shop_items")
-      .select("*", { count: "exact", head: true });
+    let productsCount = 0, blogsCount = 0, usersCount = 0, totalSales = 0;
 
-    // Get total blog posts
-    const { count: blogsCount } = await supabaseAdmin
-      .from("blog_posts")
-      .select("*", { count: "exact", head: true });
+    try {
+      const { count } = await supabaseAdmin
+        .from("shop_items")
+        .select("*", { count: "exact", head: true });
+      productsCount = count || 0;
+    } catch (e) { console.error("Products count error:", e.message); }
 
-    // Get total users
-    const { count: usersCount } = await supabaseAdmin
-      .from("profiles")
-      .select("*", { count: "exact", head: true });
+    try {
+      const { count } = await supabaseAdmin
+        .from("blog_posts")
+        .select("*", { count: "exact", head: true });
+      blogsCount = count || 0;
+    } catch (e) { console.error("Blogs count error:", e.message); }
 
-    // Get total sales from orders table
-    let totalSales = 0;
+    try {
+      const { count } = await supabaseAdmin
+        .from("profiles")
+        .select("*", { count: "exact", head: true });
+      usersCount = count || 0;
+    } catch (e) { console.error("Users count error:", e.message); }
+
     try {
       const { data: orders } = await supabaseAdmin
         .from("orders")
         .select("total_amount, status");
-
-      if (orders && orders.length > 0) {
+      if (orders && orders.length) {
         totalSales = orders
-          .filter(
-            (order) => order.status === "completed" || order.status === "paid"
-          )
-          .reduce(
-            (sum, order) => sum + (parseFloat(order.total_amount) || 0),
-            0
-          );
+          .filter(order => order.status === "completed" || order.status === "paid")
+          .reduce((sum, order) => sum + (parseFloat(order.total_amount) || 0), 0);
       }
-    } catch (ordersError) {
-      console.error("Error fetching orders:", ordersError);
-      // If orders table doesn't exist, use a default value
-      totalSales = 0;
-    }
+    } catch (e) { console.error("Sales count error:", e.message); }
 
     res.json({
       success: true,
-      data: {
-        totalProducts: productsCount || 0,
-        totalBlogs: blogsCount || 0,
-        totalUsers: usersCount || 0,
-        totalSales: totalSales,
-      },
+      data: { totalProducts: productsCount, totalBlogs: blogsCount, totalUsers: usersCount, totalSales },
     });
   } catch (error) {
     console.error("Dashboard stats error:", error);
-    res.status(500).json({
-      success: false,
-      error: "Internal server error",
-      details: error.message,
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+};
+
+// Get all users (safe info, no passwords)
+const getUsers = async (req, res) => {
+  try {
+    const { page = 1, limit = 20, search = '' } = req.query;
+    const offset = (page - 1) * limit;
+
+    let query = supabaseAdmin
+      .from('profiles')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false });
+
+    if (search) {
+      query = query.or(`first_name.ilike.%${search}%,last_name.ilike.%${search}%,email.ilike.%${search}%`);
+    }
+
+    const { data, error, count } = await query.range(offset, offset + limit - 1);
+
+    if (error) throw error;
+
+    // Format user data (remove any sensitive fields if present, though profiles table is safe)
+    const safeUsers = (data || []).map(user => ({
+      id: user.id,
+      first_name: user.first_name || '',
+      last_name: user.last_name || '',
+      email: user.email || 'Not provided',
+      phone: user.phone || '',
+      membership_plan: user.membership_plan || 'classic',
+      fitness_level: user.fitness_level || '',
+      created_at: user.created_at,
+      // Add any other safe fields you want to display
+    }));
+
+    res.json({
+      success: true,
+      data: safeUsers,
+      pagination: {
+        currentPage: parseInt(page),
+        totalPages: Math.ceil(count / limit),
+        totalItems: count,
+        itemsPerPage: parseInt(limit)
+      }
     });
+  } catch (error) {
+    console.error('Get users error:', error);
+    res.status(500).json({ success: false, error: 'Internal server error' });
   }
 };
 
@@ -670,6 +704,101 @@ const getBlogPosts = async (req, res) => {
   }
 };
 
+// Get public blog posts (published only, for website visitors)
+const getPublicBlogPosts = async (req, res) => {
+  try {
+    const { page = 1, limit = 9, search = '' } = req.query;
+    const offset = (page - 1) * limit;
+
+    let query = supabaseAdmin
+      .from('blog_posts')
+      .select('*', { count: 'exact' })
+      .eq('status', 'published')
+      .order('created_at', { ascending: false });
+
+    if (search) {
+      query = query.or(`title.ilike.%${search}%,excerpt.ilike.%${search}%,tags.cs.{${search}}`);
+    }
+
+    const { data, error, count } = await query.range(offset, offset + limit - 1);
+
+    if (error) throw error;
+
+    // For each post, generate thumbnail URL
+    const postsWithThumbnail = (data || []).map(post => {
+      let thumbnail = post.featured_image || '';
+      if (!thumbnail && post.content) {
+        // Extract first image from HTML content
+        const imgMatch = post.content.match(/<img[^>]+src="([^">]+)"/);
+        if (imgMatch && imgMatch[1]) thumbnail = imgMatch[1];
+      }
+      return {
+        id: post.id,
+        title: post.title,
+        excerpt: post.excerpt,
+        thumbnail: thumbnail || '/images/placeholder-blog.jpg',
+        category: post.category,
+        author: post.author,
+        created_at: post.created_at,
+        slug: post.id // or use a slug field if you have one
+      };
+    });
+
+    res.json({
+      success: true,
+      data: postsWithThumbnail,
+      pagination: {
+        currentPage: parseInt(page),
+        totalPages: Math.ceil(count / limit),
+        totalItems: count,
+        itemsPerPage: parseInt(limit)
+      }
+    });
+  } catch (error) {
+    console.error('Get public blog posts error:', error);
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+};
+
+// Get single public blog post by ID (published only)
+const getPublicBlogPostById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const { data, error } = await supabaseAdmin
+      .from('blog_posts')
+      .select('*')
+      .eq('id', id)
+      .eq('status', 'published')
+      .single();
+
+    if (error || !data) {
+      return res.status(404).json({
+        success: false,
+        error: 'Post not found'
+      });
+    }
+
+    // Generate thumbnail (same logic as listing)
+    let thumbnail = data.featured_image || '';
+    if (!thumbnail && data.content) {
+      const imgMatch = data.content.match(/<img[^>]+src="([^">]+)"/);
+      if (imgMatch && imgMatch[1]) thumbnail = imgMatch[1];
+    }
+
+    res.json({
+      success: true,
+      data: {
+        ...data,
+        thumbnail
+      }
+    });
+  } catch (error) {
+    console.error('Get public blog post error:', error);
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+};
+
 const createBlogPost = async (req, res) => {
   try {
     const { title, excerpt, content, category, status, image, tags, author } =
@@ -831,12 +960,15 @@ module.exports = {
   verifyAdminSession,
   getActiveSessions,
   getDashboardStats,
+  getUsers,
   getShopItems,
   createShopItem,
   updateShopItem,
   deleteShopItem,
   getShopItemById,
   getBlogPosts,
+  getPublicBlogPosts,
+  getPublicBlogPostById,
   createBlogPost,
   updateBlogPost,
   deleteBlogPost,

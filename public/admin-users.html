@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ape-X Gym - User Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;500;600;700;800;900&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #000; color: #fff; font-family: "Muli", sans-serif; }
+        .admin-container { max-width: 1400px; margin: 0 auto; padding: 1.5rem; }
+
+        /* Header */
+        .admin-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #333; margin-bottom: 2rem; }
+        .admin-logo { display: flex; align-items: center; gap: 0.75rem; }
+        .admin-logo i { font-size: 2.2rem; color: #e53637; }
+        .admin-title h1 { color: #e53637; font-size: 1.6rem; font-family: "Oswald", sans-serif; }
+        .admin-title p { color: #b7b7b7; font-size: 0.8rem; }
+        .admin-user { display: flex; align-items: center; gap: 1rem; background: #1a1a1a; padding: 0.5rem 1rem; border-radius: 30px; }
+        .admin-user-info { text-align: right; }
+        .admin-user-name { font-weight: 600; }
+        .admin-user-email { font-size: 0.75rem; color: #b7b7b7; }
+        .logout-btn { background: #e53637; color: white; border: none; padding: 0.5rem 1rem; border-radius: 30px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .logout-btn:hover { background: #fff; color: #e53637; }
+
+        /* Navigation */
+        .admin-nav { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 30px; }
+        .nav-btn { background: #1a1a1a; color: #b7b7b7; border: 1px solid #333; padding: 8px 16px; border-radius: 6px; text-decoration: none; transition: 0.3s; }
+        .nav-btn:hover, .nav-btn.active { background: #e53637; color: #fff; }
+
+        /* Search & Actions */
+        .admin-actions { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; }
+        .search-box { display: flex; gap: 10px; flex: 1; }
+        .search-input { background: #1a1a1a; border: 1px solid #333; border-radius: 6px; padding: 10px; color: #fff; flex: 1; min-width: 200px; }
+        .btn-primary { background: #e53637; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; transition: 0.3s; }
+        .btn-primary:hover { background: #fff; color: #e53637; }
+
+        /* Users Table */
+        .users-table-container { overflow-x: auto; }
+        .users-table { width: 100%; border-collapse: collapse; background: #1a1a1a; border-radius: 12px; overflow: hidden; }
+        .users-table th, .users-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #333; }
+        .users-table th { background: #222; color: #e53637; font-weight: 600; }
+        .users-table tr:hover { background: #222; }
+        .empty-state { text-align: center; padding: 3rem; color: #b7b7b7; }
+        .pagination { display: flex; justify-content: center; gap: 10px; margin-top: 30px; }
+        .page-btn { background: #1a1a1a; border: 1px solid #333; padding: 8px 16px; border-radius: 6px; cursor: pointer; color: #fff; }
+        .page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .page-info { color: #b7b7b7; margin: 0 10px; }
+
+        @media (max-width: 768px) {
+            .admin-container { padding: 1rem; }
+            .admin-header { flex-direction: column; text-align: center; }
+            .admin-actions { flex-direction: column; }
+            .users-table th, .users-table td { padding: 8px 10px; font-size: 0.85rem; }
+        }
+        @media (max-width: 640px) {
+            .users-table { font-size: 0.8rem; }
+            .users-table th, .users-table td { padding: 6px 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <div class="admin-logo">
+                <i class="fas fa-users"></i>
+                <div class="admin-title"><h1>User Management</h1><p>Manage registered members</p></div>
+            </div>
+            <div class="admin-user">
+                <div class="admin-user-info"><div class="admin-user-name">Administrator</div><div class="admin-user-email" id="adminEmailDisplay">admin@apexgym.com</div></div>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+
+        <div class="admin-nav">
+            <a href="admin-dashboard.html" class="nav-btn">Dashboard</a>
+            <a href="admin-shop.html" class="nav-btn">Shop</a>
+            <a href="admin-blog.html" class="nav-btn">Blog</a>
+            <a href="admin-users.html" class="nav-btn active">Users</a>
+            <a href="admin-orders.html" class="nav-btn">Orders</a>
+        </div>
+
+        <div class="admin-actions">
+            <div class="search-box">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search by name or email...">
+                <button class="btn-primary" id="searchBtn">Search</button>
+            </div>
+        </div>
+
+        <div class="users-table-container">
+            <table class="users-table" id="usersTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Membership</th>
+                        <th>Fitness Level</th>
+                        <th>Joined</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <tr><td colspan="6" class="empty-state">Loading users...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination" id="pagination" style="display: none;">
+            <button class="page-btn" id="prevPage" disabled>Previous</button>
+            <span class="page-info" id="pageInfo">Page 1</span>
+            <button class="page-btn" id="nextPage">Next</button>
+        </div>
+    </div>
+
+    <script>
+        // Admin session helpers
+        function getSessionToken() { return localStorage.getItem("admin_session_token"); }
+        function getHeaders() { return { "Content-Type": "application/json", "x-admin-session": getSessionToken() }; }
+
+        if (!getSessionToken()) window.location.href = "admin-login.html";
+
+        let currentPage = 1, totalPages = 1, searchTerm = "";
+        const itemsPerPage = 20;
+
+        async function loadUsers(page = 1) {
+            const tbody = document.getElementById("usersTableBody");
+            tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Loading...</td></tr>';
+
+            let url = `/admin/users?page=${page}&limit=${itemsPerPage}`;
+            if (searchTerm) url += `&search=${encodeURIComponent(searchTerm)}`;
+
+            try {
+                const res = await fetch(url, { headers: getHeaders() });
+                if (res.status === 401) { localStorage.removeItem("admin_session_token"); window.location.href = "admin-login.html"; return; }
+                const data = await res.json();
+                if (!data.success) throw new Error(data.error);
+
+                const users = data.data;
+                currentPage = data.pagination.currentPage;
+                totalPages = data.pagination.totalPages;
+
+                if (!users.length) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No users found.</td></tr>';
+                    document.getElementById("pagination").style.display = "none";
+                    return;
+                }
+
+                tbody.innerHTML = users.map(user => `
+                    <tr>
+                        <td>${escapeHtml(user.first_name)} ${escapeHtml(user.last_name)}</td>
+                        <td>${escapeHtml(user.email)}</td>
+                        <td>${escapeHtml(user.phone || '-')}</td>
+                        <td><span style="text-transform:capitalize;">${escapeHtml(user.membership_plan || 'classic')}</span></td>
+                        <td><span style="text-transform:capitalize;">${escapeHtml(user.fitness_level || '-')}</span></td>
+                        <td>${user.created_at ? new Date(user.created_at).toLocaleDateString() : '-'}</td>
+                    </tr>
+                `).join('');
+
+                updatePagination();
+            } catch (err) {
+                console.error(err);
+                tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Error loading users.</td></tr>';
+            }
+        }
+
+        function updatePagination() {
+            const pagDiv = document.getElementById("pagination");
+            if (totalPages <= 1) { pagDiv.style.display = "none"; return; }
+            pagDiv.style.display = "flex";
+            document.getElementById("pageInfo").innerText = `Page ${currentPage} of ${totalPages}`;
+            document.getElementById("prevPage").disabled = currentPage === 1;
+            document.getElementById("nextPage").disabled = currentPage === totalPages;
+        }
+
+        document.getElementById("prevPage").addEventListener("click", () => { if (currentPage > 1) loadUsers(currentPage - 1); });
+        document.getElementById("nextPage").addEventListener("click", () => { if (currentPage < totalPages) loadUsers(currentPage + 1); });
+        document.getElementById("searchBtn").addEventListener("click", () => { searchTerm = document.getElementById("searchInput").value; loadUsers(1); });
+        document.getElementById("searchInput").addEventListener("keypress", (e) => { if (e.key === "Enter") document.getElementById("searchBtn").click(); });
+
+        // Logout
+        document.getElementById("logoutBtn").addEventListener("click", async () => {
+            try { await fetch("/admin/logout", { method: "POST", headers: getHeaders() }); } catch(e) {}
+            localStorage.removeItem("admin_session_token");
+            window.location.href = "admin-login.html";
+        });
+
+        function escapeHtml(str) { if (!str) return ""; return str.replace(/[&<>]/g, m => { if (m === "&") return "&amp;"; if (m === "<") return "&lt;"; if (m === ">") return "&gt;"; return m; }); }
+
+        loadUsers();
+    </script>
+</body>
+</html>

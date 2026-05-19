@@ -7,6 +7,7 @@ const {
   verifyAdminSession,
   getActiveSessions,
   getDashboardStats,
+  getUsers,
   getShopItems,
   createShopItem,
   updateShopItem,
@@ -68,6 +69,9 @@ router.get("/debug/sessions", getActiveSessions);
 // Protected routes
 router.post("/logout", verifyAdminSession, adminLogout);
 router.get("/dashboard/stats", verifyAdminSession, getDashboardStats);
+
+// User management (admin only)
+router.get('/users', verifyAdminSession, getUsers);
 
 // Shop items routes
 router.get("/shop-items", verifyAdminSession, getShopItems);

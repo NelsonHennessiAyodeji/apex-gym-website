@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ape-X Gym – Blog</title>
+  <meta name="description" content="Latest fitness tips, nutrition advice, and gym news from Ape-X Gym Nigeria." />
+  
+  <!-- CSS & Fonts (same as your main site) -->
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/responsive.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  
+  <style>
+    /* Blog-specific styles – extends your existing theme */
+    .blog-header {
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/images/blog-header-bg.jpg') center/cover no-repeat;
+      padding: 5rem 2rem;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .blog-header h1 {
+      font-size: 3rem;
+      color: var(--accent-red);
+      font-family: 'Oswald', sans-serif;
+    }
+    .blog-header p {
+      color: var(--white);
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 1rem auto 0;
+    }
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+      margin: 2rem auto;
+      max-width: 1400px;
+      padding: 0 1.5rem;
+    }
+    .blog-card {
+      background: var(--dark-grey);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid #333;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .blog-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-red);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+    .blog-card-image {
+      height: 200px;
+      background: #222;
+      overflow: hidden;
+    }
+    .blog-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+    .blog-card:hover .blog-card-image img {
+      transform: scale(1.05);
+    }
+    .blog-card-content {
+      padding: 1.5rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .blog-card-category {
+      color: var(--accent-red);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.5rem;
+    }
+    .blog-card-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--white);
+      line-height: 1.3;
+    }
+    .blog-card-excerpt {
+      color: #b7b7b7;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+    .blog-card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: #999;
+      border-top: 1px solid #333;
+      padding-top: 1rem;
+      margin-top: auto;
+    }
+    .read-more {
+      color: var(--accent-red);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+    .read-more:hover {
+      color: var(--white);
+    }
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin: 3rem 0;
+    }
+    .page-btn {
+      background: var(--dark-grey);
+      border: 1px solid #333;
+      color: var(--white);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+      min-width: 100px;
+    }
+    .page-btn:hover:not(:disabled) {
+      background: var(--accent-red);
+      border-color: var(--accent-red);
+    }
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .page-info {
+      color: #b7b7b7;
+    }
+    .loading-spinner {
+      text-align: center;
+      padding: 3rem;
+      color: #b7b7b7;
+    }
+    .no-posts {
+      text-align: center;
+      padding: 4rem;
+      color: #b7b7b7;
+    }
+    .search-bar {
+      max-width: 600px;
+      margin: 0 auto 2rem auto;
+      display: flex;
+      gap: 0.5rem;
+      padding: 0 1rem;
+    }
+    .search-bar input {
+      flex: 1;
+      padding: 0.8rem;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      color: white;
+    }
+    .search-bar button {
+      background: var(--accent-red);
+      border: none;
+      padding: 0 1.5rem;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    @media (max-width: 768px) {
+      .blog-header h1 { font-size: 2rem; }
+      .blog-grid { grid-template-columns: 1fr; gap: 1.5rem; padding: 0 1rem; }
+      .blog-card-title { font-size: 1.1rem; }
+    }
+    @media (max-width: 480px) {
+      .blog-header { padding: 3rem 1rem; }
+      .search-bar { flex-direction: column; }
+      .search-bar button { padding: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header (reuse your existing header – it will be loaded from the site header) -->
+  <!-- But your header.html is separate; we'll include the same header markup as your other pages -->
+  <header class="site-header">
+    <div class="header-container">
+      <div class="logo">
+        <a href="/">
+          <div class="logo-circle">
+            <img src="./images/20251201_192548.png" alt="Ape-X Gum Logo" class="logo-img" />
+          </div>
+          <span class="logo-text">Ape-X Gym</span>
+        </a>
+      </div>
+      <nav class="main-nav desktop-nav">
+        <ul class="nav-links">
+          <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="/membership" class="nav-link">Memberships</a></li>
+          <li class="nav-item"><a href="/shop" class="nav-link">Ape-X Store</a></li>
+          <li class="nav-item"><a href="/about" class="nav-link">About Ape-X</a></li>
+        </ul>
+      </nav>
+      <div class="header-right">
+        <div class="auth-buttons">
+          <a href="/profile" class="btn-account">My Account</a>
+          <a href="/register" class="btn-join">Join Now</a>
+        </div>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle">
+          <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobileNav">
+      <div class="mobile-nav-container">
+        <div class="mobile-nav-header">
+          <div class="logo"><img src="https://dummyimage.com/60x60/000000/ffffff&text=AXG" alt="Ape-X Gym" /><span>Ape-X Gym</span></div>
+          <button class="close-menu" id="closeMenu">&times;</button>
+        </div>
+        <ul class="mobile-nav-links">
+          <li><a href="/" class="mobile-nav-link">Home</a></li>
+          <li><a href="/membership" class="mobile-nav-link">Memberships</a></li>
+          <li><a href="/shop" class="mobile-nav-link">Ape-X Store</a></li>
+          <li><a href="/about" class="mobile-nav-link">About Ape-X</a></li>
+          <li><a href="/profile" class="mobile-nav-link">My Account</a></li>
+          <li><a href="/register" class="mobile-nav-link">Join Now</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Blog Header -->
+  <div class="blog-header">
+    <h1>Ape-X Blog</h1>
+    <p>Expert fitness advice, nutrition tips, and gym news to help you reach your goals.</p>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search articles..." />
+    <button id="searchBtn">Search</button>
+  </div>
+
+  <!-- Blog Posts Grid -->
+  <div id="blogGrid" class="blog-grid">
+    <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading posts...</div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination" id="pagination" style="display: none;">
+    <button class="page-btn" id="prevPage">← Previous</button>
+    <span class="page-info" id="pageInfo">Page 1</span>
+    <button class="page-btn" id="nextPage">Next →</button>
+  </div>
+
+  <!-- Footer (reuse your existing footer markup) -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo"><img src="https://dummyimage.com/60x60/000000/ffffff&text=AXG" alt="Ape-X Gym" /><span>Ape-X Gym</span></div>
+          <p class="footer-tagline">Where Excellence Meets Fitness</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <div class="footer-column"><h4>Info</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Press Room</a></li></ul></div>
+          <div class="footer-column"><h4>Legal</h4><ul><li><a href="/privacy">Privacy Policy</a></li><li><a href="/terms">Terms & Conditions</a></li></ul></div>
+          <div class="footer-column"><h4>Support</h4><ul><li><a href="#">FAQs</a></li><li><a href="#">Contact Us</a></li><li><a href="/blog">Blog</a></li></ul></div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="copyright"><p>&copy; 2025 Ape-X Gym Nigeria. All rights reserved.</p></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/mobile-menu.js"></script>
+  <script>
+    let currentPage = 1;
+    let totalPages = 1;
+    let searchTerm = '';
+    const itemsPerPage = 9;
+
+    const blogGrid = document.getElementById('blogGrid');
+    const paginationDiv = document.getElementById('pagination');
+    const prevBtn = document.getElementById('prevPage');
+    const nextBtn = document.getElementById('nextPage');
+    const pageInfoSpan = document.getElementById('pageInfo');
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+
+    async function loadPosts(page = 1) {
+      blogGrid.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading posts...</div>';
+      
+      let url = `/api/blog-posts?page=${page}&limit=${itemsPerPage}`;
+      if (searchTerm) url += `&search=${encodeURIComponent(searchTerm)}`;
+      
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+        
+        const posts = data.data;
+        totalPages = data.pagination.totalPages;
+        currentPage = page;
+        
+        renderPosts(posts);
+        updatePagination();
+      } catch (err) {
+        console.error(err);
+        blogGrid.innerHTML = '<div class="no-posts"><i class="fas fa-exclamation-triangle"></i><p>Failed to load posts. Please try again.</p></div>';
+      }
+    }
+    
+    function renderPosts(posts) {
+      if (!posts.length) {
+        blogGrid.innerHTML = '<div class="no-posts"><i class="fas fa-newspaper"></i><p>No blog posts found.</p></div>';
+        return;
+      }
+      
+      blogGrid.innerHTML = posts.map(post => `
+        <div class="blog-card">
+          <div class="blog-card-image">
+            <img src="${post.thumbnail || '/images/placeholder-blog.jpg'}" alt="${escapeHtml(post.title)}" loading="lazy" onerror="this.src='/images/placeholder-blog.jpg'">
+          </div>
+          <div class="blog-card-content">
+            <div class="blog-card-category">${escapeHtml(post.category || 'General')}</div>
+            <h3 class="blog-card-title">${escapeHtml(post.title)}</h3>
+            <div class="blog-card-excerpt">${escapeHtml(post.excerpt || '')}</div>
+            <div class="blog-card-meta">
+              <span><i class="far fa-user"></i> ${escapeHtml(post.author || 'Admin')}</span>
+              <span><i class="far fa-calendar-alt"></i> ${new Date(post.created_at).toLocaleDateString()}</span>
+              <a href="/blog-post?id=${post.id}" class="read-more">Read More →</a>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    function updatePagination() {
+      if (totalPages <= 1) {
+        paginationDiv.style.display = 'none';
+        return;
+      }
+      paginationDiv.style.display = 'flex';
+      pageInfoSpan.innerText = `Page ${currentPage} of ${totalPages}`;
+      prevBtn.disabled = currentPage === 1;
+      nextBtn.disabled = currentPage === totalPages;
+    }
+    
+    function goToPage(page) {
+      if (page < 1 || page > totalPages) return;
+      loadPosts(page);
+    }
+    
+    prevBtn.addEventListener('click', () => goToPage(currentPage - 1));
+    nextBtn.addEventListener('click', () => goToPage(currentPage + 1));
+    
+    searchBtn.addEventListener('click', () => {
+      searchTerm = searchInput.value.trim();
+      loadPosts(1);
+    });
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') searchBtn.click();
+    });
+    
+    // Initial load
+    loadPosts(1);
+    
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+      });
+    }
+  </script>
+</body>
+</html>

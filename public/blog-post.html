@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Ape-X Gym – Blog Article</title>
+  <meta name="description" content="Read the latest articles from Ape-X Gym." />
+  
+  <!-- CSS & Fonts -->
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/responsive.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  
+  <style>
+    /* Article page specific styles */
+    .article-wrapper {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+    .article-card {
+      background: #0a0a0a;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    .article-hero {
+      position: relative;
+      background: #111;
+      min-height: 300px;
+      display: flex;
+      align-items: flex-end;
+    }
+    .article-hero-img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      object-position: center;
+      transition: transform 0.5s;
+    }
+    .article-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, #000, transparent);
+      padding: 2rem;
+    }
+    .article-category {
+      display: inline-block;
+      background: rgba(229,54,55,0.9);
+      color: white;
+      padding: 0.25rem 1rem;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
+    }
+    .article-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      color: white;
+      margin-bottom: 1rem;
+      font-family: 'Playfair Display', serif;
+    }
+    .article-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      color: #ccc;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+    }
+    .article-meta span i {
+      margin-right: 0.4rem;
+      color: var(--accent-red);
+    }
+    .article-body {
+      padding: 2rem;
+    }
+    .article-content {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #e0e0e0;
+    }
+    .article-content h1, 
+    .article-content h2, 
+    .article-content h3 {
+      color: white;
+      margin: 1.8rem 0 1rem;
+      font-weight: 700;
+    }
+    .article-content h2 {
+      font-size: 1.8rem;
+      border-left: 4px solid var(--accent-red);
+      padding-left: 1rem;
+    }
+    .article-content p {
+      margin-bottom: 1.4rem;
+    }
+    .article-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      margin: 1.5rem 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .article-content blockquote {
+      border-left: 4px solid var(--accent-red);
+      background: #1a1a1a;
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+      font-style: italic;
+      border-radius: 8px;
+      color: #ddd;
+    }
+    .article-content a {
+      color: var(--accent-red);
+      text-decoration: none;
+    }
+    .article-content a:hover {
+      text-decoration: underline;
+    }
+    .article-share {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 2rem 0;
+      padding-top: 1rem;
+      border-top: 1px solid #333;
+    }
+    .share-btn {
+      background: #1a1a1a;
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: 0.3s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .share-btn:hover {
+      background: var(--accent-red);
+      transform: translateY(-3px);
+    }
+    .author-section {
+      background: #111;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .author-avatar {
+      width: 70px;
+      height: 70px;
+      background: var(--accent-red);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: bold;
+      color: white;
+    }
+    .author-info h4 {
+      color: white;
+      margin-bottom: 0.3rem;
+    }
+    .author-info p {
+      color: #b7b7b7;
+      font-size: 0.9rem;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent-red);
+      color: white;
+      padding: 0.8rem 1.8rem;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+      margin-top: 1rem;
+    }
+    .back-btn:hover {
+      background: white;
+      color: var(--accent-red);
+    }
+    .loading-state, .error-state {
+      text-align: center;
+      padding: 4rem;
+      color: #b7b7b7;
+    }
+    .error-state i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 768px) {
+      .article-wrapper { padding: 1rem; }
+      .article-hero-img { height: 250px; }
+      .article-overlay { padding: 1.5rem; }
+      .article-title { font-size: 1.8rem; }
+      .article-body { padding: 1.5rem; }
+      .article-content { font-size: 1rem; }
+      .article-meta { gap: 1rem; font-size: 0.8rem; }
+      .author-section { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .article-title { font-size: 1.5rem; }
+      .share-btn { width: 38px; height: 38px; font-size: 1rem; }
+      .back-btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header (same as your main site – keep consistent) -->
+  <header class="site-header">
+    <div class="header-container">
+      <div class="logo">
+        <a href="/">
+          <div class="logo-circle">
+            <img src="./images/20251201_192548.png" alt="Ape-X Gym Logo" class="logo-img" />
+          </div>
+          <span class="logo-text">Ape-X Gym</span>
+        </a>
+      </div>
+      <nav class="main-nav desktop-nav">
+        <ul class="nav-links">
+          <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="/membership" class="nav-link">Memberships</a></li>
+          <li class="nav-item"><a href="/shop" class="nav-link">Ape-X Store</a></li>
+          <li class="nav-item"><a href="/about" class="nav-link">About Ape-X</a></li>
+          <li class="nav-item"><a href="/blog" class="nav-link">Blog</a></li>
+        </ul>
+      </nav>
+      <div class="header-right">
+        <div class="auth-buttons">
+          <a href="/profile" class="btn-account">My Account</a>
+          <a href="/register" class="btn-join">Join Now</a>
+        </div>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle">
+          <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+        </button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobileNav">
+      <div class="mobile-nav-container">
+        <div class="mobile-nav-header">
+          <div class="logo"><img src="https://dummyimage.com/60x60/000000/ffffff&text=AXG" alt="Ape-X Gym" /><span>Ape-X Gym</span></div>
+          <button class="close-menu" id="closeMenu">&times;</button>
+        </div>
+        <ul class="mobile-nav-links">
+          <li><a href="/" class="mobile-nav-link">Home</a></li>
+          <li><a href="/membership" class="mobile-nav-link">Memberships</a></li>
+          <li><a href="/shop" class="mobile-nav-link">Ape-X Store</a></li>
+          <li><a href="/about" class="mobile-nav-link">About Ape-X</a></li>
+          <li><a href="/blog" class="mobile-nav-link">Blog</a></li>
+          <li><a href="/profile" class="mobile-nav-link">My Account</a></li>
+          <li><a href="/register" class="mobile-nav-link">Join Now</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="article-wrapper" id="articleWrapper">
+      <div class="loading-state">
+        <i class="fas fa-spinner fa-spin fa-2x"></i>
+        <p>Loading article...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo"><img src="https://dummyimage.com/60x60/000000/ffffff&text=AXG" alt="Ape-X Gym" /><span>Ape-X Gym</span></div>
+          <p class="footer-tagline">Where Excellence Meets Fitness</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <div class="footer-column"><h4>Info</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Press Room</a></li></ul></div>
+          <div class="footer-column"><h4>Legal</h4><ul><li><a href="/privacy">Privacy Policy</a></li><li><a href="/terms">Terms & Conditions</a></li></ul></div>
+          <div class="footer-column"><h4>Support</h4><ul><li><a href="#">FAQs</a></li><li><a href="#">Contact Us</a></li><li><a href="/blog">Blog</a></li></ul></div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="copyright"><p>&copy; 2025 Ape-X Gym Nigeria. All rights reserved.</p></div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/mobile-menu.js"></script>
+  <script>
+    // Get post ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('id');
+
+    // Helper: estimate reading time
+    function readingTime(html) {
+      const text = html.replace(/<[^>]*>/g, '');
+      const words = text.trim().split(/\s+/).length;
+      const minutes = Math.ceil(words / 200);
+      return minutes === 1 ? '1 min read' : `${minutes} min read`;
+    }
+
+    // Helper: escape HTML for meta fields
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+      });
+    }
+
+    // Load and render post
+    async function loadPost() {
+      const wrapper = document.getElementById('articleWrapper');
+      if (!postId) {
+        wrapper.innerHTML = `
+          <div class="error-state">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>No article specified</h3>
+            <a href="/blog" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Blog</a>
+          </div>`;
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/blog-posts/${postId}`);
+        const data = await res.json();
+        if (!data.success || !data.data) throw new Error('Post not found');
+
+        const post = data.data;
+        document.title = `${post.title} | Ape-X Gym Blog`;
+
+        const readTime = readingTime(post.content || '');
+        const authorName = escapeHtml(post.author || 'Admin');
+        const authorInitial = authorName.charAt(0).toUpperCase();
+
+        wrapper.innerHTML = `
+          <div class="article-card">
+            <div class="article-hero">
+              ${post.thumbnail ? `<img class="article-hero-img" src="${post.thumbnail}" alt="${escapeHtml(post.title)}" onerror="this.style.display='none'">` : ''}
+              <div class="article-overlay">
+                <div class="article-category">${escapeHtml(post.category || 'General')}</div>
+                <h1 class="article-title">${escapeHtml(post.title)}</h1>
+                <div class="article-meta">
+                  <span><i class="far fa-user"></i> ${authorName}</span>
+                  <span><i class="far fa-calendar-alt"></i> ${new Date(post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                  <span><i class="far fa-clock"></i> ${readTime}</span>
+                </div>
+              </div>
+            </div>
+            <div class="article-body">
+              <div class="article-content">${post.content || '<p>No content available.</p>'}</div>
+              
+              <div class="article-share">
+                <button class="share-btn" onclick="shareOnFacebook()"><i class="fab fa-facebook-f"></i></button>
+                <button class="share-btn" onclick="shareOnTwitter()"><i class="fab fa-twitter"></i></button>
+                <button class="share-btn" onclick="shareOnWhatsApp()"><i class="fab fa-whatsapp"></i></button>
+                <button class="share-btn" onclick="copyLink()"><i class="fas fa-link"></i></button>
+              </div>
+
+              <div class="author-section">
+                <div class="author-avatar">${authorInitial}</div>
+                <div class="author-info">
+                  <h4>Written by ${authorName}</h4>
+                  <p>Fitness expert and contributor at Ape-X Gym. Passionate about helping others achieve their health goals.</p>
+                </div>
+              </div>
+
+              <div style="text-align: center;">
+                <a href="/blog" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Blog</a>
+              </div>
+            </div>
+          </div>
+        `;
+      } catch (err) {
+        console.error(err);
+        wrapper.innerHTML = `
+          <div class="error-state">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>Article not found</h3>
+            <p>The post you're looking for doesn't exist or has been removed.</p>
+            <a href="/blog" class="back-btn"><i class="fas fa-arrow-left"></i> Browse all articles</a>
+          </div>`;
+      }
+    }
+
+    // Share functions
+    window.shareOnFacebook = function() {
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank', 'width=600,height=400');
+    };
+    window.shareOnTwitter = function() {
+      window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(document.title)}`, '_blank', 'width=600,height=400');
+    };
+    window.shareOnWhatsApp = function() {
+      window.open(`https://wa.me/?text=${encodeURIComponent(document.title + ' ' + window.location.href)}`, '_blank');
+    };
+    window.copyLink = function() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('Link copied to clipboard!');
+      }).catch(() => {
+        prompt('Copy this link:', window.location.href);
+      });
+    };
+
+    loadPost();
+  </script>
+</body>
+</html>

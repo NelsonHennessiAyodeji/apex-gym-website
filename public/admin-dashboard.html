@@ -136,6 +136,11 @@
         font-weight: 800;
         color: #fff;
         margin-bottom: 0.25rem;
+        min-height: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
       }
 
       .stat-label {
@@ -143,6 +148,20 @@
         font-size: 0.8rem;
         text-transform: uppercase;
         letter-spacing: 1px;
+      }
+
+      .spinner {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        border: 3px solid rgba(229, 54, 55, 0.3);
+        border-top-color: #e53637;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
       }
 
       /* Actions Grid - 2 columns on mobile, 4 on desktop */
@@ -245,7 +264,7 @@
         font-size: 0.7rem;
       }
 
-      /* Mobile fine-tuning: keep 2 columns even on small screens */
+      /* Mobile fine-tuning */
       @media (max-width: 640px) {
         .admin-stats {
           grid-template-columns: repeat(2, 1fr);
@@ -309,26 +328,34 @@
         </div>
       </div>
 
-      <!-- Statistics Cards -->
+      <!-- Statistics Cards (with loading spinners) -->
       <div class="admin-stats">
         <div class="stat-card">
           <div class="stat-icon"><i class="fas fa-shopping-bag"></i></div>
-          <div class="stat-number" id="totalProducts">0</div>
+          <div class="stat-number" id="totalProducts">
+            <div class="spinner"></div>
+          </div>
           <div class="stat-label">Total Products</div>
         </div>
         <div class="stat-card">
           <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
-          <div class="stat-number" id="totalBlogs">0</div>
+          <div class="stat-number" id="totalBlogs">
+            <div class="spinner"></div>
+          </div>
           <div class="stat-label">Blog Articles</div>
         </div>
         <div class="stat-card">
           <div class="stat-icon"><i class="fas fa-users"></i></div>
-          <div class="stat-number" id="totalUsers">0</div>
+          <div class="stat-number" id="totalUsers">
+            <div class="spinner"></div>
+          </div>
           <div class="stat-label">Registered Users</div>
         </div>
         <div class="stat-card">
           <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
-          <div class="stat-number" id="totalSales">0</div>
+          <div class="stat-number" id="totalSales">
+            <div class="spinner"></div>
+          </div>
           <div class="stat-label">Total Sales</div>
         </div>
       </div>
@@ -357,7 +384,7 @@
         </a>
       </div>
 
-      <!-- Recent Activity (placeholder) -->
+      <!-- Recent Activity -->
       <div class="recent-activity">
         <div class="section-title">Recent Activity</div>
         <ul class="activity-list" id="activityList">
@@ -373,7 +400,6 @@
     </div>
 
     <script>
-      // Helper functions
       function getSessionToken() {
         return localStorage.getItem("admin_session_token");
       }
@@ -396,17 +422,28 @@
             return;
           }
           if (!response.ok) throw new Error("Failed to load stats");
-          const data = await response.json();
-          document.getElementById("totalProducts").textContent =
-            data.totalProducts || 0;
-          document.getElementById("totalBlogs").textContent =
-            data.totalBlogs || 0;
-          document.getElementById("totalUsers").textContent =
-            data.totalUsers || 0;
-          document.getElementById("totalSales").textContent =
-            "₦" + (data.totalSales || 0).toLocaleString();
+          const result = await response.json();
+          const stats = result.data || result;
+
+          // Update each stat number – replace spinner with actual number
+          const productsEl = document.getElementById("totalProducts");
+          productsEl.innerHTML = (stats.totalProducts || 0).toLocaleString();
+
+          const blogsEl = document.getElementById("totalBlogs");
+          blogsEl.innerHTML = (stats.totalBlogs || 0).toLocaleString();
+
+          const usersEl = document.getElementById("totalUsers");
+          usersEl.innerHTML = (stats.totalUsers || 0).toLocaleString();
+
+          const salesEl = document.getElementById("totalSales");
+          salesEl.innerHTML = "₦" + (stats.totalSales || 0).toLocaleString();
         } catch (err) {
           console.error("Stats error:", err);
+          // Show error fallback
+          document.getElementById("totalProducts").innerHTML = "!";
+          document.getElementById("totalBlogs").innerHTML = "!";
+          document.getElementById("totalUsers").innerHTML = "!";
+          document.getElementById("totalSales").innerHTML = "!";
         }
       }
 
@@ -417,23 +454,16 @@
           return;
         }
 
-        document.getElementById("adminEmailDisplay").textContent =
-          "admin@apexgym.com";
+        document.getElementById("adminEmailDisplay").textContent = "admin@apexgym.com";
         loadDashboardStats();
 
-        // Logout
-        document
-          .getElementById("logoutBtn")
-          .addEventListener("click", async () => {
-            try {
-              await fetch("/admin/logout", {
-                method: "POST",
-                headers: getHeaders(),
-              });
-            } catch (e) {}
-            localStorage.removeItem("admin_session_token");
-            window.location.href = "admin-login.html";
-          });
+        document.getElementById("logoutBtn").addEventListener("click", async () => {
+          try {
+            await fetch("/admin/logout", { method: "POST", headers: getHeaders() });
+          } catch (e) {}
+          localStorage.removeItem("admin_session_token");
+          window.location.href = "admin-login.html";
+        });
       });
     </script>
   </body>

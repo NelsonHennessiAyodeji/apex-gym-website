@@ -57,6 +57,28 @@ app.get("/about", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "about.html"));
 });
 
+// Public blog listing page
+app.get('/blog', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'blog.html'));
+});
+
+// Public API for blog posts (no auth)
+app.get('/api/blog-posts', async (req, res) => {
+  const { getPublicBlogPosts } = require('./controllers/admin.controller');
+  await getPublicBlogPosts(req, res);
+});
+
+// Public single blog post API
+app.get('/api/blog-posts/:id', async (req, res) => {
+  const { getPublicBlogPostById } = require('./controllers/admin.controller');
+  await getPublicBlogPostById(req, res);
+});
+
+// Public single blog post HTML page
+app.get('/blog-post', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'blog-post.html'));
+});
+
 // Add these routes after existing HTML routes
 app.get("/terms", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "terms.html"));
