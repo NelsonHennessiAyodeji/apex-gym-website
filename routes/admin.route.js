@@ -17,6 +17,7 @@ const {
   createBlogPost,
   updateBlogPost,
   deleteBlogPost,
+  getRecentActivityLogs,
 } = require("../controllers/admin.controller.js");
 
 // Configure multer for memory storage
@@ -92,6 +93,8 @@ router.put(
 router.delete("/shop-items/:id", verifyAdminSession, deleteShopItem);
 
 router.get("/shop-items/:id", verifyAdminSession, getShopItemById);
+
+router.get("/activity-logs", verifyAdminSession, getRecentActivityLogs);
 
 // Blog posts routes
 router.get("/blog-posts", verifyAdminSession, getBlogPosts);

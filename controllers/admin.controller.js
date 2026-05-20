@@ -18,6 +18,25 @@ const ADMIN_CREDENTIALS = {
 // Simple session management
 let activeSessions = {};
 
+// Helper: log admin activity
+async function logAdminActivity(action, entityType, entityName, entityId, adminEmail, details = {}) {
+  try {
+    await supabaseAdmin
+      .from("admin_activity_logs")
+      .insert([{
+        action,
+        entity_type: entityType,
+        entity_name: entityName,
+        entity_id: String(entityId),
+        admin_email: adminEmail,
+        details,
+        created_at: new Date().toISOString()
+      }]);
+  } catch (err) {
+    console.error("Failed to log admin activity:", err.message);
+  }
+}
+
 // Admin login
 const adminLogin = async (req, res) => {
   try {
@@ -41,6 +60,8 @@ const adminLogin = async (req, res) => {
           req.headers["x-forwarded-for"] ||
           req.connection.remoteAddress,
       };
+
+      await logAdminActivity("LOGIN", "admin", ADMIN_CREDENTIALS.email, null, email, { ip: req.ip });
 
       console.log("Admin login successful, session created");
 
@@ -71,7 +92,7 @@ const adminLogin = async (req, res) => {
 };
 
 // Simple session verification
-const verifyAdminSession = (req, res, next) => {
+const verifyAdminSession = async (req, res, next) => {
   try {
     const sessionToken = req.headers["x-admin-session"];
 
@@ -119,13 +140,15 @@ const verifyAdminSession = (req, res, next) => {
 };
 
 // Admin logout
-const adminLogout = (req, res) => {
+const adminLogout = async (req, res) => {
   try {
     const sessionToken = req.headers["x-admin-session"];
 
     if (sessionToken) {
       delete activeSessions[sessionToken];
     }
+
+    await logAdminActivity("LOGOUT", "admin", req.adminEmail || "unknown", null, req.adminEmail);
 
     res.json({
       success: true,
@@ -487,6 +510,15 @@ const createShopItem = async (req, res) => {
       throw error;
     }
 
+    await logAdminActivity(
+      "CREATE",
+      "product",
+      name,
+      data[0].id,
+      req.adminEmail,
+      { name, price, stock, category }
+    );
+
     console.log("Shop item created successfully:", data[0]);
 
     res.status(201).json({
@@ -587,6 +619,15 @@ const updateShopItem = async (req, res) => {
 
     console.log("Shop item updated successfully:", data[0]);
 
+    await logAdminActivity(
+      "UPDATE",
+      "product",
+      updateData.name,
+      id,
+      req.adminEmail,
+      { updated_fields: updateData }
+    );
+
     res.json({
       success: true,
       data: data[0],
@@ -631,6 +672,15 @@ const deleteShopItem = async (req, res) => {
     }
 
     console.log("Shop item deleted successfully");
+
+    await logAdminActivity(
+      "DELETE",
+      "product",
+      "Product ID " + id,
+      id,
+      req.adminEmail,
+      { deleted_id: id }
+    );
 
     res.json({
       success: true,
@@ -831,6 +881,15 @@ const createBlogPost = async (req, res) => {
 
     if (error) throw error;
 
+    await logAdminActivity(
+      "CREATE",
+      "blog",
+      title,
+      data[0].id,
+      req.adminEmail,
+      { title, category, status }
+    );
+
     res.status(201).json({
       success: true,
       data: data[0],
@@ -891,6 +950,15 @@ const updateBlogPost = async (req, res) => {
 
     console.log("Updated post:", data[0]);
 
+    await logAdminActivity(
+      "UPDATE",
+      "blog",
+      title || "Blog post",
+      id,
+      req.adminEmail,
+      { updated_fields: updateData }
+    );
+
     res.json({
       success: true,
       data: data[0],
@@ -916,6 +984,15 @@ const deleteBlogPost = async (req, res) => {
 
     if (error) throw error;
 
+    await logAdminActivity(
+      "DELETE",
+      "blog",
+      "Blog post ID " + id,
+      id,
+      req.adminEmail,
+      { deleted_id: id }
+    );
+
     res.json({
       success: true,
       message: "Blog post deleted successfully",
@@ -927,6 +1004,27 @@ const deleteBlogPost = async (req, res) => {
       error: "Internal server error",
       details: error.message,
     });
+  }
+};
+
+const getRecentActivityLogs = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 10;
+    const { data, error } = await supabaseAdmin
+      .from("admin_activity_logs")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(limit);
+
+    if (error) throw error;
+
+    res.json({
+      success: true,
+      data: data || []
+    });
+  } catch (error) {
+    console.error("Get activity logs error:", error);
+    res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
 
@@ -972,4 +1070,5 @@ module.exports = {
   createBlogPost,
   updateBlogPost,
   deleteBlogPost,
+  getRecentActivityLogs,
 };
