@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ape-X Gym – Contact Us</title>
+  <meta name="description" content="Get in touch with Ape-X Gym. Find our locations, phone numbers, email, and send us a message.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="https://dummyimage.com/64x64/000000/ffffff&text=AXG">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Contact page specific styles */
+    .contact-hero {
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://dummyimage.com/1920x400/222/666&text=Contact+Ape-X+Gym');
+      background-size: cover;
+      background-position: center;
+      padding: 4rem 2rem;
+      text-align: center;
+      color: var(--white);
+    }
+
+    .contact-hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .contact-hero p {
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+      color: #ccc;
+    }
+
+    .contact-section {
+      padding: 4rem 2rem;
+      background-color: var(--light-bg);
+    }
+
+    .contact-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Contact Info Cards - 2 columns on mobile */
+    .contact-info-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .info-card {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .info-card:hover {
+      transform: translateY(-5px);
+      border-bottom: 3px solid var(--accent-red);
+    }
+
+    .info-card i {
+      font-size: 2.5rem;
+      color: var(--accent-red);
+      margin-bottom: 1rem;
+    }
+
+    .info-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary-black);
+    }
+
+    .info-card p, .info-card a {
+      color: var(--medium-grey);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .info-card a:hover {
+      color: var(--accent-red);
+    }
+
+    /* Contact Form + Map */
+    .contact-form-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      background: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .contact-form {
+      padding: 2rem;
+    }
+
+    .contact-form h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      color: var(--primary-black);
+      position: relative;
+      display: inline-block;
+    }
+
+    .contact-form h2::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background-color: var(--accent-gold);
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      background: var(--light-bg);
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--accent-red);
+      box-shadow: 0 0 0 2px rgba(255,59,48,0.1);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .submit-btn {
+      background: var(--accent-red);
+      color: white;
+      border: none;
+      padding: 0.9rem 2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      width: 100%;
+    }
+
+    .submit-btn:hover {
+      background: #e0352a;
+      transform: translateY(-2px);
+    }
+
+    .map-placeholder {
+      background: #1a1a1a;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .map-placeholder img {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .map-placeholder p {
+      color: #ccc;
+      font-size: 0.9rem;
+    }
+
+    /* Business Hours */
+    .hours-section {
+      margin-top: 3rem;
+      background: var(--white);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .hours-section h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--primary-black);
+      text-align: center;
+    }
+
+    .hours-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .hours-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .hours-day {
+      font-weight: 600;
+      color: var(--primary-black);
+    }
+
+    .hours-time {
+      color: var(--medium-grey);
+    }
+
+    /* Responsive: 2 columns for contact cards on mobile */
+    @media (max-width: 1024px) {
+      .contact-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .contact-hero h1 {
+        font-size: 1.8rem;
+      }
+      .contact-form-wrapper {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      .map-placeholder {
+        order: -1;
+        padding: 2rem;
+      }
+      .contact-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+      .info-card {
+        padding: 1.2rem;
+      }
+      .info-card i {
+        font-size: 1.8rem;
+      }
+      .info-card h3 {
+        font-size: 1rem;
+      }
+      .info-card p, .info-card a {
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .contact-section {
+        padding: 2rem 1rem;
+      }
+      .contact-form {
+        padding: 1.5rem;
+      }
+      .contact-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+      }
+      .info-card {
+        padding: 1rem;
+      }
+      .hours-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header (copied from index.html) -->
+  <header class="site-header">
+    <div class="header-container">
+      <div class="logo">
+        <a href="/">
+          <div class="logo-circle">
+            <img src="/images/20251201_192548.png" alt="Ape-X Gym Logo" class="logo-img">
+          </div>
+          <span class="logo-text">Ape-X Gym</span>
+        </a>
+      </div>
+
+      <nav class="main-nav desktop-nav">
+        <ul class="nav-links">
+          <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="/membership" class="nav-link">Memberships</a></li>
+          <li class="nav-item"><a href="/shop" class="nav-link">Ape-X Store</a></li>
+          <li class="nav-item"><a href="/about" class="nav-link">About Ape-X</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-right">
+        <div class="auth-buttons">
+          <a href="/profile" class="btn-account">My Account</a>
+          <a href="/register" class="btn-join">Join Now</a>
+        </div>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu">
+          <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+        </button>
+      </div>
+    </div>
+
+    <nav class="mobile-nav" id="mobileNav">
+      <div class="mobile-nav-container">
+        <div class="mobile-nav-header">
+          <div class="logo">
+            <img src="https://dummyimage.com/60x60/000000/ffffff&text=AXG" alt="Ape-X Gym">
+            <span>Ape-X Gym</span>
+          </div>
+          <button class="close-menu" id="closeMenu">&times;</button>
+        </div>
+        <ul class="mobile-nav-links">
+          <li><a href="/" class="mobile-nav-link">Home</a></li>
+          <li><a href="/membership" class="mobile-nav-link">Memberships</a></li>
+          <li><a href="/shop" class="mobile-nav-link">Ape-X Store</a></li>
+          <li><a href="/about" class="mobile-nav-link">About Ape-X</a></li>
+          <li><a href="/profile" class="mobile-nav-link">My Account</a></li>
+          <li><a href="/register" class="mobile-nav-link">Join Now</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="contact-hero">
+      <div class="hero-content">
+        <h1>Get In Touch</h1>
+        <p>Have questions? We're here to help. Reach out to us anytime.</p>
+      </div>
+    </section>
+
+    <section class="contact-section">
+      <div class="contact-container">
+        <!-- Contact Info Cards - 2 columns on mobile -->
+        <div class="contact-info-grid">
+          <div class="info-card">
+            <i class="fas fa-map-marker-alt"></i>
+            <h3>Visit Us</h3>
+            <p>4 Fitness Avenue, Ikeja<br>Lagos, Nigeria</p>
+            <p><small>Also in Abuja, Port Harcourt, Ibadan</small></p>
+          </div>
+          <div class="info-card">
+            <i class="fas fa-phone-alt"></i>
+            <h3>Call Us</h3>
+            <p><a href="tel:+2341234567890">+234 123 456 7890</a></p>
+            <p><a href="tel:+2341234567891">+234 123 456 7891</a></p>
+          </div>
+          <div class="info-card">
+            <i class="fas fa-envelope"></i>
+            <h3>Email Us</h3>
+            <p><a href="mailto:info@apexgym.com.ng">info@apexgym.com.ng</a></p>
+            <p><a href="mailto:support@apexgym.com.ng">support@apexgym.com.ng</a></p>
+          </div>
+          <div class="info-card">
+            <i class="fab fa-whatsapp"></i>
+            <h3>WhatsApp</h3>
+            <p><a href="https://wa.me/2341234567890">+234 123 456 7890</a></p>
+          </div>
+        </div>
+
+        <!-- Contact Form + Map -->
+        <div class="contact-form-wrapper">
+          <div class="contact-form">
+            <h2>Send us a message</h2>
+            <form id="contactForm">
+              <div class="form-group">
+                <input type="text" id="fullName" placeholder="Your Full Name" required>
+              </div>
+              <div class="form-group">
+                <input type="email" id="email" placeholder="Your Email Address" required>
+              </div>
+              <div class="form-group">
+                <input type="tel" id="phone" placeholder="Phone Number (optional)">
+              </div>
+              <div class="form-group">
+                <select id="subject">
+                  <option value="general">General Inquiry</option>
+                  <option value="membership">Membership Question</option>
+                  <option value="support">Technical Support</option>
+                  <option value="feedback">Feedback / Suggestion</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <textarea id="message" placeholder="Your Message..." required></textarea>
+              </div>
+              <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+          </div>
+          <div class="map-placeholder">
+            <img src="https://dummyimage.com/500x400/222/666&text=Map+Location" alt="Ape-X Gym Lagos location">
+            <p><i class="fas fa-map-pin"></i> 4 Fitness Avenue, Ikeja, Lagos</p>
+            <p><small>View our interactive map coming soon</small></p>
+          </div>
+        </div>
+
+        <!-- Business Hours -->
+        <div class="hours-section">
+          <h3>Opening Hours</h3>
+          <div class="hours-grid">
+            <div class="hours-item"><span class="hours-day">Monday - Friday</span><span class="hours-time">5:00 AM – 11:00 PM</span></div>
+            <div class="hours-item"><span class="hours-day">Saturday</span><span class="hours-time">6:00 AM – 10:00 PM</span></div>
+            <div class="hours-item"><span class="hours-day">Sunday</span><span class="hours-time">7:00 AM – 8:00 PM</span></div>
+            <div class="hours-item"><span class="hours-day">Public Holidays</span><span class="hours-time">8:00 AM – 6:00 PM</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer (copied from index.html) -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <img src="/images/20251201_192548.png" alt="Ape-X Gym">
+            <span>Ape-X Gym</span>
+          </div>
+          <p class="footer-tagline">Where Excellence Meets Fitness</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>Info</h4>
+            <ul><li><a href="/about">About Us</a></li><li><a href="/membership">Memberships</a></li><li><a href="#">Careers</a></li></ul>
+          </div>
+          <div class="footer-column">
+            <h4>Legal</h4>
+            <ul><li><a href="/privacy">Privacy Policy</a></li><li><a href="/terms">Terms & Conditions</a></li></ul>
+          </div>
+          <div class="footer-column">
+            <h4>Support</h4>
+            <ul><li><a href="/contact">Contact Us</a></li><li><a href="#">FAQs</a></li><li><a href="/blog">Blog</a></li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-middle">
+        <div class="newsletter">
+          <h4>Stay Updated</h4>
+          <p>Subscribe for exclusive offers and fitness tips</p>
+          <form id="newsletterForm" class="newsletter-form">
+            <input type="email" placeholder="Enter your email" required>
+            <button type="submit">Subscribe</button>
+          </form>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="copyright">
+          <p>&copy; 2025 Ape-X Gym Nigeria. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/mobile-menu.js"></script>
+  <script src="/js/main.js"></script>
+  <script>
+    // Back to top
+    document.addEventListener("DOMContentLoaded", function() {
+      const backToTopBtn = document.getElementById("backToTop");
+      window.addEventListener("scroll", function() {
+        if (window.pageYOffset > 300) backToTopBtn.classList.add("visible");
+        else backToTopBtn.classList.remove("visible");
+      });
+      backToTopBtn.addEventListener("click", function() {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    });
+
+    // Contact form submission (placeholder - no backend required)
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Thank you for reaching out! We will get back to you shortly.');
+      this.reset();
+    });
+
+    // Newsletter form
+    const newsletterForm = document.getElementById('newsletterForm');
+    if (newsletterForm) {
+      newsletterForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Thank you for subscribing!');
+        this.reset();
+      });
+    }
+  </script>
+</body>
+</html>

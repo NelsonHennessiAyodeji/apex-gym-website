@@ -20,6 +20,23 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/auth", require("./routes/auth.route"));
 app.use("/admin", require("./routes/admin.route"));
 app.use("/cart", require("./routes/cart.route"));
+app.use("/api", require("./routes/api.route"));
+app.use("/orders", require("./routes/order.route"));
+
+// Componenets Routes
+// Update the static file serving section
+app.use(
+  express.static(path.join(__dirname, "public"), {
+    setHeaders: (res, path) => {
+      if (path.endsWith(".css")) {
+        res.setHeader("Content-Type", "text/css");
+      }
+      if (path.endsWith(".js")) {
+        res.setHeader("Content-Type", "application/javascript");
+      }
+    },
+  })
+);
 
 // Route to serve HTML files
 app.get("/", (req, res) => {
@@ -40,6 +57,10 @@ app.get("/profile", (req, res) => {
 
 app.get("/membership", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "membership.html"));
+});
+
+app.get("/contact", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "contact.html"));
 });
 
 // Add this route after other HTML routes
@@ -88,6 +109,10 @@ app.get("/privacy", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "privacy.html"));
 });
 
+app.get("/checkout", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "checkout.html"));
+});
+
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin-login.html"));
 });
@@ -103,21 +128,6 @@ app.get("/admin/shop", verifyAdminSession, (req, res) => {
 app.get("/admin/blog", verifyAdminSession, (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin-blog.html"));
 });
-
-// Componenets Routes
-// Update the static file serving section
-app.use(
-  express.static(path.join(__dirname, "public"), {
-    setHeaders: (res, path) => {
-      if (path.endsWith(".css")) {
-        res.setHeader("Content-Type", "text/css");
-      }
-      if (path.endsWith(".js")) {
-        res.setHeader("Content-Type", "application/javascript");
-      }
-    },
-  })
-);
 
 // Add route for header and footer includes
 app.get("/header", (req, res) => {

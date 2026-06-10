@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ape-X Gym – Checkout</title>
+  <link rel="icon" type="image/x-icon" href="https://dummyimage.com/64x64/000000/ffffff&text=AXG">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    .checkout-page { background-color: var(--light-bg); min-height: calc(100vh - 200px); }
+    .checkout-container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+    .checkout-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 2rem; }
+    .order-summary { background: var(--white); border-radius: 12px; padding: 1.5rem; box-shadow: var(--shadow); position: sticky; top: 100px; }
+    .order-summary h2 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--primary-black); border-bottom: 2px solid var(--accent-gold); display: inline-block; }
+    .cart-items-list { max-height: 400px; overflow-y: auto; margin: 1rem 0; }
+    .cart-item-checkout { display: flex; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid #eee; }
+    .cart-item-checkout img { width: 70px; height: 70px; object-fit: cover; border-radius: 8px; }
+    .cart-item-details { flex: 1; }
+    .cart-item-name { font-weight: 600; margin-bottom: 0.25rem; }
+    .cart-item-price { color: var(--accent-red); font-weight: 700; }
+    .cart-item-quantity { color: #666; font-size: 0.85rem; }
+    .order-total { display: flex; justify-content: space-between; padding: 1rem 0; font-size: 1.3rem; font-weight: 700; border-top: 2px solid #ddd; margin-top: 1rem; }
+    .checkout-form { background: var(--white); border-radius: 12px; padding: 1.5rem; box-shadow: var(--shadow); }
+    .checkout-form h2 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--primary-black); border-bottom: 2px solid var(--accent-gold); display: inline-block; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--dark-grey); }
+    .form-group input, .form-group select { width: 100%; padding: 0.8rem 1rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; transition: var(--transition); }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--accent-red); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .paystack-btn { width: 100%; background: var(--accent-red); color: var(--white); border: none; padding: 1rem; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: var(--transition); margin-top: 1rem; }
+    .paystack-btn:hover { background: #e0352a; transform: translateY(-2px); }
+    .empty-cart-message { text-align: center; padding: 2rem; color: #666; }
+    .back-to-shop { display: inline-block; margin-top: 1rem; color: var(--accent-red); text-decoration: none; }
+    @media (max-width: 768px) {
+      .checkout-grid { grid-template-columns: 1fr; }
+      .order-summary { position: static; order: 1; }
+      .checkout-form { order: 2; }
+      .form-row { grid-template-columns: 1fr; }
+      .checkout-container { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header (exactly like shop.html) -->
+  <header class="site-header">
+    <div class="header-container">
+      <div class="logo">
+        <a href="/">
+          <div class="logo-circle">
+            <img src="/images/20251201_192548.png" alt="Ape-X Gym Logo" class="logo-img">
+          </div>
+          <span class="logo-text">Ape-X Gym</span>
+        </a>
+      </div>
+      <nav class="main-nav desktop-nav">
+        <ul class="nav-links">
+          <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="/membership" class="nav-link">Memberships</a></li>
+          <li class="nav-item"><a href="/shop" class="nav-link">Shop</a></li>
+          <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
+        </ul>
+      </nav>
+      <div class="header-right">
+        <div class="cart-icon" id="cartIcon">
+          <i class="fa fa-shopping-cart"></i>
+          <span class="cart-count" id="cartCount">0</span>
+          <div class="cart-dropdown" id="cartDropdown">
+            <div class="cart-items" id="cartItems">
+              <div class="empty-cart"><i class="fa fa-shopping-cart"></i><p>Your cart is empty</p></div>
+            </div>
+            <div class="cart-total" id="cartTotalContainer" style="display: none">
+              <span>Total:</span><span id="cartTotal">₦0</span>
+            </div>
+            <div class="cart-actions" id="cartActions" style="display: none">
+              <a href="#" class="view-cart">View Cart</a>
+              <a href="/checkout" class="checkout">Checkout</a>
+            </div>
+          </div>
+        </div>
+        <div class="profile-icon" id="profileIcon">
+          <i class="fa fa-user"></i>
+          <div class="profile-dropdown" id="profileDropdown">
+            <a href="/profile" class="profile-link" style="display: none">My Profile</a>
+            <a href="/login" class="login-link">Login</a>
+            <a href="/register" class="register-link">Register</a>
+            <a href="#" class="logout-link" style="display: none">Logout</a>
+          </div>
+        </div>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle"><span class="bar"></span><span class="bar"></span><span class="bar"></span></button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobileNav">
+      <div class="mobile-nav-container">
+        <div class="mobile-nav-header">
+          <div class="logo"><img src="https://dummyimage.com/60x60/000000/ffffff&text=AXG" alt="Ape-X Gym"><span>Ape-X Gym</span></div>
+          <button class="close-menu" id="closeMenu">&times;</button>
+        </div>
+        <ul class="mobile-nav-links">
+          <li><a href="/" class="mobile-nav-link">Home</a></li>
+          <li><a href="/membership" class="mobile-nav-link">Memberships</a></li>
+          <li><a href="/shop" class="mobile-nav-link">Shop</a></li>
+          <li><a href="/about" class="mobile-nav-link">About</a></li>
+          <li><a href="/profile" class="mobile-nav-link">My Account</a></li>
+          <li><a href="/register" class="mobile-nav-link">Join Now</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main class="checkout-page">
+    <div class="checkout-container">
+      <div id="loadingState" style="text-align: center; padding: 4rem;">
+        <i class="fas fa-spinner fa-spin" style="font-size: 3rem; color: var(--accent-red);"></i>
+        <p style="color: #bbb; margin-top: 1rem;">Loading checkout...</p>
+      </div>
+      <div id="checkoutContent" style="display: none;">
+        <div class="checkout-grid">
+          <div class="order-summary">
+            <h2>Order Summary</h2>
+            <div id="cartItemsList" class="cart-items-list"></div>
+            <div class="order-total">
+              <span>Total:</span>
+              <span id="orderTotalAmount">₦0</span>
+            </div>
+          </div>
+          <div class="checkout-form">
+            <h2>Billing Details</h2>
+            <form id="checkoutForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>First Name *</label>
+                  <input type="text" id="firstName" required>
+                </div>
+                <div class="form-group">
+                  <label>Last Name *</label>
+                  <input type="text" id="lastName" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Email Address *</label>
+                <input type="email" id="email" required>
+              </div>
+              <div class="form-group">
+                <label>Phone Number *</label>
+                <input type="tel" id="phone" required>
+              </div>
+              <div class="form-group">
+                <label>Full Address *</label>
+                <input type="text" id="address" placeholder="Street, City, State" required>
+              </div>
+              <button type="submit" class="paystack-btn" id="payNowBtn">
+                <i class="fas fa-credit-card"></i> Pay Now
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div id="errorState" style="display: none; text-align: center; padding: 4rem;">
+        <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: var(--accent-red);"></i>
+        <h2 style="color: var(--primary-black);">Unable to load checkout</h2>
+        <p id="errorMessage" style="color: #666;">Please try again later.</p>
+        <a href="/shop" class="back-to-shop">← Back to Shop</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo"><img src="/images/20251201_192548.png" alt="Ape-X Gym"><span>Ape-X Gym</span></div>
+          <p class="footer-tagline">Where Excellence Meets Fitness</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <div class="footer-column"><h4>Info</h4><ul><li><a href="/about">About Us</a></li><li><a href="/membership">Memberships</a></li><li><a href="#">Careers</a></li></ul></div>
+          <div class="footer-column"><h4>Legal</h4><ul><li><a href="/privacy">Privacy Policy</a></li><li><a href="/terms">Terms & Conditions</a></li></ul></div>
+          <div class="footer-column"><h4>Support</h4><ul><li><a href="/contact">Contact Us</a></li><li><a href="#">FAQs</a></li><li><a href="/blog">Blog</a></li></ul></div>
+        </div>
+      </div>
+      <div class="footer-middle"><div class="newsletter"><h4>Stay Updated</h4><form id="newsletterForm" class="newsletter-form"><input type="email" placeholder="Enter your email" required><button type="submit">Subscribe</button></form></div></div>
+      <div class="footer-bottom"><div class="copyright"><p>&copy; 2025 Ape-X Gym Nigeria. All rights reserved.</p></div></div>
+    </div>
+  </footer>
+
+  <button id="backToTop" class="back-to-top"><i class="fas fa-chevron-up"></i></button>
+
+  <script src="/js/mobile-menu.js"></script>
+  <script src="/js/main.js"></script>
+  <style>
+    /* Header dropdown styles (same as shop) */
+    .cart-icon, .profile-icon { position: relative; margin-left: 20px; cursor: pointer; }
+    .cart-icon i, .profile-icon i { font-size: 1.2rem; color: var(--dark-grey); transition: var(--transition); }
+    .cart-icon:hover i, .profile-icon:hover i { color: var(--accent-red); }
+    .cart-count { position: absolute; top: -8px; right: -8px; background-color: var(--accent-red); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+    .cart-dropdown, .profile-dropdown { position: absolute; top: 100%; right: 0; background-color: var(--dark-grey); border: 1px solid #333; border-radius: 8px; padding: 1rem; min-width: 280px; z-index: 1000; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+    .cart-icon:hover .cart-dropdown, .profile-icon:hover .profile-dropdown { display: block; }
+    .cart-items { max-height: 300px; overflow-y: auto; }
+    .cart-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0; border-bottom: 1px solid #333; }
+    .cart-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
+    .cart-item-details { flex: 1; }
+    .cart-item-name { color: var(--white); font-size: 0.9rem; }
+    .cart-item-price { color: var(--accent-red); font-size: 0.85rem; font-weight: 600; }
+    .remove-item { background: none; border: none; color: #b7b7b7; cursor: pointer; font-size: 1rem; padding: 0.25rem; }
+    .remove-item:hover { color: var(--accent-red); }
+    .empty-cart { text-align: center; color: #b7b7b7; padding: 1rem; }
+    .empty-cart i { font-size: 2rem; margin-bottom: 0.5rem; }
+    .cart-total { display: flex; justify-content: space-between; margin-top: 1rem; padding-top: 0.5rem; border-top: 1px solid #333; color: var(--white); font-weight: 600; }
+    .cart-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
+    .cart-actions a { flex: 1; text-align: center; padding: 0.5rem; border-radius: 4px; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    .view-cart { background-color: #333; color: var(--white); }
+    .checkout { background-color: var(--accent-red); color: var(--white); }
+    .profile-dropdown { min-width: 150px; padding: 0.5rem 0; }
+    .profile-dropdown a { display: block; padding: 0.5rem 1rem; color: var(--white); text-decoration: none; transition: background 0.3s; }
+    .profile-dropdown a:hover { background-color: #333; color: var(--accent-red); }
+    .header-right { display: flex; align-items: center; gap: 1rem; }
+    @media (max-width: 768px) { .cart-icon, .profile-icon { margin-left: 0; } }
+  </style>
+
+  <script>
+    // Helper: get token
+    function getToken() {
+      return localStorage.getItem("supabase_token");
+    }
+
+    let cartItems = [];
+    let totalAmount = 0;
+    let userProfile = null;
+    let userEmail = "";
+    let paystackPublicKey = null;
+
+    // Fetch Paystack public key from backend
+    async function fetchPaystackKey() {
+      try {
+        const res = await fetch('/api/paystack-key', {
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await res.json();
+        if (data.success && data.key) {
+          paystackPublicKey = data.key;
+          console.log("Paystack key loaded");
+          return true;
+        } else {
+          console.error("No key in response", data);
+          return false;
+        }
+      } catch(err) {
+        console.error("Error fetching Paystack key:", err);
+        return false;
+      }
+    }
+
+    // This function will be called from Paystack's callback (must be a regular function, not async)
+    window.paystackCallback = function(response) {
+      // This is a regular function, we'll call our async handler
+      handlePaymentSuccess(response);
+    };
+
+    async function handlePaymentSuccess(response) {
+    const payBtn = document.getElementById("payNowBtn");
+    payBtn.disabled = true;
+    payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+    const firstName = document.getElementById("firstName").value.trim();
+    const lastName = document.getElementById("lastName").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const fullAddress = document.getElementById("address").value.trim();
+
+    try {
+        const city = fullAddress.split(',')[1]?.trim() || '';
+        const state = fullAddress.split(',')[2]?.trim() || '';
+        const billingDetails = {
+        email: email,
+        address: fullAddress,
+        city: city,
+        state: state,
+        reference: response.reference
+        };
+        await saveOrderAndClearCart(response.reference, billingDetails);
+        alert('Payment successful! Your order has been placed.');
+        window.location.href = "/shop?payment=success";
+    } catch (err) {
+        console.error("Order save error:", err);
+        alert(`Payment was successful but order could not be saved.\nError: ${err.message}\nPlease contact support with reference: ${response.reference}`);
+        window.location.href = "/shop?payment=pending";
+    }
+    }
+
+    async function initCheckoutWithEmail() {
+      // First load the Paystack key
+      const keyLoaded = await fetchPaystackKey();
+      if (!keyLoaded || !paystackPublicKey) {
+        document.getElementById("loadingState").style.display = "none";
+        document.getElementById("errorState").style.display = "block";
+        document.getElementById("errorMessage").innerHTML = "Payment system not configured. Please contact support.";
+        return;
+      }
+
+      const token = getToken();
+      if (!token) {
+        window.location.href = "/login";
+        return;
+      }
+      try {
+        // Load user profile
+        const profileRes = await fetch("/auth/profile", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (!profileRes.ok) throw new Error("Failed to load profile");
+        const profileData = await profileRes.json();
+        userProfile = profileData.profile;
+        userEmail = profileData.user.email;
+
+        // Load cart
+        const cartRes = await fetch("/cart", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const cartData = await cartRes.json();
+        if (!cartData.success) throw new Error("Failed to load cart");
+        cartItems = cartData.items || [];
+        totalAmount = cartData.total || 0;
+
+        if (cartItems.length === 0) {
+          document.getElementById("loadingState").style.display = "none";
+          document.getElementById("errorState").style.display = "block";
+          document.getElementById("errorMessage").innerHTML = "Your cart is empty. <a href='/shop' style='color: var(--accent-red);'>Continue shopping</a>";
+          return;
+        }
+
+        // Pre-fill form
+        document.getElementById("firstName").value = userProfile.first_name || "";
+        document.getElementById("lastName").value = userProfile.last_name || "";
+        document.getElementById("email").value = userEmail;
+        document.getElementById("phone").value = userProfile.phone || "";
+        document.getElementById("address").value = userProfile.address || "";
+
+        renderOrderSummary();
+        updateHeaderCart();
+        updateProfileDropdown(true);
+
+        document.getElementById("loadingState").style.display = "none";
+        document.getElementById("checkoutContent").style.display = "block";
+      } catch (err) {
+        console.error(err);
+        document.getElementById("loadingState").style.display = "none";
+        document.getElementById("errorState").style.display = "block";
+        document.getElementById("errorMessage").innerHTML = err.message;
+      }
+    }
+
+    function renderOrderSummary() {
+      const container = document.getElementById("cartItemsList");
+      if (!container) return;
+      if (cartItems.length === 0) {
+        container.innerHTML = '<div class="empty-cart-message">Your cart is empty</div>';
+        document.getElementById("orderTotalAmount").innerHTML = "₦0";
+        return;
+      }
+      let html = "";
+      cartItems.forEach(item => {
+        const price = item.shop_items?.price || 0;
+        const qty = item.quantity || 1;
+        const total = price * qty;
+        html += `
+          <div class="cart-item-checkout">
+            <img src="${item.shop_items?.image_url || 'https://via.placeholder.com/70'}" alt="${item.shop_items?.name}">
+            <div class="cart-item-details">
+              <div class="cart-item-name">${item.shop_items?.name}</div>
+              <div class="cart-item-price">₦${price.toLocaleString()}</div>
+              <div class="cart-item-quantity">Quantity: ${qty}</div>
+            </div>
+            <div style="font-weight: 700;">₦${total.toLocaleString()}</div>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+      document.getElementById("orderTotalAmount").innerHTML = `₦${totalAmount.toLocaleString()}`;
+    }
+
+    async function updateHeaderCart() {
+      const token = getToken();
+      if (!token) {
+        document.querySelectorAll(".cart-count").forEach(el => el.textContent = "0");
+        return;
+      }
+      try {
+        const res = await fetch("/cart", { headers: { Authorization: `Bearer ${token}` } });
+        const data = await res.json();
+        const count = data.success ? (data.items?.length || 0) : 0;
+        document.querySelectorAll(".cart-count").forEach(el => el.textContent = count);
+      } catch(e) {
+        document.querySelectorAll(".cart-count").forEach(el => el.textContent = "0");
+      }
+    }
+
+    function updateProfileDropdown(isLoggedIn) {
+      document.querySelectorAll(".profile-link").forEach(l => l.style.display = isLoggedIn ? "block" : "none");
+      document.querySelectorAll(".login-link").forEach(l => l.style.display = isLoggedIn ? "none" : "block");
+      document.querySelectorAll(".register-link").forEach(l => l.style.display = isLoggedIn ? "none" : "block");
+      document.querySelectorAll(".logout-link").forEach(l => l.style.display = isLoggedIn ? "block" : "none");
+    }
+
+    async function saveOrderAndClearCart(reference, billingDetails) {
+      const token = getToken();
+      if (!token) throw new Error("Not authenticated");
+
+      const orderData = {
+        email: billingDetails.email,
+        total: totalAmount,
+        items: cartItems.map(item => ({
+          product_id: item.product_id,
+          name: item.shop_items.name,
+          price: item.shop_items.price,
+          quantity: item.quantity
+        })),
+        billingDetails: {
+          address: billingDetails.address,
+          city: billingDetails.city,
+          state: billingDetails.state,
+          reference: reference
+        }
+      };
+
+      const res = await fetch("/orders/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(orderData)
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error || "Order creation failed");
+      return data.orderId;
+    }
+
+    function payWithPaystack(e) {
+      e.preventDefault();
+
+      if (!paystackPublicKey) {
+        alert("Payment system not ready. Please refresh the page.");
+        return;
+      }
+
+      const firstName = document.getElementById("firstName").value.trim();
+      const lastName = document.getElementById("lastName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const fullAddress = document.getElementById("address").value.trim();
+
+      if (!firstName || !lastName || !email || !phone || !fullAddress) {
+        alert("Please fill in all billing details.");
+        return;
+      }
+
+      if (cartItems.length === 0) {
+        alert("Your cart is empty.");
+        return;
+      }
+
+      const amountKobo = totalAmount * 100;
+      const reference = 'AXG-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
+
+      const handler = PaystackPop.setup({
+        key: paystackPublicKey,
+        email: email,
+        amount: amountKobo,
+        currency: 'NGN',
+        ref: reference,
+        metadata: {
+          custom_fields: [
+            { display_name: "First Name", variable_name: "first_name", value: firstName },
+            { display_name: "Last Name", variable_name: "last_name", value: lastName },
+            { display_name: "Phone", variable_name: "phone", value: phone },
+            { display_name: "Address", variable_name: "address", value: fullAddress }
+          ]
+        },
+        callback: window.paystackCallback,  // Use the regular function reference
+        onClose: function() {
+          alert('Payment window closed.');
+        }
+      });
+      handler.openIframe();
+    }
+
+    // Logout functionality
+    document.querySelectorAll(".logout-link").forEach(link => {
+      link.addEventListener("click", async (e) => {
+        e.preventDefault();
+        await fetch("/auth/logout", { method: "POST" });
+        localStorage.removeItem("supabase_token");
+        window.location.href = "/";
+      });
+    });
+
+    // Newsletter form
+    document.getElementById("newsletterForm")?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      alert("Thank you for subscribing!");
+      e.target.reset();
+    });
+
+    // Back to top
+    const backToTop = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.pageYOffset > 300) backToTop.classList.add("visible");
+      else backToTop.classList.remove("visible");
+    });
+    backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+    // Attach event listener to form
+    document.getElementById("checkoutForm").addEventListener("submit", payWithPaystack);
+
+    // Load Paystack script and then initialize
+    const script = document.createElement('script');
+    script.src = 'https://js.paystack.co/v1/inline.js';
+    script.onload = () => {
+      initCheckoutWithEmail();
+    };
+    document.head.appendChild(script);
+  </script>
+</body>
+</html>

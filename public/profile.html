@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -6,443 +6,386 @@
     <title>Ape-X Gym – My Profile</title>
     <meta
       name="description"
-      content="Manage your Ape-X Gym account, view membership, track orders, and update your fitness profile."
+      content="View and manage your Ape-X Gym account, membership, and orders."
     />
 
-    <!-- Favicon -->
     <link
       rel="icon"
       type="image/x-icon"
       href="https://dummyimage.com/64x64/000000/ffffff&text=AXG"
     />
-
-    <!-- CSS -->
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/responsive.css" />
-
-    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-
-    <!-- Google Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap"
       rel="stylesheet"
     />
 
     <style>
-      /* Profile specific styles */
-      .profile-wrapper {
-        max-width: 1200px;
-        margin: 2rem auto;
-        padding: 0 2rem;
+      /* Profile page custom styles (same as before) */
+      .profile-page {
+        background-color: var(--primary-black);
+        min-height: calc(100vh - 200px);
       }
-
-      .profile-header {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        align-items: center;
-        margin-bottom: 2rem;
+      .profile-container {
+        max-width: 1200px;
+        margin: 0 auto;
         padding: 2rem;
+      }
+      .profile-header-card {
         background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
         border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
         border: 1px solid #333;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        flex-wrap: wrap;
       }
-
       .profile-avatar {
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, var(--accent-red), #8b0000);
         border-radius: 50%;
-        background: #333;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-size: 3rem;
+        color: var(--white);
         border: 3px solid var(--accent-gold);
       }
-
-      .profile-avatar i {
-        font-size: 3rem;
-        color: var(--accent-gold);
+      .profile-info-header {
+        flex: 1;
       }
-
-      .profile-info h1 {
+      .profile-info-header h1 {
         color: var(--white);
         margin-bottom: 0.5rem;
+        font-size: 1.8rem;
       }
-
-      .profile-info p {
-        color: #ccc;
+      .profile-info-header p {
+        color: #bbb;
         margin-bottom: 0.25rem;
       }
-
       .member-since {
-        font-size: 0.9rem;
-        color: var(--accent-gold) !important;
+        font-size: 0.85rem;
+        color: var(--accent-gold);
       }
-
       .edit-profile-btn {
-        display: inline-block;
-        margin-top: 1rem;
-        padding: 0.5rem 1.5rem;
-        background: var(--accent-red);
-        color: white;
-        border-radius: 4px;
-        text-decoration: none;
-        font-size: 0.9rem;
-        transition: var(--transition);
-      }
-
-      .edit-profile-btn:hover {
-        background: white;
+        background: transparent;
+        border: 1px solid var(--accent-red);
         color: var(--accent-red);
+        padding: 0.5rem 1.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-block;
       }
-
-      /* Stats Grid */
+      .edit-profile-btn:hover {
+        background: var(--accent-red);
+        color: var(--white);
+      }
       .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.5rem;
+        gap: 1rem;
         margin-bottom: 2rem;
       }
-
       .stat-card {
         background: #1a1a1a;
         border: 1px solid #333;
         border-radius: 8px;
         padding: 1.5rem;
         text-align: center;
-        transition: var(--transition);
       }
-
-      .stat-card:hover {
-        border-color: var(--accent-red);
-        transform: translateY(-3px);
-      }
-
       .stat-value {
         font-size: 1.8rem;
         font-weight: 700;
-        color: var(--accent-gold);
+        color: var(--accent-red);
         margin-bottom: 0.5rem;
       }
-
       .stat-label {
-        color: #ccc;
+        color: #bbb;
         font-size: 0.9rem;
       }
-
-      /* Profile Content Layout */
-      .profile-content {
+      .profile-content-grid {
         display: grid;
         grid-template-columns: 280px 1fr;
         gap: 2rem;
-        background: #1a1a1a;
-        border-radius: 12px;
-        border: 1px solid #333;
-        overflow: hidden;
       }
-
-      /* Sidebar Navigation */
       .profile-sidebar {
-        background: #111;
-        padding: 2rem 0;
-        border-right: 1px solid #333;
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 12px;
+        padding: 1rem 0;
+        height: fit-content;
       }
-
       .profile-nav {
         list-style: none;
         padding: 0;
         margin: 0;
       }
-
-      .profile-nav li a {
+      .profile-nav li {
+        border-bottom: 1px solid #333;
+      }
+      .profile-nav li:last-child {
+        border-bottom: none;
+      }
+      .profile-nav a {
         display: flex;
         align-items: center;
-        gap: 1rem;
-        padding: 0.8rem 2rem;
+        gap: 0.75rem;
+        padding: 0.9rem 1.5rem;
         color: #ccc;
         text-decoration: none;
-        transition: var(--transition);
-        font-size: 0.95rem;
+        transition: all 0.3s;
       }
-
-      .profile-nav li a i {
+      .profile-nav a i {
         width: 20px;
         color: var(--accent-red);
       }
-
-      .profile-nav li a:hover,
-      .profile-nav li a.active {
-        background: #1a1a1a;
-        color: var(--accent-red);
+      .profile-nav a:hover,
+      .profile-nav a.active {
+        background: #2a2a2a;
+        color: var(--white);
         border-left: 3px solid var(--accent-red);
       }
-
-      /* Main Content Area */
       .profile-main {
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 12px;
         padding: 2rem;
       }
-
       .profile-tab {
         display: none;
       }
-
       .profile-tab.active {
         display: block;
       }
-
       .section-title {
         font-size: 1.5rem;
-        font-weight: 600;
-        margin-bottom: 1.5rem;
         color: var(--white);
-        border-left: 4px solid var(--accent-red);
-        padding-left: 1rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--accent-gold);
+        display: inline-block;
       }
-
-      /* Form Styles */
-      .form-grid {
+      .form-row {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
-        margin-bottom: 2rem;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
       }
-
       .form-group {
         margin-bottom: 1rem;
       }
-
-      .form-group.full-width {
-        grid-column: span 2;
-      }
-
       .form-group label {
         display: block;
-        color: #ccc;
+        color: #bbb;
         margin-bottom: 0.5rem;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
       }
-
-      .form-control {
+      .form-group input,
+      .form-group select {
         width: 100%;
-        padding: 0.8rem;
-        background: #222;
+        padding: 0.75rem;
+        background: #0a0a0a;
         border: 1px solid #333;
         border-radius: 4px;
         color: var(--white);
-        font-size: 0.95rem;
+        font-size: 0.9rem;
       }
-
-      .form-control:focus {
+      .form-group input:focus,
+      .form-group select:focus {
         outline: none;
         border-color: var(--accent-red);
       }
-
-      .form-control[readonly],
-      .form-control[disabled] {
-        background: #1a1a1a;
+      .form-group input:read-only,
+      .form-group select:disabled {
+        background: #222;
         cursor: not-allowed;
       }
-
-      .save-btn {
-        background: var(--accent-red);
-        color: white;
-        border: none;
-        padding: 0.8rem 2rem;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: var(--transition);
-      }
-
-      .save-btn:hover {
-        background: white;
-        color: var(--accent-red);
-      }
-
-      /* Membership Card */
       .membership-card {
-        background: #111;
-        border: 1px solid #333;
+        background: #0a0a0a;
         border-radius: 8px;
         padding: 1.5rem;
         margin-top: 1rem;
       }
-
       .membership-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
         flex-wrap: wrap;
-        gap: 1rem;
       }
-
       .membership-name {
         font-size: 1.3rem;
         font-weight: 700;
         color: var(--accent-gold);
       }
-
       .membership-status {
-        padding: 0.3rem 1rem;
+        padding: 0.25rem 0.75rem;
         border-radius: 20px;
         font-size: 0.8rem;
         font-weight: 600;
       }
-
       .status-active {
         background: rgba(46, 204, 113, 0.2);
         color: #2ecc71;
       }
-
       .membership-info {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 1rem;
         margin-bottom: 1.5rem;
       }
-
       .info-item {
         display: flex;
         justify-content: space-between;
         padding: 0.5rem 0;
         border-bottom: 1px solid #333;
       }
-
       .info-label {
-        color: #ccc;
-        font-size: 0.9rem;
+        color: #bbb;
+        font-size: 0.85rem;
       }
-
       .info-value {
         color: var(--white);
         font-weight: 500;
       }
-
       .membership-actions {
         display: flex;
         gap: 1rem;
-        margin-top: 1rem;
+        flex-wrap: wrap;
       }
-
       .membership-btn {
-        padding: 0.6rem 1.5rem;
-        background: #333;
-        color: white;
-        text-decoration: none;
+        padding: 0.5rem 1rem;
         border-radius: 4px;
-        font-size: 0.9rem;
-        transition: var(--transition);
+        text-decoration: none;
+        font-size: 0.85rem;
+        transition: all 0.3s;
       }
-
-      .membership-btn:hover {
+      .renew-btn {
         background: var(--accent-red);
+        color: var(--white);
       }
-
-      /* Health Section */
+      .renew-btn:hover {
+        background: #fff;
+        color: var(--accent-red);
+      }
+      .upgrade-btn {
+        background: transparent;
+        border: 1px solid var(--accent-gold);
+        color: var(--accent-gold);
+      }
+      .upgrade-btn:hover {
+        background: var(--accent-gold);
+        color: var(--primary-black);
+      }
       .health-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
+        gap: 1rem;
         margin-top: 1rem;
       }
-
       .health-item {
-        background: #111;
+        background: #0a0a0a;
         padding: 1rem;
         border-radius: 8px;
-        border: 1px solid #333;
       }
-
       .health-label {
-        font-weight: 600;
         color: var(--accent-gold);
+        font-weight: 600;
         margin-bottom: 0.5rem;
       }
-
-      .health-value {
-        color: #ccc;
-        font-size: 0.9rem;
-      }
-
       .conditions-list {
         list-style: none;
         padding-left: 0;
       }
-
       .conditions-list li {
-        color: #ccc;
-        font-size: 0.9rem;
-        padding: 0.2rem 0;
+        color: #bbb;
+        padding: 0.25rem 0;
+        padding-left: 1.25rem;
+        position: relative;
       }
-
-      /* Order History Table */
+      .conditions-list li::before {
+        content: "•";
+        color: var(--accent-red);
+        position: absolute;
+        left: 0;
+      }
       .orders-table {
+        width: 100%;
+        overflow-x: auto;
+      }
+      table {
         width: 100%;
         border-collapse: collapse;
       }
-
-      .orders-table th,
-      .orders-table td {
-        padding: 0.8rem;
+      th,
+      td {
+        padding: 0.75rem;
         text-align: left;
         border-bottom: 1px solid #333;
       }
-
-      .orders-table th {
+      th {
         color: var(--accent-gold);
         font-weight: 600;
       }
-
-      .orders-table td {
+      td {
         color: #ccc;
       }
-
-      /* Responsive */
-      @media (max-width: 992px) {
-        .profile-content {
+      .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #666;
+      }
+      .error-state {
+        text-align: center;
+        padding: 3rem;
+        color: #e53637;
+      }
+      @media (max-width: 768px) {
+        .profile-container {
+          padding: 1rem;
+        }
+        .profile-content-grid {
           grid-template-columns: 1fr;
         }
         .profile-sidebar {
-          border-right: none;
-          border-bottom: 1px solid #333;
+          order: 2;
         }
-        .profile-nav li a {
-          padding: 0.6rem 1rem;
+        .profile-main {
+          order: 1;
         }
-      }
-
-      @media (max-width: 768px) {
-        .profile-wrapper {
-          padding: 0 1rem;
-          margin: 1rem auto;
-        }
-        .profile-header {
-          flex-direction: column;
-          text-align: center;
-        }
-        .form-grid {
+        .form-row {
           grid-template-columns: 1fr;
         }
-        .form-group.full-width {
-          grid-column: span 1;
-        }
-        .membership-header {
+        .profile-header-card {
           flex-direction: column;
-          align-items: flex-start;
+          text-align: center;
         }
         .stats-grid {
           grid-template-columns: repeat(2, 1fr);
         }
       }
+      @media (max-width: 480px) {
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+        .membership-info {
+          grid-template-columns: 1fr;
+        }
+      }
     </style>
   </head>
   <body>
-    <!-- Header (same as index.html) -->
+    <!-- Header (exactly like shop.html) -->
     <header class="site-header">
       <div class="header-container">
         <div class="logo">
@@ -457,7 +400,6 @@
             <span class="logo-text">Ape-X Gym</span>
           </a>
         </div>
-
         <nav class="main-nav desktop-nav">
           <ul class="nav-links">
             <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
@@ -472,8 +414,8 @@
             </li>
           </ul>
         </nav>
-
         <div class="header-right">
+          <!-- Cart Icon -->
           <div class="cart-icon" id="cartIcon">
             <i class="fa fa-shopping-cart"></i>
             <span class="cart-count" id="cartCount">0</span>
@@ -497,7 +439,7 @@
               </div>
             </div>
           </div>
-
+          <!-- Profile Icon -->
           <div class="profile-icon" id="profileIcon">
             <i class="fa fa-user"></i>
             <div class="profile-dropdown" id="profileDropdown">
@@ -509,18 +451,12 @@
               <a href="#" class="logout-link" style="display: none">Logout</a>
             </div>
           </div>
-
-          <button
-            class="mobile-menu-toggle"
-            id="mobileMenuToggle"
-            aria-label="Toggle mobile menu"
-          >
+          <button class="mobile-menu-toggle" id="mobileMenuToggle">
             <span class="bar"></span><span class="bar"></span
             ><span class="bar"></span>
           </button>
         </div>
       </div>
-
       <nav class="mobile-nav" id="mobileNav">
         <div class="mobile-nav-container">
           <div class="mobile-nav-header">
@@ -528,8 +464,7 @@
               <img
                 src="https://dummyimage.com/60x60/000000/ffffff&text=AXG"
                 alt="Ape-X Gym"
-              />
-              <span>Ape-X Gym</span>
+              /><span>Ape-X Gym</span>
             </div>
             <button class="close-menu" id="closeMenu">&times;</button>
           </div>
@@ -540,246 +475,186 @@
             </li>
             <li><a href="/shop" class="mobile-nav-link">Ape-X Store</a></li>
             <li><a href="/about" class="mobile-nav-link">About Ape-X</a></li>
-            <li><a href="/login" class="mobile-nav-link">My Account</a></li>
+            <li><a href="/profile" class="mobile-nav-link">My Account</a></li>
             <li><a href="/register" class="mobile-nav-link">Join Now</a></li>
           </ul>
         </div>
       </nav>
     </header>
 
-    <main>
-      <div class="profile-wrapper" id="profileWrapper">
-        <!-- Loading state -->
+    <main class="profile-page">
+      <div class="profile-container">
+        <!-- Loading State -->
         <div id="loadingState" style="text-align: center; padding: 4rem">
           <i
-            class="fa fa-spinner fa-spin"
-            style="font-size: 2rem; color: var(--accent-gold)"
+            class="fas fa-spinner fa-spin"
+            style="font-size: 3rem; color: var(--accent-red)"
           ></i>
-          <p style="color: #ccc; margin-top: 1rem">Loading your profile...</p>
+          <p style="color: #bbb; margin-top: 1rem">Loading your profile...</p>
         </div>
 
-        <!-- Profile content (hidden until loaded) -->
+        <!-- Profile Content (hidden initially) -->
         <div id="profileContent" style="display: none">
           <!-- Profile Header -->
-          <div class="profile-header">
+          <div class="profile-header-card">
             <div class="profile-avatar">
-              <i class="fa fa-user"></i>
+              <i class="fas fa-user"></i>
             </div>
-            <div class="profile-info">
-              <h1 id="userFullName">Loading...</h1>
-              <p id="userEmail">Loading...</p>
-              <p class="member-since" id="memberSince">Member since: --</p>
-              <button class="edit-profile-btn" id="enableEditBtn">
-                Edit Profile
-              </button>
+            <div class="profile-info-header">
+              <h1 id="userFullName">Member Name</h1>
+              <p id="userEmail">email@example.com</p>
+              <p class="member-since" id="memberSince">Member since --</p>
+            </div>
+            <div>
+              <a href="#" class="edit-profile-btn" id="editProfileBtn"
+                >Edit Profile</a
+              >
             </div>
           </div>
 
-          <!-- Stats Grid -->
+          <!-- Quick Stats -->
           <div class="stats-grid">
             <div class="stat-card">
-              <div class="stat-value" id="statWeight">-- kg</div>
-              <div class="stat-label">Current Weight</div>
+              <div class="stat-value" id="fitnessLevelStat">--</div>
+              <div class="stat-label">Fitness Level</div>
             </div>
             <div class="stat-card">
-              <div class="stat-value" id="statBMI">--</div>
-              <div class="stat-label">BMI</div>
+              <div class="stat-value" id="membershipTypeStat">--</div>
+              <div class="stat-label">Membership Type</div>
             </div>
             <div class="stat-card">
-              <div class="stat-value" id="statMembership">--</div>
-              <div class="stat-label">Membership</div>
+              <div class="stat-value" id="ordersCountStat">0</div>
+              <div class="stat-label">Orders Placed</div>
             </div>
             <div class="stat-card">
-              <div class="stat-value" id="statStatus">--</div>
+              <div class="stat-value" id="memberStatusStat">Active</div>
               <div class="stat-label">Status</div>
             </div>
           </div>
 
-          <!-- Profile Tabs Content -->
-          <div class="profile-content">
+          <!-- Main Content Grid -->
+          <div class="profile-content-grid">
+            <!-- Sidebar Tabs -->
             <div class="profile-sidebar">
               <ul class="profile-nav">
                 <li>
-                  <a href="#" data-tab="account" class="active"
-                    ><i class="fa fa-user"></i> Account Overview</a
+                  <a href="#" class="active" data-tab="overview"
+                    ><i class="fas fa-user-circle"></i> Overview</a
                   >
                 </li>
                 <li>
                   <a href="#" data-tab="orders"
-                    ><i class="fa fa-shopping-bag"></i> Order History</a
-                  >
-                </li>
-                <li>
-                  <a href="#" data-tab="health"
-                    ><i class="fa fa-heart"></i> Health & Fitness</a
+                    ><i class="fas fa-shopping-bag"></i> Purchase History</a
                   >
                 </li>
                 <li>
                   <a href="#" data-tab="membership"
-                    ><i class="fa fa-id-card"></i> Membership Details</a
+                    ><i class="fas fa-id-card"></i> Membership Details</a
+                  >
+                </li>
+                <li>
+                  <a href="#" data-tab="health"
+                    ><i class="fas fa-heartbeat"></i> Health & Fitness</a
                   >
                 </li>
                 <li>
                   <a href="#" data-tab="settings"
-                    ><i class="fa fa-cog"></i> Account Settings</a
+                    ><i class="fas fa-cog"></i> Account Settings</a
                   >
                 </li>
               </ul>
             </div>
 
+            <!-- Main Content Area -->
             <div class="profile-main">
-              <!-- Account Tab -->
-              <div id="accountTab" class="profile-tab active">
+              <!-- Tab: Overview -->
+              <div id="overview" class="profile-tab active">
                 <div class="section-title">Personal Information</div>
-                <div class="form-grid">
+                <div class="form-row">
                   <div class="form-group">
                     <label>First Name</label>
-                    <input
-                      type="text"
-                      id="inputFirstName"
-                      class="form-control"
-                      readonly
-                    />
+                    <input type="text" id="firstName" readonly />
                   </div>
                   <div class="form-group">
                     <label>Last Name</label>
-                    <input
-                      type="text"
-                      id="inputLastName"
-                      class="form-control"
-                      readonly
-                    />
+                    <input type="text" id="lastName" readonly />
                   </div>
-                  <div class="form-group full-width">
-                    <label>Email Address</label>
-                    <input
-                      type="email"
-                      id="inputEmail"
-                      class="form-control"
-                      readonly
-                    />
-                  </div>
+                </div>
+                <div class="form-row">
                   <div class="form-group">
                     <label>Phone Number</label>
-                    <input
-                      type="tel"
-                      id="inputPhone"
-                      class="form-control"
-                      readonly
-                    />
+                    <input type="text" id="phone" readonly />
                   </div>
                   <div class="form-group">
                     <label>Date of Birth</label>
-                    <input
-                      type="date"
-                      id="inputDob"
-                      class="form-control"
-                      readonly
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label>Gender</label>
-                    <select id="inputGender" class="form-control" disabled>
-                      <option value="">Select</option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
-                  <div class="form-group full-width">
-                    <label>Address</label>
-                    <input
-                      type="text"
-                      id="inputAddress"
-                      class="form-control"
-                      readonly
-                    />
+                    <input type="text" id="dob" readonly />
                   </div>
                 </div>
-                <button
-                  class="save-btn"
-                  id="saveProfileBtn"
-                  style="display: none"
-                >
-                  Save Changes
-                </button>
-              </div>
-
-              <!-- Order History Tab -->
-              <div id="ordersTab" class="profile-tab">
-                <div class="section-title">Order History</div>
-                <div id="ordersList">
-                  <p style="color: #ccc">
-                    No orders found. <a href="/shop">Start shopping →</a>
-                  </p>
+                <div class="form-group">
+                  <label>Address</label>
+                  <input type="text" id="address" readonly />
+                </div>
+                <div class="form-group">
+                  <label>Emergency Contact</label>
+                  <input type="text" id="emergencyContact" readonly />
                 </div>
               </div>
 
-              <!-- Health Tab -->
-              <div id="healthTab" class="profile-tab">
-                <div class="section-title">Health & Fitness Information</div>
-                <div class="health-grid">
-                  <div class="health-item">
-                    <div class="health-label">Health Conditions</div>
-                    <ul class="conditions-list" id="healthConditionsList">
-                      <li>No conditions reported</li>
-                    </ul>
-                  </div>
-                  <div class="health-item">
-                    <div class="health-label">Additional Notes</div>
-                    <div class="health-value" id="healthNotes">No notes</div>
-                  </div>
-                  <div class="health-item">
-                    <div class="health-label">Fitness Level</div>
-                    <div class="health-value" id="fitnessLevelValue">
-                      Beginner
-                    </div>
-                  </div>
-                  <div class="health-item">
-                    <div class="health-label">Emergency Contact</div>
-                    <div class="health-value" id="emergencyContactDisplay">
-                      Not set
-                    </div>
+              <!-- Tab: Purchase History -->
+              <div id="orders" class="profile-tab">
+                <div class="section-title">Purchase History</div>
+                <div class="orders-table">
+                  <div id="ordersList" class="empty-state">
+                    <i
+                      class="fas fa-shopping-bag"
+                      style="font-size: 2rem; margin-bottom: 1rem"
+                    ></i>
+                    <p>
+                      No orders yet. Visit our
+                      <a href="/shop" style="color: var(--accent-red)">store</a>
+                      to make your first purchase!
+                    </p>
                   </div>
                 </div>
               </div>
 
-              <!-- Membership Tab -->
-              <div id="membershipTab" class="profile-tab">
+              <!-- Tab: Membership Details -->
+              <div id="membership" class="profile-tab">
                 <div class="section-title">Membership Details</div>
                 <div class="membership-card">
                   <div class="membership-header">
                     <div class="membership-name" id="membershipPlanName">
                       Classic
                     </div>
-                    <div class="membership-status status-active">Active</div>
+                    <div
+                      class="membership-status status-active"
+                      id="membershipStatus"
+                    >
+                      Active
+                    </div>
                   </div>
                   <div class="membership-info">
                     <div class="info-item">
-                      <span class="info-label">Monthly Cost</span>
-                      <span class="info-value" id="membershipPrice"
+                      <span class="info-label">Monthly Cost</span
+                      ><span class="info-value" id="membershipPrice"
                         >₦5,000</span
                       >
                     </div>
                     <div class="info-item">
-                      <span class="info-label">Start Date</span>
-                      <span class="info-value" id="membershipStartDate"
-                        >--</span
-                      >
+                      <span class="info-label">Start Date</span
+                      ><span class="info-value" id="membershipStart">--</span>
                     </div>
                     <div class="info-item">
-                      <span class="info-label">Next Billing Date</span>
-                      <span class="info-value" id="membershipNextBilling"
-                        >--</span
-                      >
+                      <span class="info-label">Expiration</span
+                      ><span class="info-value" id="membershipExpiry">--</span>
                     </div>
                     <div class="info-item">
-                      <span class="info-label">Auto-Renewal</span>
-                      <span class="info-value">Enabled</span>
+                      <span class="info-label">Auto-Renewal</span
+                      ><span class="info-value">Enabled</span>
                     </div>
                   </div>
                   <div class="membership-actions">
-                    <a href="#" class="membership-btn renew-btn" id="renewBtn"
+                    <a href="#" class="membership-btn renew-btn"
                       >Renew Membership</a
                     >
                     <a href="/membership" class="membership-btn upgrade-btn"
@@ -789,52 +664,106 @@
                 </div>
               </div>
 
-              <!-- Settings Tab -->
-              <div id="settingsTab" class="profile-tab">
-                <div class="section-title">Account Settings</div>
-                <div class="form-grid">
-                  <div class="form-group full-width">
-                    <label>Change Password</label>
-                    <input
-                      type="password"
-                      class="form-control"
-                      placeholder="New password"
-                      id="newPassword"
-                    />
+              <!-- Tab: Health & Fitness -->
+              <div id="health" class="profile-tab">
+                <div class="section-title">Health Information</div>
+                <div class="health-grid">
+                  <div class="health-item">
+                    <div class="health-label">Fitness Level</div>
+                    <div id="fitnessLevelValue" style="color: #fff">--</div>
                   </div>
-                  <div class="form-group full-width">
-                    <input
-                      type="password"
-                      class="form-control"
-                      placeholder="Confirm password"
-                      id="confirmPassword"
-                    />
+                  <div class="health-item">
+                    <div class="health-label">Health Conditions</div>
+                    <ul class="conditions-list" id="healthConditionsList">
+                      <li>None reported</li>
+                    </ul>
                   </div>
-                  <div class="form-group full-width">
-                    <button class="save-btn" id="changePasswordBtn">
-                      Update Password
-                    </button>
+                  <div class="health-item">
+                    <div class="health-label">Additional Notes</div>
+                    <div id="healthNotes" style="color: #fff">--</div>
+                  </div>
+                  <div class="health-item">
+                    <div class="health-label">Fitness Goals</div>
+                    <div style="color: #fff">Update coming soon</div>
                   </div>
                 </div>
-                <div class="section-title" style="margin-top: 2rem">
-                  Notifications
+              </div>
+
+              <!-- Tab: Account Settings -->
+              <div id="settings" class="profile-tab">
+                <div class="section-title">Account Settings</div>
+                <div class="form-group">
+                  <label>Email Address</label>
+                  <input type="email" id="settingEmail" readonly />
                 </div>
                 <div class="form-group">
-                  <label
-                    style="display: flex; align-items: center; gap: 0.5rem"
+                  <label>Change Password</label>
+                  <button
+                    class="edit-profile-btn"
+                    id="changePasswordBtn"
+                    style="
+                      background: var(--accent-red);
+                      color: white;
+                      border: none;
+                      padding: 0.5rem 1rem;
+                    "
                   >
-                    <input type="checkbox" id="emailNotifications" checked />
-                    Receive email updates about promotions and classes
-                  </label>
+                    Reset Password
+                  </button>
+                </div>
+                <div class="form-group">
+                  <label>Notification Preferences</label>
+                  <button
+                    class="edit-profile-btn"
+                    id="notificationsBtn"
+                    style="background: transparent; border: 1px solid #666"
+                  >
+                    Manage Notifications
+                  </button>
+                </div>
+                <div class="form-group">
+                  <button
+                    id="logoutBtn"
+                    class="edit-profile-btn"
+                    style="background: #333; color: #fff"
+                  >
+                    Logout
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        <!-- Error State -->
+        <div
+          id="errorState"
+          style="display: none; text-align: center; padding: 4rem"
+        >
+          <i
+            class="fas fa-exclamation-triangle"
+            style="
+              font-size: 3rem;
+              color: var(--accent-red);
+              margin-bottom: 1rem;
+            "
+          ></i>
+          <h2 style="color: var(--white)">Unable to Load Profile</h2>
+          <p style="color: #bbb; margin: 1rem 0" id="errorMessage">
+            Please try again later.
+          </p>
+          <button
+            id="redirectToLoginBtn"
+            class="btn-primary"
+            style="background: var(--accent-red)"
+          >
+            Go to Login
+          </button>
+        </div>
       </div>
     </main>
 
-    <!-- Footer (same as index.html) -->
+    <!-- Footer -->
     <footer class="site-footer">
       <div class="footer-container">
         <div class="footer-top">
@@ -862,20 +791,9 @@
             <div class="footer-column">
               <h4>Info</h4>
               <ul>
-                <li><a href="#">About Us</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/membership">Memberships</a></li>
                 <li><a href="#">Careers</a></li>
-                <li><a href="#">Press Room</a></li>
-                <li><a href="#">Newsroom</a></li>
-                <li><a href="#">Franchising</a></li>
-              </ul>
-            </div>
-            <div class="footer-column">
-              <h4>Partners</h4>
-              <ul>
-                <li><a href="#">Corporate Partnerships</a></li>
-                <li><a href="#">Brand Partners</a></li>
-                <li><a href="#">Sponsorships</a></li>
-                <li><a href="#">Community Partners</a></li>
               </ul>
             </div>
             <div class="footer-column">
@@ -883,17 +801,14 @@
               <ul>
                 <li><a href="/privacy">Privacy Policy</a></li>
                 <li><a href="/terms">Terms & Conditions</a></li>
-                <li><a href="#">Cookie Policy</a></li>
-                <li><a href="#">Accessibility</a></li>
-                <li><a href="#">Do Not Sell My Info</a></li>
               </ul>
             </div>
             <div class="footer-column">
               <h4>Support</h4>
               <ul>
+                <li><a href="/contact">Contact Us</a></li>
                 <li><a href="#">FAQs</a></li>
-                <li><a href="#">Contact Us</a></li>
-                <li><a href="#">Blog</a></li>
+                <li><a href="/blog">Blog</a></li>
               </ul>
             </div>
           </div>
@@ -911,326 +826,452 @@
         <div class="footer-bottom">
           <div class="copyright">
             <p>&copy; 2025 Ape-X Gym Nigeria. All rights reserved.</p>
-            <p class="legal-disclaimer">
-              *Membership plans and perks subject to terms. See club for
-              details.
-            </p>
           </div>
         </div>
       </div>
     </footer>
 
-    <button id="backToTop" class="back-to-top">
+    <button id="backToTop" class="back-to-top" aria-label="Back to top">
       <i class="fas fa-chevron-up"></i>
     </button>
 
     <script src="/js/mobile-menu.js"></script>
     <script src="/js/main.js"></script>
-    <script>
-      // Global variables
-      let currentUser = null;
-      let currentProfile = null;
-      let editMode = false;
 
-      // Helper functions
+    <style>
+      /* Cart & Profile Dropdown Styles (matching shop.html) */
+      .cart-icon,
+      .profile-icon {
+        position: relative;
+        margin-left: 20px;
+        cursor: pointer;
+      }
+      .cart-icon i,
+      .profile-icon i {
+        font-size: 1.2rem;
+        color: var(--dark-grey);
+        transition: var(--transition);
+      }
+      .cart-icon:hover i,
+      .profile-icon:hover i {
+        color: var(--accent-red);
+      }
+      .cart-count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: var(--accent-red);
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+      }
+      .cart-dropdown,
+      .profile-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: var(--dark-grey);
+        border: 1px solid #333;
+        border-radius: 8px;
+        padding: 1rem;
+        min-width: 280px;
+        z-index: 1000;
+        display: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+      .cart-icon:hover .cart-dropdown,
+      .profile-icon:hover .profile-dropdown {
+        display: block;
+      }
+      .cart-items {
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      .cart-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #333;
+      }
+      .cart-item img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 4px;
+      }
+      .cart-item-details {
+        flex: 1;
+      }
+      .cart-item-name {
+        color: var(--white);
+        font-size: 0.9rem;
+      }
+      .cart-item-price {
+        color: var(--accent-red);
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+      .remove-item {
+        background: none;
+        border: none;
+        color: #b7b7b7;
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 0.25rem;
+      }
+      .remove-item:hover {
+        color: var(--accent-red);
+      }
+      .empty-cart {
+        text-align: center;
+        color: #b7b7b7;
+        padding: 1rem;
+      }
+      .empty-cart i {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+      .cart-total {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid #333;
+        color: var(--white);
+        font-weight: 600;
+      }
+      .cart-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+      .cart-actions a {
+        flex: 1;
+        text-align: center;
+        padding: 0.5rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+      .view-cart {
+        background-color: #333;
+        color: var(--white);
+      }
+      .checkout {
+        background-color: var(--accent-red);
+        color: var(--white);
+      }
+      .profile-dropdown {
+        min-width: 150px;
+        padding: 0.5rem 0;
+      }
+      .profile-dropdown a {
+        display: block;
+        padding: 0.5rem 1rem;
+        color: var(--white);
+        text-decoration: none;
+        transition: background 0.3s;
+      }
+      .profile-dropdown a:hover {
+        background-color: #333;
+        color: var(--accent-red);
+      }
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .auth-buttons {
+        display: flex;
+        gap: 0.5rem;
+      }
+      @media (max-width: 768px) {
+        .auth-buttons {
+          display: none;
+        }
+        .cart-icon,
+        .profile-icon {
+          margin-left: 0;
+        }
+      }
+    </style>
+
+    <script>
+      // ---- Helper functions ----
       function getToken() {
         return localStorage.getItem("supabase_token");
       }
 
-      function showModal(title, message) {
-        // Simple alert for now; you can replace with a custom modal
-        alert(`${title}: ${message}`);
-      }
-
-      // Load user data from backend
-      async function loadUserProfile() {
+      async function fetchProfile() {
         const token = getToken();
         if (!token) {
-          window.location.href = "/login";
-          return false;
+          showError("No login session found. Please log in again.");
+          return null;
         }
-
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
         try {
           const response = await fetch("/auth/profile", {
             headers: { Authorization: `Bearer ${token}` },
+            signal: controller.signal,
           });
-
-          if (!response.ok) {
-            if (response.status === 401) {
-              localStorage.removeItem("supabase_token");
-              window.location.href = "/login";
-            }
-            throw new Error("Failed to load profile");
+          clearTimeout(timeoutId);
+          if (response.status === 401 || response.status === 403) {
+            localStorage.removeItem("supabase_token");
+            showError("Your session has expired. Please log in again.");
+            return null;
           }
-
-          const data = await response.json();
-          currentUser = data.user;
-          currentProfile = data.profile;
-
-          populateProfileData();
-          document.getElementById("loadingState").style.display = "none";
-          document.getElementById("profileContent").style.display = "block";
-          return true;
+          if (!response.ok) throw new Error(`Server error: ${response.status}`);
+          return await response.json();
         } catch (error) {
-          console.error("Error loading profile:", error);
-          document.getElementById("loadingState").innerHTML =
-            '<p style="color: red;">Failed to load profile. <a href="/login">Please login again</a>.</p>';
-          return false;
+          clearTimeout(timeoutId);
+          if (error.name === "AbortError") showError("Request timed out.");
+          else showError(error.message || "Failed to load profile");
+          return null;
         }
       }
 
-      function populateProfileData() {
-        // Header
-        const firstName =
-          currentProfile?.first_name ||
-          currentUser.user_metadata?.first_name ||
-          "";
-        const lastName =
-          currentProfile?.last_name ||
-          currentUser.user_metadata?.last_name ||
-          "";
+      function showError(message) {
+        document.getElementById("loadingState").style.display = "none";
+        document.getElementById("profileContent").style.display = "none";
+        const errorDiv = document.getElementById("errorState");
+        const errorMsg = document.getElementById("errorMessage");
+        if (errorMsg) errorMsg.textContent = message;
+        errorDiv.style.display = "block";
+        localStorage.removeItem("supabase_token");
+      }
+
+      function formatDate(dateString) {
+        if (!dateString) return "Not set";
+        return new Date(dateString).toLocaleDateString();
+      }
+
+      function populateProfile(data) {
+        const { user, profile } = data;
         document.getElementById("userFullName").textContent =
-          `${firstName} ${lastName}`.trim() || "Ape-X Member";
-        document.getElementById("userEmail").textContent = currentUser.email;
-        const joinDate = new Date(currentUser.created_at);
-        document.getElementById(
-          "memberSince"
-        ).textContent = `Member since ${joinDate.toLocaleDateString()}`;
-
-        // Stats (placeholder - can be extended)
-        document.getElementById("statMembership").textContent =
-          currentProfile?.membership_plan === "elite" ? "Elite" : "Classic";
-        document.getElementById("statStatus").textContent = "Active";
-
-        // Account form
-        document.getElementById("inputFirstName").value = firstName;
-        document.getElementById("inputLastName").value = lastName;
-        document.getElementById("inputEmail").value = currentUser.email;
-        document.getElementById("inputPhone").value =
-          currentProfile?.phone || "";
-        document.getElementById("inputDob").value =
-          currentProfile?.date_of_birth || "";
-        document.getElementById("inputGender").value =
-          currentProfile?.gender || "";
-        document.getElementById("inputAddress").value =
-          currentProfile?.address || "";
-
-        // Health info
-        const conditions = currentProfile?.health_conditions || [];
+          `${profile.first_name || user.user_metadata?.first_name || ""} ${profile.last_name || user.user_metadata?.last_name || ""}`.trim() ||
+          "Member";
+        document.getElementById("userEmail").textContent = user.email;
+        document.getElementById("memberSince").textContent =
+          `Member since ${new Date(user.created_at).toLocaleDateString()}`;
+        document.getElementById("fitnessLevelStat").textContent =
+          profile.fitness_level
+            ? profile.fitness_level.charAt(0).toUpperCase() +
+              profile.fitness_level.slice(1)
+            : "Beginner";
+        document.getElementById("membershipTypeStat").textContent =
+          profile.membership_plan
+            ? profile.membership_plan.toUpperCase()
+            : "CLASSIC";
+        document.getElementById("memberStatusStat").textContent = "Active";
+        document.getElementById("firstName").value = profile.first_name || "";
+        document.getElementById("lastName").value = profile.last_name || "";
+        document.getElementById("phone").value = profile.phone || "";
+        document.getElementById("dob").value = profile.date_of_birth || "";
+        document.getElementById("address").value = profile.address || "";
+        const emergency = `${profile.emergency_contact_name || ""} ${profile.emergency_contact_phone ? `(${profile.emergency_contact_phone})` : ""}`;
+        document.getElementById("emergencyContact").value =
+          emergency.trim() || "Not set";
+        const plan = profile.membership_plan || "classic";
+        const price = plan === "classic" ? "₦5,000" : "₦8,000";
+        document.getElementById("membershipPlanName").textContent =
+          plan.toUpperCase();
+        document.getElementById("membershipPrice").textContent = price;
+        document.getElementById("membershipStart").textContent = formatDate(
+          user.created_at,
+        );
+        const expiry = new Date(user.created_at);
+        expiry.setFullYear(expiry.getFullYear() + 1);
+        document.getElementById("membershipExpiry").textContent =
+          formatDate(expiry);
+        document.getElementById("fitnessLevelValue").textContent =
+          profile.fitness_level
+            ? profile.fitness_level.charAt(0).toUpperCase() +
+              profile.fitness_level.slice(1)
+            : "Not set";
+        const conditions = profile.health_conditions || [];
         const conditionsList = document.getElementById("healthConditionsList");
-        if (
+        conditionsList.innerHTML =
           conditions.length === 0 ||
           (conditions.length === 1 && conditions[0] === "none")
-        ) {
-          conditionsList.innerHTML = "<li>No conditions reported</li>";
-        } else {
-          conditionsList.innerHTML = conditions
-            .map((c) => `<li>${c}</li>`)
-            .join("");
-        }
+            ? "<li>No health conditions reported</li>"
+            : conditions.map((c) => `<li>${c}</li>`).join("");
         document.getElementById("healthNotes").textContent =
-          currentProfile?.health_notes || "No additional notes";
-        document.getElementById("fitnessLevelValue").textContent =
-          currentProfile?.fitness_level || "Not specified";
-        const emergencyContact = currentProfile?.emergency_contact_name
-          ? `${currentProfile.emergency_contact_name} (${
-              currentProfile.emergency_contact_phone || ""
-            })`
-          : "Not provided";
-        document.getElementById("emergencyContactDisplay").textContent =
-          emergencyContact;
-
-        // Membership details
-        const plan = currentProfile?.membership_plan || "classic";
-        document.getElementById("membershipPlanName").textContent =
-          plan === "elite" ? "Elite Membership" : "Classic Membership";
-        document.getElementById("membershipPrice").textContent =
-          plan === "elite" ? "₦8,000/month" : "₦5,000/month";
-        // Placeholder dates
-        document.getElementById("membershipStartDate").textContent =
-          joinDate.toLocaleDateString();
-        const nextBilling = new Date(joinDate);
-        nextBilling.setMonth(nextBilling.getMonth() + 1);
-        document.getElementById("membershipNextBilling").textContent =
-          nextBilling.toLocaleDateString();
+          profile.health_notes || "No additional notes";
+        document.getElementById("settingEmail").value = user.email;
       }
 
-      // Edit mode toggle
-      document
-        .getElementById("enableEditBtn")
-        .addEventListener("click", function () {
-          editMode = !editMode;
-          const inputs = document.querySelectorAll(
-            "#accountTab input, #accountTab select"
-          );
-          inputs.forEach((input) => {
-            if (input.id !== "inputEmail") {
-              // Email not editable
-              input.readOnly = !editMode;
-              input.disabled = !editMode;
-            }
+      function initTabs() {
+        document.querySelectorAll(".profile-nav a").forEach((tab) => {
+          tab.addEventListener("click", (e) => {
+            e.preventDefault();
+            const tabId = tab.getAttribute("data-tab");
+            document
+              .querySelectorAll(".profile-nav a")
+              .forEach((t) => t.classList.remove("active"));
+            document
+              .querySelectorAll(".profile-tab")
+              .forEach((t) => t.classList.remove("active"));
+            tab.classList.add("active");
+            document.getElementById(tabId).classList.add("active");
           });
-          document.getElementById("saveProfileBtn").style.display = editMode
-            ? "block"
-            : "none";
-          this.textContent = editMode ? "Cancel Editing" : "Edit Profile";
         });
+      }
 
-      // Save profile changes
-      document
-        .getElementById("saveProfileBtn")
-        .addEventListener("click", async function () {
-          const token = getToken();
-          if (!token) return;
+      function initBackToTop() {
+        const btn = document.getElementById("backToTop");
+        window.addEventListener("scroll", () =>
+          btn.classList.toggle("visible", window.pageYOffset > 300),
+        );
+        btn.addEventListener("click", () =>
+          window.scrollTo({ top: 0, behavior: "smooth" }),
+        );
+      }
 
-          const updatedData = {
-            first_name: document.getElementById("inputFirstName").value,
-            last_name: document.getElementById("inputLastName").value,
-            phone: document.getElementById("inputPhone").value,
-            date_of_birth: document.getElementById("inputDob").value,
-            gender: document.getElementById("inputGender").value,
-            address: document.getElementById("inputAddress").value,
-          };
+      function initLogout() {
+        document
+          .getElementById("logoutBtn")
+          ?.addEventListener("click", async () => {
+            try {
+              await fetch("/auth/logout", { method: "POST" });
+            } catch (e) {}
+            localStorage.removeItem("supabase_token");
+            window.location.href = "/";
+          });
+      }
 
-          try {
-            const response = await fetch(`/auth/profile/${currentUser.id}`, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-              body: JSON.stringify(updatedData),
-            });
+      function initRedirectButton() {
+        document
+          .getElementById("redirectToLoginBtn")
+          ?.addEventListener("click", () => (window.location.href = "/login"));
+      }
 
-            if (!response.ok) throw new Error("Update failed");
-
-            showModal("Success", "Profile updated successfully!");
-            // Refresh data
-            await loadUserProfile();
-            editMode = false;
-            document.getElementById("enableEditBtn").textContent =
-              "Edit Profile";
-            document.getElementById("saveProfileBtn").style.display = "none";
-            const inputs = document.querySelectorAll("#accountTab input");
-            inputs.forEach((input) => (input.readOnly = true));
-          } catch (error) {
-            showModal("Error", "Could not update profile.");
-          }
-        });
-
-      // Change password
-      document
-        .getElementById("changePasswordBtn")
-        .addEventListener("click", async function () {
-          const newPwd = document.getElementById("newPassword").value;
-          const confirmPwd = document.getElementById("confirmPassword").value;
-          if (!newPwd) {
-            showModal("Error", "Please enter a new password.");
-            return;
-          }
-          if (newPwd !== confirmPwd) {
-            showModal("Error", "Passwords do not match.");
-            return;
-          }
-          // Note: Supabase password update requires the user to be authenticated
-          // This is a placeholder - implement via /auth/update-password endpoint if needed
-          showModal(
-            "Info",
-            "Password change functionality requires additional backend endpoint. Coming soon."
+      function initPlaceholders() {
+        document
+          .getElementById("editProfileBtn")
+          ?.addEventListener("click", (e) => {
+            e.preventDefault();
+            alert("Edit profile functionality coming soon!");
+          });
+        document
+          .getElementById("changePasswordBtn")
+          ?.addEventListener("click", (e) => {
+            e.preventDefault();
+            alert(
+              "Password reset will be available soon. Contact support for now.",
+            );
+          });
+        document
+          .getElementById("notificationsBtn")
+          ?.addEventListener("click", (e) => {
+            e.preventDefault();
+            alert("Notification preferences coming soon!");
+          });
+        document.querySelector(".renew-btn")?.addEventListener("click", (e) => {
+          e.preventDefault();
+          alert(
+            "Renewal feature coming soon. Visit your home club for assistance.",
           );
         });
+      }
 
-      // Tab switching
-      const tabs = document.querySelectorAll(".profile-nav a");
-      tabs.forEach((tab) => {
-        tab.addEventListener("click", function (e) {
-          e.preventDefault();
-          const targetTab = this.dataset.tab;
-          // Remove active class from all tabs and hide all tab content
-          tabs.forEach((t) => t.classList.remove("active"));
-          document
-            .querySelectorAll(".profile-tab")
-            .forEach((tabDiv) => tabDiv.classList.remove("active"));
-          this.classList.add("active");
-          let targetDiv;
-          switch (targetTab) {
-            case "account":
-              targetDiv = document.getElementById("accountTab");
-              break;
-            case "orders":
-              targetDiv = document.getElementById("ordersTab");
-              break;
-            case "health":
-              targetDiv = document.getElementById("healthTab");
-              break;
-            case "membership":
-              targetDiv = document.getElementById("membershipTab");
-              break;
-            case "settings":
-              targetDiv = document.getElementById("settingsTab");
-              break;
-            default:
-              targetDiv = document.getElementById("accountTab");
-          }
-          if (targetDiv) targetDiv.classList.add("active");
-        });
-      });
+      function initNewsletter() {
+        document
+          .getElementById("newsletterForm")
+          ?.addEventListener("submit", (e) => {
+            e.preventDefault();
+            alert("Thank you for subscribing!");
+            e.target.reset();
+          });
+      }
 
-      // Cart functionality (same as shop.html)
-      let cart = [];
+      // ---- Cart & Profile UI state (matching shop.html) ----
       async function loadCart() {
         const token = getToken();
-        if (!token) return;
+        if (!token) {
+          updateCartDisplay([]);
+          updateProfileDropdown(false);
+          return;
+        }
         try {
           const res = await fetch("/cart", {
             headers: { Authorization: `Bearer ${token}` },
           });
           const data = await res.json();
-          if (data.success) cart = data.items || [];
-          updateCartDisplay();
+          updateCartDisplay(data.success ? data.items || [] : []);
+          updateProfileDropdown(true);
         } catch (err) {
-          console.error(err);
+          updateCartDisplay([]);
+          updateProfileDropdown(false);
         }
       }
-      function updateCartDisplay() {
-        const totalQty = cart.reduce(
-          (sum, item) => sum + (item.quantity || 1),
-          0
-        );
-        document.getElementById("cartCount").textContent = totalQty;
-        const cartItemsDiv = document.getElementById("cartItems");
+
+      function updateCartDisplay(cartItems = []) {
+        const cartCountSpans = document.querySelectorAll(".cart-count");
+        cartCountSpans.forEach((el) => (el.textContent = cartItems.length));
+        const cartItemsContainer = document.querySelector(".cart-items");
+        const emptyCart = document.querySelector(".empty-cart");
+        const cartTotal = document.querySelector(".cart-total");
+        const cartActions = document.querySelector(".cart-actions");
+        if (cartItems.length === 0) {
+          if (emptyCart) emptyCart.style.display = "block";
+          if (cartTotal) cartTotal.style.display = "none";
+          if (cartActions) cartActions.style.display = "none";
+          if (cartItemsContainer && emptyCart)
+            cartItemsContainer.innerHTML =
+              '<div class="empty-cart"><i class="fa fa-shopping-cart"></i><p>Your cart is empty</p></div>';
+          return;
+        }
+        if (emptyCart) emptyCart.style.display = "none";
+        if (cartTotal) cartTotal.style.display = "flex";
+        if (cartActions) cartActions.style.display = "flex";
+        let total = 0;
+        let itemsHtml = "";
+        cartItems.forEach((item) => {
+          const price = item.shop_items?.price || 0;
+          const qty = item.quantity || 1;
+          total += price * qty;
+          itemsHtml += `<div class="cart-item">
+          <img src="${item.shop_items?.image_url || "https://via.placeholder.com/50"}" alt="${item.shop_items?.name}">
+          <div class="cart-item-details">
+            <div class="cart-item-name">${item.shop_items?.name || "Product"}</div>
+            <div class="cart-item-price">₦${price.toLocaleString()} x ${qty}</div>
+          </div>
+          <button class="remove-item" data-product-id="${item.product_id}"><i class="fa fa-times"></i></button>
+        </div>`;
+        });
+        if (cartItemsContainer) cartItemsContainer.innerHTML = itemsHtml;
         const cartTotalSpan = document.getElementById("cartTotal");
-        const cartTotalContainer =
-          document.getElementById("cartTotalContainer");
-        const cartActions = document.getElementById("cartActions");
-        if (cart.length === 0) {
-          cartItemsDiv.innerHTML =
-            '<div class="empty-cart"><i class="fa fa-shopping-cart"></i><p>Your cart is empty</p></div>';
-          cartTotalContainer.style.display = "none";
-          cartActions.style.display = "none";
-        } else {
-          let html = "";
-          let total = 0;
-          cart.forEach((item) => {
-            const price = item.shop_items?.price || 0;
-            const qty = item.quantity || 1;
-            total += price * qty;
-            html += `<div class="cart-item"><img src="${
-              item.shop_items?.image_url || "https://via.placeholder.com/50"
-            }" alt=""><div class="cart-item-details"><div class="cart-item-name">${
-              item.shop_items?.name
-            }</div><div class="cart-item-price">₦${price.toLocaleString()} x ${qty}</div></div></div>`;
-          });
-          cartItemsDiv.innerHTML = html;
+        if (cartTotalSpan)
           cartTotalSpan.textContent = `₦${total.toLocaleString()}`;
-          cartTotalContainer.style.display = "flex";
-          cartActions.style.display = "flex";
-        }
+        document.querySelectorAll(".remove-item").forEach((btn) => {
+          btn.addEventListener("click", async (e) => {
+            e.stopPropagation();
+            const productId = btn.dataset.productId;
+            const token = getToken();
+            if (!token) return;
+            try {
+              await fetch(`/cart/remove/${productId}`, {
+                method: "DELETE",
+                headers: { Authorization: `Bearer ${token}` },
+              });
+              await loadCart();
+            } catch (err) {
+              console.error(err);
+            }
+          });
+        });
       }
-      // Update auth UI (login/logout links)
-      function updateAuthUI() {
-        const token = getToken();
-        const isLoggedIn = !!token;
+
+      function updateProfileDropdown(isLoggedIn) {
         document
           .querySelectorAll(".profile-link")
           .forEach((l) => (l.style.display = isLoggedIn ? "block" : "none"));
@@ -1244,36 +1285,24 @@
           .querySelectorAll(".logout-link")
           .forEach((l) => (l.style.display = isLoggedIn ? "block" : "none"));
       }
-      async function logout() {
-        try {
-          await fetch("/auth/logout", { method: "POST" });
-        } catch (e) {}
-        localStorage.removeItem("supabase_token");
-        window.location.href = "/";
-      }
-      document.querySelectorAll(".logout-link").forEach((link) =>
-        link.addEventListener("click", (e) => {
-          e.preventDefault();
-          logout();
-        })
-      );
 
-      // Initialize
-      document.addEventListener("DOMContentLoaded", async function () {
-        updateAuthUI();
-        await loadCart();
-        await loadUserProfile();
-      });
+      document.addEventListener("DOMContentLoaded", async () => {
+        initBackToTop();
+        initLogout();
+        initPlaceholders();
+        initNewsletter();
+        initRedirectButton();
 
-      // Back to top
-      const backToTop = document.getElementById("backToTop");
-      window.addEventListener("scroll", () => {
-        if (window.pageYOffset > 300) backToTop.classList.add("visible");
-        else backToTop.classList.remove("visible");
+        await loadCart(); // load cart and update header UI
+
+        const data = await fetchProfile();
+        if (data) {
+          populateProfile(data);
+          document.getElementById("loadingState").style.display = "none";
+          document.getElementById("profileContent").style.display = "block";
+          initTabs();
+        }
       });
-      backToTop.addEventListener("click", () =>
-        window.scrollTo({ top: 0, behavior: "smooth" })
-      );
     </script>
   </body>
 </html>
