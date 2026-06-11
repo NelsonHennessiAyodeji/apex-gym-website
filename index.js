@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+const supabase = require("./db/supabase");
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -111,6 +112,71 @@ app.get("/privacy", (req, res) => {
 
 app.get("/checkout", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "checkout.html"));
+});
+
+// Paystack public key endpoint (for frontend) to Verify Paystack payment
+app.get("/api/verify-payment", async (req, res) => {
+  const reference = req.query.reference;
+  if (!reference) {
+    return res.status(400).json({ success: false, error: "Missing reference" });
+  }
+
+  const secretKey = process.env.PAYSTACK_SECRET_KEY;
+  if (!secretKey) {
+    console.error("PAYSTACK_SECRET_KEY not set");
+    return res.status(500).json({ success: false, error: "Payment system misconfigured" });
+  }
+
+  try {
+    const response = await fetch(`https://api.paystack.co/transaction/verify/${reference}`, {
+      headers: {
+        Authorization: `Bearer ${secretKey}`,
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+
+    if (!data.status) {
+      return res.status(400).json({ success: false, error: data.message || "Verification failed" });
+    }
+
+    const paymentStatus = data.data.status; // "success", "failed", "pending"
+    if (paymentStatus === "success") {
+      res.json({ success: true, status: "paid", data: data.data });
+    } else {
+      res.json({ success: true, status: "failed", message: `Payment status: ${paymentStatus}` });
+    }
+  } catch (error) {
+    console.error("Paystack verification error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Get authenticated user's orders
+app.get("/api/my-orders", async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      return res.status(401).json({ success: false, error: "No token" });
+    }
+    const token = authHeader.replace("Bearer ", "");
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      return res.status(401).json({ success: false, error: "Invalid token" });
+    }
+
+    const { data: orders, error } = await supabase
+      .from("orders")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+    res.json({ success: true, orders: orders || [] });
+  } catch (err) {
+    console.error("Fetch orders error:", err);
+    res.status(500).json({ success: false, error: err.message });
+  }
 });
 
 app.get("/admin", (req, res) => {

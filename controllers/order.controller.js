@@ -6,13 +6,42 @@ const supabaseAdmin = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
+const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
+
+async function verifyPaystackTransaction(reference) {
+  if (!PAYSTACK_SECRET_KEY) {
+    console.error("❌ PAYSTACK_SECRET_KEY not set");
+    return { success: false, message: "Payment gateway not configured" };
+  }
+  try {
+    const response = await fetch(`https://api.paystack.co/transaction/verify/${reference}`, {
+      headers: {
+        Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    if (!data.status) {
+      return { success: false, message: data.message };
+    }
+    if (data.data.status === "success") {
+      return { success: true, data: data.data };
+    } else {
+      return { success: false, message: `Payment status: ${data.data.status}` };
+    }
+  } catch (error) {
+    console.error("Paystack verification error:", error);
+    return { success: false, message: error.message };
+  }
+}
+
 const createOrder = async (req, res) => {
   try {
     console.log("📦 Order creation request received");
 
     const { email, total, items, billingDetails } = req.body;
+    const paymentReference = billingDetails.reference;
 
-    // 1. Authenticate the user
     const authHeader = req.headers.authorization;
     if (!authHeader) {
       return res.status(401).json({ success: false, error: "No authorization header" });
@@ -26,17 +55,36 @@ const createOrder = async (req, res) => {
     }
     console.log("✅ User ID:", user.id);
 
-    // 2. Call the database function to insert order
-    const { data: orderId, error: insertError } = await supabaseAdmin.rpc("insert_order", {
-      p_user_id: user.id,
-      p_email: email,
-      p_total_amount: total,
-      p_items: items,
-      p_billing_address: billingDetails.address,
-      p_billing_city: billingDetails.city,
-      p_billing_state: billingDetails.state,
-      p_payment_reference: billingDetails.reference
-    });
+    console.log("🔍 Verifying Paystack transaction:", paymentReference);
+    const verification = await verifyPaystackTransaction(paymentReference);
+    if (!verification.success) {
+      console.error("❌ Payment verification failed:", verification.message);
+      return res.status(400).json({
+        success: false,
+        error: "Payment verification failed. Please contact support.",
+        details: verification.message,
+      });
+    }
+    console.log("✅ Payment verified successfully. Amount:", verification.data.amount / 100);
+
+    const orderData = {
+      user_id: user.id,
+      email: email,
+      total_amount: total,
+      items: items,
+      billing_address: billingDetails.address,
+      billing_city: billingDetails.city,
+      billing_state: billingDetails.state,
+      payment_reference: paymentReference,
+      status: 'paid',
+      created_at: new Date().toISOString()
+    };
+
+    const { data: insertedOrder, error: insertError } = await supabaseAdmin
+      .from("orders")
+      .insert([orderData])
+      .select("id")
+      .single();
 
     if (insertError) {
       console.error("💥 Insert error:", insertError);
@@ -48,9 +96,9 @@ const createOrder = async (req, res) => {
       });
     }
 
-    console.log("✅ Order saved with ID:", orderId);
+    const orderId = insertedOrder.id;
+    console.log("✅ Order saved with ID:", orderId, "Status: paid");
 
-    // 3. Clear the user's cart after successful order
     const { error: clearError } = await supabaseAdmin
       .from("cart_items")
       .delete()
