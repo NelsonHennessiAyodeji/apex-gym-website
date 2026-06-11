@@ -308,7 +308,7 @@
 
     <script>
       // Helper functions
-      function getToken() { return window.Auth ? window.Auth.getAccessToken() : null; }
+      function getToken() { return localStorage.getItem("supabase_token"); }
 
       async function fetchProfile() {
         const token = getToken();
@@ -318,7 +318,7 @@
         try {
           const response = await fetch("/auth/profile", { headers: { Authorization: `Bearer ${token}` }, signal: controller.signal });
           clearTimeout(timeoutId);
-          if (response.status === 401 || response.status === 403) { if (window.Auth) window.Auth.clearTokens(); showError("Your session has expired. Please log in again."); return null; }
+          if (response.status === 401 || response.status === 403) { localStorage.removeItem("supabase_token"); showError("Your session has expired. Please log in again."); return null; }
           if (!response.ok) throw new Error(`Server error: ${response.status}`);
           return await response.json();
         } catch (error) {
@@ -350,7 +350,7 @@
         const errorMsg = document.getElementById("errorMessage");
         if (errorMsg) errorMsg.textContent = message;
         errorDiv.style.display = "block";
-        if (window.Auth) window.Auth.clearTokens();
+        localStorage.removeItem("supabase_token");
       }
 
       function formatDate(dateString) {
@@ -442,7 +442,7 @@
       function initLogout() {
         document.getElementById("logoutBtn")?.addEventListener("click", async () => {
           try { await fetch("/auth/logout", { method: "POST" }); } catch(e) {}
-          if (window.Auth) window.Auth.clearTokens();
+          localStorage.removeItem("supabase_token");
           window.location.href = "/";
         });
       }
