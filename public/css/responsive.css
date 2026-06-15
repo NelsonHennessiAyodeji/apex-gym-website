@@ -248,3 +248,50 @@
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   }
 }
+
+/* Additional mobile typography refinements */
+@media screen and (max-width: 767px) {
+  .hero h1 {
+    font-size: 1.8rem;
+    letter-spacing: -0.5px;
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+  .section-title {
+    font-size: 1.6rem !important;
+  }
+  .membership-card h3 {
+    font-size: 1.4rem;
+  }
+  .price {
+    font-size: 1.8rem;
+  }
+  .product-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .product-price {
+    font-size: 1rem;
+  }
+  .profile-card h3 {
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+  .hero h1 {
+    font-size: 1.5rem;
+  }
+  .btn-primary, .btn-secondary {
+    font-size: 0.8rem;
+    padding: 0.7rem 1rem;
+  }
+  .logo-text {
+    font-size: 1.1rem;
+  }
+}

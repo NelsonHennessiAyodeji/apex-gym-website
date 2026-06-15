@@ -1,12 +1,18 @@
-/* Membership Page Specific Styles */
+/* Membership Page – Professional Styling (Matches Homepage) */
+:root {
+  --membership-card-bg: #1a1a1a;
+  --membership-border: #333;
+  --membership-text-light: #b7b7b7;
+}
 
-/* Hero */
+/* Hero Section – same as homepage */
 .hero-membership {
   padding: 6rem 2rem;
   text-align: center;
-  color: var(--white);
+  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://dummyimage.com/1920x800/222222/444444&text=Membership');
   background-size: cover;
   background-position: center;
+  color: var(--white);
 }
 
 .hero-membership .hero-content {
@@ -18,17 +24,20 @@
   font-size: 3rem;
   margin-bottom: 1rem;
   text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
-/* Membership Sections */
+/* Membership Sections – dark background like homepage values section */
 .membership-section {
   padding: 4rem 2rem;
+  background-color: var(--primary-black);
 }
 
 .membership-section.alt-bg {
-  background-color: var(--light-bg);
+  background-color: #0a0a0a; /* subtle alternate */
 }
 
+/* Membership Cards – exactly like homepage membership cards */
 .membership-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -37,11 +46,11 @@
 }
 
 .membership-card {
-  background: var(--white);
+  background: var(--membership-card-bg);
+  border: 1px solid var(--membership-border);
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: var(--shadow);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, border-color 0.3s ease;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -49,12 +58,13 @@
 
 .membership-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: var(--accent-red);
 }
 
 .membership-card.featured {
   border: 2px solid var(--accent-gold);
   transform: scale(1.02);
+  background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
 }
 
 .membership-card.featured:hover {
@@ -69,9 +79,11 @@
   background: var(--accent-gold);
   color: var(--primary-black);
   padding: 0.3rem 1rem;
-  border-radius: 20px;
+  border-radius: 30px;
   font-size: 0.8rem;
   font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .card-header {
@@ -81,29 +93,32 @@
 
 .card-header h3 {
   font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--white);
   margin-bottom: 0.5rem;
 }
 
 .price {
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 2.2rem;
+  font-weight: 800;
   color: var(--accent-red);
 }
 
 .price-period {
   font-size: 0.9rem;
   font-weight: normal;
-  color: var(--light-grey);
+  color: var(--membership-text-light);
 }
 
 .plan-desc {
   font-size: 0.9rem;
-  color: var(--light-grey);
+  color: var(--membership-text-light);
   margin-top: 0.5rem;
 }
 
 .card-features {
   margin: 1.5rem 0;
+  flex-grow: 1;
 }
 
 .card-features ul {
@@ -116,7 +131,8 @@
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  color: var(--medium-grey);
+  color: var(--membership-text-light);
+  font-size: 0.95rem;
 }
 
 .card-features li i {
@@ -125,16 +141,18 @@
 }
 
 .other-durations {
-  background: var(--light-bg);
+  background: #0a0a0a;
   padding: 1rem;
   border-radius: 8px;
   margin: 1rem 0;
   font-size: 0.9rem;
+  color: var(--membership-text-light);
 }
 
 .other-durations p {
   font-weight: bold;
   margin-bottom: 0.5rem;
+  color: var(--white);
 }
 
 .other-durations ul {
@@ -144,7 +162,7 @@
 
 .other-durations li {
   padding: 0.2rem 0;
-  color: var(--medium-grey);
+  color: var(--membership-text-light);
 }
 
 .join-btn {
@@ -152,21 +170,25 @@
   text-align: center;
   margin-top: auto;
   width: 100%;
-  padding: 0.8rem;
+  padding: 0.9rem;
   font-size: 1rem;
   font-weight: 600;
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--accent-red);
   color: var(--white);
-  transition: background 0.3s;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .join-btn:hover {
-  background: #e0352a;
+  background: #fff;
+  color: var(--accent-red);
   text-decoration: none;
+  transform: translateY(-2px);
 }
 
-/* Short-term Options */
+/* Short-term Options – dark cards with gold icons */
 .short-term-section {
   padding: 4rem 2rem;
   background: var(--primary-black);
@@ -181,15 +203,17 @@
 }
 
 .short-term-card {
-  background: var(--dark-grey);
+  background: var(--membership-card-bg);
+  border: 1px solid var(--membership-border);
   padding: 2rem;
   text-align: center;
   border-radius: 12px;
-  transition: transform 0.3s;
+  transition: all 0.3s;
 }
 
 .short-term-card:hover {
   transform: translateY(-5px);
+  border-color: var(--accent-red);
 }
 
 .short-term-card i {
@@ -201,23 +225,25 @@
 .short-term-card h3 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
+  color: var(--white);
 }
 
 .short-term-card .price {
   font-size: 2rem;
   margin: 1rem 0;
   color: var(--accent-red);
+  font-weight: 800;
 }
 
 .short-term-card p {
   margin-bottom: 1.5rem;
-  color: var(--light-grey);
+  color: var(--membership-text-light);
 }
 
-/* Comparison Table */
+/* Comparison Table – dark theme table */
 .comparison-section {
   padding: 4rem 2rem;
-  background: var(--light-bg);
+  background: #0a0a0a;
 }
 
 .comparison-table {
@@ -228,42 +254,53 @@
 .comparison-table table {
   width: 100%;
   border-collapse: collapse;
-  background: var(--white);
-  border-radius: 8px;
+  background: var(--membership-card-bg);
+  border-radius: 12px;
   overflow: hidden;
+  border: 1px solid var(--membership-border);
 }
 
 .comparison-table th,
 .comparison-table td {
   padding: 1rem;
   text-align: left;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #333;
+  color: var(--membership-text-light);
 }
 
 .comparison-table th {
-  background: var(--primary-black);
-  color: var(--white);
+  background: #222;
+  color: var(--accent-gold);
   font-weight: 600;
 }
 
-.comparison-table tr:hover {
-  background: #f5f5f5;
+.comparison-table tr:hover td {
+  background: #252525;
 }
 
 #toggleComparison {
-  margin: 1rem auto 0;
+  margin: 2rem auto 0;
   display: block;
   background: var(--accent-red);
   color: white;
   border: none;
   padding: 0.8rem 2rem;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 6px;
   font-weight: 600;
+  transition: all 0.3s;
 }
 
-/* Responsive */
+#toggleComparison:hover {
+  background: #fff;
+  color: var(--accent-red);
+}
+
+/* Responsive – matches homepage behavior */
 @media (max-width: 768px) {
+  .hero-membership {
+    padding: 4rem 1rem;
+  }
   .hero-membership h1 {
     font-size: 2rem;
   }
@@ -279,6 +316,18 @@
   .comparison-table th,
   .comparison-table td {
     padding: 0.8rem;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
+  }
+  .join-btn {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .price {
+    font-size: 1.8rem;
+  }
+  .card-header h3 {
+    font-size: 1.5rem;
   }
 }

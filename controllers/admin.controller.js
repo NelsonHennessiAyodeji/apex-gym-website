@@ -1007,6 +1007,88 @@ const deleteBlogPost = async (req, res) => {
   }
 };
 
+const getOrders = async (req, res) => {
+  try {
+    const { page = 1, limit = 20, search = '', status = 'all' } = req.query;
+    const offset = (parseInt(page) - 1) * parseInt(limit);
+
+    let query = supabaseAdmin
+      .from('orders')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false });
+
+    if (status !== 'all') {
+      query = query.eq('status', status);
+    }
+
+    if (search) {
+      // Search by email, payment_reference, or user name (join with profiles if needed)
+      query = query.or(`email.ilike.%${search}%,payment_reference.ilike.%${search}%`);
+      // If you want to search by customer name, you'd need a join – optional.
+    }
+
+    const { data, error, count } = await query.range(offset, offset + parseInt(limit) - 1);
+    if (error) throw error;
+
+    // Optionally join with profiles to get user names
+    const userIds = [...new Set(data.map(o => o.user_id).filter(id => id))];
+    let userMap = {};
+    if (userIds.length) {
+      const { data: profiles } = await supabaseAdmin
+        .from('profiles')
+        .select('id, first_name, last_name')
+        .in('id', userIds);
+      if (profiles) {
+        userMap = Object.fromEntries(profiles.map(p => [p.id, `${p.first_name || ''} ${p.last_name || ''}`.trim() || '—']));
+      }
+    }
+
+    const enrichedData = data.map(order => ({
+      ...order,
+      user_name: userMap[order.user_id] || '—'
+    }));
+
+    res.json({
+      success: true,
+      data: enrichedData,
+      pagination: {
+        currentPage: parseInt(page),
+        totalPages: Math.ceil(count / parseInt(limit)),
+        totalItems: count,
+        itemsPerPage: parseInt(limit)
+      }
+    });
+  } catch (error) {
+    console.error('Get orders error:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+const updateOrderStatus = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+    const validStatuses = ['pending', 'paid', 'completed', 'cancelled'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ success: false, error: 'Invalid status' });
+    }
+
+    const { error } = await supabaseAdmin
+      .from('orders')
+      .update({ status, updated_at: new Date().toISOString() })
+      .eq('id', orderId);
+
+    if (error) throw error;
+
+    await logAdminActivity('UPDATE', 'order', `Order ${orderId}`, orderId, req.adminEmail, { new_status: status });
+
+    res.json({ success: true, message: 'Order status updated' });
+  } catch (error) {
+    console.error('Update order status error:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 const getRecentActivityLogs = async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 10;
@@ -1070,5 +1152,7 @@ module.exports = {
   createBlogPost,
   updateBlogPost,
   deleteBlogPost,
+  getOrders,
+  updateOrderStatus,
   getRecentActivityLogs,
 };

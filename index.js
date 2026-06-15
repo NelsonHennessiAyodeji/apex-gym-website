@@ -220,6 +220,10 @@ app.get("/admin/blog", verifyAdminSession, (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin-blog.html"));
 });
 
+app.get("/admin/blog", verifyAdminSession, (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin-orders.html"));
+});
+
 // Public API for shop items (no authentication required)
 app.get("/api/shop-items", async (req, res) => {
   try {
