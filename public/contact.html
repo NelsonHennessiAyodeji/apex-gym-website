@@ -179,6 +179,12 @@
       transform: translateY(-2px);
     }
 
+    .submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
     .map-placeholder {
       background: #1a1a1a;
       min-height: 100%;
@@ -240,6 +246,50 @@
 
     .hours-time {
       color: var(--medium-grey);
+    }
+
+    /* Modal for success/error messages */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      z-index: 10000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.8);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-box {
+      background: #1a1a1a;
+      max-width: 400px;
+      width: 90%;
+      padding: 2rem;
+      border-radius: 12px;
+      border: 2px solid var(--accent-red);
+      text-align: center;
+    }
+    .modal-box h2 {
+      color: var(--accent-red);
+      margin-bottom: 1rem;
+    }
+    .modal-box p {
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+    .modal-box .modal-btn {
+      background: var(--accent-red);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .modal-box .modal-btn:hover {
+      background: #fff;
+      color: var(--accent-red);
     }
 
     /* Responsive: 2 columns for contact cards on mobile */
@@ -418,7 +468,7 @@
               <div class="form-group">
                 <textarea id="message" placeholder="Your Message..." required></textarea>
               </div>
-              <button type="submit" class="submit-btn">Send Message</button>
+              <button type="submit" class="submit-btn" id="submitBtn">Send Message</button>
             </form>
           </div>
           <div class="map-placeholder">
@@ -493,37 +543,97 @@
     </div>
   </footer>
 
+  <!-- Modal for messages -->
+  <div id="messageModal" class="modal-overlay">
+    <div class="modal-box">
+      <h2 id="modalTitle">Message</h2>
+      <p id="modalMessage">Your message has been sent.</p>
+      <button class="modal-btn" id="modalBtn">OK</button>
+    </div>
+  </div>
+
   <script src="/js/mobile-menu.js"></script>
   <script src="/js/main.js"></script>
   <script>
-    // Back to top
     document.addEventListener("DOMContentLoaded", function() {
+      // Back to top (if element exists)
       const backToTopBtn = document.getElementById("backToTop");
-      window.addEventListener("scroll", function() {
-        if (window.pageYOffset > 300) backToTopBtn.classList.add("visible");
-        else backToTopBtn.classList.remove("visible");
-      });
-      backToTopBtn.addEventListener("click", function() {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
-    });
+      if (backToTopBtn) {
+        window.addEventListener("scroll", function() {
+          if (window.pageYOffset > 300) backToTopBtn.classList.add("visible");
+          else backToTopBtn.classList.remove("visible");
+        });
+        backToTopBtn.addEventListener("click", function() {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
 
-    // Contact form submission (placeholder - no backend required)
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      alert('Thank you for reaching out! We will get back to you shortly.');
-      this.reset();
-    });
+      // Modal handling
+      const modal = document.getElementById("messageModal");
+      const modalTitle = document.getElementById("modalTitle");
+      const modalMessage = document.getElementById("modalMessage");
+      const modalBtn = document.getElementById("modalBtn");
+      modalBtn.addEventListener("click", function() {
+        modal.style.display = "none";
+      });
+      window.addEventListener("click", function(e) {
+        if (e.target === modal) modal.style.display = "none";
+      });
 
-    // Newsletter form
-    const newsletterForm = document.getElementById('newsletterForm');
-    if (newsletterForm) {
-      newsletterForm.addEventListener('submit', function(e) {
+      function showModal(title, message) {
+        modalTitle.textContent = title;
+        modalMessage.textContent = message;
+        modal.style.display = "flex";
+      }
+
+      // Contact form submission
+      const contactForm = document.getElementById("contactForm");
+      const submitBtn = document.getElementById("submitBtn");
+      contactForm.addEventListener("submit", async function(e) {
         e.preventDefault();
-        alert('Thank you for subscribing!');
-        this.reset();
+
+        const name = document.getElementById("fullName").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const subject = document.getElementById("subject").value;
+        const message = document.getElementById("message").value.trim();
+
+        if (!name || !email || !message) {
+          showModal("Error", "Name, email, and message are required.");
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Sending...";
+
+        try {
+          const response = await fetch("/contact", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, phone, subject, message })
+          });
+          const data = await response.json();
+          if (!response.ok) throw new Error(data.error || "Failed to send.");
+          showModal("Success", data.message || "Your message has been sent.");
+          contactForm.reset();
+        } catch (err) {
+          showModal("Error", err.message || "Could not send message. Please try again later.");
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Send Message";
+        }
       });
-    }
+
+      // Newsletter form (unchanged)
+      const newsletterForm = document.getElementById("newsletterForm");
+      if (newsletterForm) {
+        newsletterForm.addEventListener("submit", function(e) {
+          e.preventDefault();
+          showModal("Subscribed", "Thank you for subscribing!");
+          this.reset();
+        });
+      }
+    });
   </script>
 </body>
 </html>

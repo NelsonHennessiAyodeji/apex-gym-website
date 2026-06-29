@@ -23,6 +23,7 @@ app.use("/admin", require("./routes/admin.route"));
 app.use("/cart", require("./routes/cart.route"));
 app.use("/api", require("./routes/api.route"));
 app.use("/orders", require("./routes/order.route"));
+app.use("/contact", require("./routes/contact.route"));
 
 // Componenets Routes
 // Update the static file serving section
